@@ -1,18 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="com.examples.bluetoothviewer"
-      android:versionCode="1"
-      android:versionName="1.0">
+    package="com.examples.bluetoothviewer"
+    android:versionCode="1"
+    android:versionName="1.0">
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".BluetoothViewer"
-                  android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+	<activity android:name=".BluetoothViewer"
+	    android:screenOrientation="nosensor"
+	    android:label="@string/app_name">
+	    <intent-filter>
+		<action android:name="android.intent.action.MAIN" />
+		<category android:name="android.intent.category.LAUNCHER" />
+	    </intent-filter>
+	</activity>
+
+        <activity android:name=".DeviceListActivity"
+                  android:label="@string/select_device"
+                  android:theme="@android:style/Theme.Dialog"
+                  android:configChanges="orientation|keyboardHidden" />
+	      
+        <activity android:name="backport.android.bluetooth.RequestEnableActivity"
+	    android:label="Bluetooth Permission Request" android:noHistory="true"
+	    android:theme="@android:style/Theme.Translucent.NoTitleBar"
+	    android:configChanges="orientation|keyboardHidden">
+	    <intent-filter>
+		<action android:name="com.titan2x.android.senspod.action.REQUEST_ENABLE" />
+		<category android:name="android.intent.category.DEFAULT" />
+	    </intent-filter>
+	</activity>
+
+	
+	<receiver android:name="backport.android.bluetooth.BluetoothIntentRedirector">
+	    <intent-filter>
+		<action android:name="android.bluetooth.intent.action.DISCOVERY_COMPLETED" />
+		<action android:name="android.bluetooth.intent.action.DISCOVERY_STARTED" />
+		<action android:name="android.bluetooth.intent.action.NAME_CHANGED" />
+		<action android:name="android.bluetooth.intent.action.SCAN_MODE_CHANGED" />
+		<action android:name="android.bluetooth.intent.action.BLUETOOTH_STATE_CHANGED" />
+		<action android:name="android.bluetooth.intent.action.REMOTE_DEVICE_CONNECTED" />
+		<action android:name="android.bluetooth.intent.action.REMOTE_DEVICE_DISCONNECTED" />
+		<action android:name="android.bluetooth.intent.action.REMOTE_DEVICE_DISCONNECT_REQUESTED" />
+		<action android:name="android.bluetooth.intent.action.BOND_STATE_CHANGED" />
+		<action android:name="android.bluetooth.intent.action.PAIRING_REQUEST" />
+		<action android:name="android.bluetooth.intent.action.PAIRING_CANCEL" />
+		<action android:name="android.bluetooth.intent.action.REMOTE_DEVICE_CLASS_UPDATED" />
+		<action android:name="android.bluetooth.intent.action.REMOTE_DEVICE_FOUND" />
+		<action android:name="android.bluetooth.intent.action.REMOTE_NAME_UPDATED" />
+	    </intent-filter>
+	</receiver>
 
     </application>
+    
+    <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
+
     <uses-sdk android:minSdkVersion="4" />
 
 </manifest> 
