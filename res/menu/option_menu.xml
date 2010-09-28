@@ -19,5 +19,5 @@
           android:title="@string/connect" />
     <item android:id="@+id/discoverable"
           android:icon="@android:drawable/ic_menu_mylocation"
-          android:title="@string/discoverable" />
+          android:title="@string/discoverable" android:visible="false" android:enabled="false"/>
 </menu>
