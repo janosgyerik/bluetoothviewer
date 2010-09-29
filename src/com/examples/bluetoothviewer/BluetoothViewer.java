@@ -266,6 +266,7 @@ public class BluetoothViewer extends Activity {
                 mConversationArrayAdapter.add(">>> " + writeMessage);
                 break;
             case MESSAGE_READ:
+            	if (paused) break;
                 byte[] readBuf = (byte[]) msg.obj;
                 // construct a string from the valid bytes in the buffer
                 String readMessage = new String(readBuf, 0, msg.arg1);
@@ -314,10 +315,68 @@ public class BluetoothViewer extends Activity {
         }
     }
 
+    private MenuItem connectMenuItem = null;
+    private MenuItem disconnectMenuItem = null;
+    private MenuItem pauseMenuItem = null;
+    private MenuItem resumeMenuItem = null;
+    
+    private void onBluetoothStateChanged() {
+        if (mChatService != null) {
+        	if (connectMenuItem != null) {
+        		switch (mChatService.getState()) {
+        		case BluetoothChatService.STATE_CONNECTED:
+        			connectMenuItem.setVisible(false);
+        			disconnectMenuItem.setVisible(true);
+        			resumeMenuItem.setVisible(false);
+        			pauseMenuItem.setVisible(true);
+        			break;
+        		case BluetoothChatService.STATE_NONE:
+        		case BluetoothChatService.STATE_CONNECTING:
+        		default:
+        			connectMenuItem.setVisible(true);
+        			disconnectMenuItem.setVisible(false);
+        			resumeMenuItem.setVisible(false);
+        			pauseMenuItem.setVisible(false);
+        			break;
+        		}
+        	}
+        }       
+    }
+    
+    private boolean paused = false;
+    
+    private void onPauseChanged() {
+		if (mChatService != null && mChatService.getState() == BluetoothChatService.STATE_CONNECTED) {
+			if (pauseMenuItem != null) {
+				if (paused) {
+					pauseMenuItem.setVisible(false);
+					resumeMenuItem.setVisible(true);
+				}
+				else {
+					pauseMenuItem.setVisible(true);
+					resumeMenuItem.setVisible(false);
+				}
+			}
+		}
+		else {
+			pauseMenuItem.setVisible(false);
+			resumeMenuItem.setVisible(false);
+		}
+    }
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option_menu, menu);
+        
+        connectMenuItem = menu.findItem(R.id.scan);
+        disconnectMenuItem = menu.findItem(R.id.menu_disconnect);
+        onBluetoothStateChanged();
+        
+        pauseMenuItem = menu.findItem(R.id.menu_pause_on);
+        resumeMenuItem = menu.findItem(R.id.menu_pause_off);
+        onPauseChanged();
+        
         return true;
     }
 
@@ -333,6 +392,17 @@ public class BluetoothViewer extends Activity {
             // Ensure this device is discoverable by others
             //ensureDiscoverable();
             return true;
+        case R.id.menu_disconnect:
+        	if (mChatService != null) mChatService.stop();
+        	return true;
+        case R.id.menu_pause_on:
+        	paused = true;
+        	onPauseChanged();
+        	return true;
+        case R.id.menu_pause_off:
+        	paused = false;
+        	onPauseChanged();
+        	return true;
         }
         return false;
     }

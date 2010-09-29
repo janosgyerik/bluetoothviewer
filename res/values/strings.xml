@@ -37,4 +37,7 @@
     <!-- Options Menu -->
     <string name="connect">Connect a device</string>
     <string name="discoverable">Make discoverable</string>
+    <string name="menu_disconnect">Disconnect device</string>
+    <string name="menu_pause_on">Pause</string>
+    <string name="menu_pause_off">Resume</string>
 </resources>

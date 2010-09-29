@@ -17,6 +17,15 @@
     <item android:id="@+id/scan"
           android:icon="@android:drawable/ic_menu_search"
           android:title="@string/connect" />
+    <item android:id="@+id/menu_disconnect"
+          android:icon="@drawable/disconnect"
+          android:title="@string/menu_disconnect" />
+    <item android:id="@+id/menu_pause_on"
+          android:icon="@drawable/pause"
+          android:title="@string/menu_pause_on" />
+    <item android:id="@+id/menu_pause_off"
+          android:icon="@drawable/pause"
+          android:title="@string/menu_pause_off" />
     <item android:id="@+id/discoverable"
           android:icon="@android:drawable/ic_menu_mylocation"
           android:title="@string/discoverable" android:visible="false" android:enabled="false"/>
