@@ -258,18 +258,21 @@ public class BluetoothViewer extends Activity {
                     mTitle.setText(R.string.title_not_connected);
                     break;
                 }
+                onBluetoothStateChanged();
                 break;
             case MESSAGE_WRITE:
                 byte[] writeBuf = (byte[]) msg.obj;
                 // construct a string from the buffer
                 String writeMessage = new String(writeBuf);
                 mConversationArrayAdapter.add(">>> " + writeMessage);
+                if (D) Log.d(TAG, "written = '" + writeMessage + "'");
                 break;
             case MESSAGE_READ:
             	if (paused) break;
                 byte[] readBuf = (byte[]) msg.obj;
                 // construct a string from the valid bytes in the buffer
                 String readMessage = new String(readBuf, 0, msg.arg1);
+                if (D) Log.d(TAG, readMessage);
                 mConversationArrayAdapter.add(readMessage);
                 break;
             case MESSAGE_DEVICE_NAME:
@@ -323,23 +326,19 @@ public class BluetoothViewer extends Activity {
     private void onBluetoothStateChanged() {
     	if (! menuReady) return;
     	if (mChatService != null) {
-    		if (connectMenuItem != null) {
-    			switch (mChatService.getState()) {
-    			case BluetoothChatService.STATE_CONNECTED:
-    				connectMenuItem.setVisible(false);
-    				disconnectMenuItem.setVisible(true);
-    				resumeMenuItem.setVisible(false);
-    				pauseMenuItem.setVisible(true);
-    				break;
-    			case BluetoothChatService.STATE_NONE:
-    			case BluetoothChatService.STATE_CONNECTING:
-    			default:
-    				connectMenuItem.setVisible(true);
-    				disconnectMenuItem.setVisible(false);
-    				resumeMenuItem.setVisible(false);
-    				pauseMenuItem.setVisible(false);
-    				break;
-    			}
+    		switch (mChatService.getState()) {
+    		case BluetoothChatService.STATE_CONNECTED:
+    			connectMenuItem.setVisible(false);
+    			disconnectMenuItem.setVisible(true);
+    			onPauseChanged();
+    			break;
+    		case BluetoothChatService.STATE_NONE:
+    		case BluetoothChatService.STATE_CONNECTING:
+    		default:
+    			connectMenuItem.setVisible(true);
+    			disconnectMenuItem.setVisible(false);
+    			onPauseChanged();
+    			break;
     		}
     	}       
     }
@@ -372,11 +371,12 @@ public class BluetoothViewer extends Activity {
         
         connectMenuItem = menu.findItem(R.id.scan);
         disconnectMenuItem = menu.findItem(R.id.menu_disconnect);
-        onBluetoothStateChanged();
+        disconnectMenuItem.setVisible(false);
         
         pauseMenuItem = menu.findItem(R.id.menu_pause_on);
+        pauseMenuItem.setVisible(false);
         resumeMenuItem = menu.findItem(R.id.menu_pause_off);
-        onPauseChanged();
+        resumeMenuItem.setVisible(false);
         
         menuReady = true;
         
