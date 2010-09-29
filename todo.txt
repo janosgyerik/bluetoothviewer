@@ -2,6 +2,4 @@ test with real device
 	send "suspend" works?
 	disconnect button
 	pause button
-
-todo
 	read from device line by line
