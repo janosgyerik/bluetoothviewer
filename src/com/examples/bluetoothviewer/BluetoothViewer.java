@@ -321,48 +321,49 @@ public class BluetoothViewer extends Activity {
     private MenuItem resumeMenuItem = null;
     
     private void onBluetoothStateChanged() {
-        if (mChatService != null) {
-        	if (connectMenuItem != null) {
-        		switch (mChatService.getState()) {
-        		case BluetoothChatService.STATE_CONNECTED:
-        			connectMenuItem.setVisible(false);
-        			disconnectMenuItem.setVisible(true);
-        			resumeMenuItem.setVisible(false);
-        			pauseMenuItem.setVisible(true);
-        			break;
-        		case BluetoothChatService.STATE_NONE:
-        		case BluetoothChatService.STATE_CONNECTING:
-        		default:
-        			connectMenuItem.setVisible(true);
-        			disconnectMenuItem.setVisible(false);
-        			resumeMenuItem.setVisible(false);
-        			pauseMenuItem.setVisible(false);
-        			break;
-        		}
-        	}
-        }       
+    	if (! menuReady) return;
+    	if (mChatService != null) {
+    		if (connectMenuItem != null) {
+    			switch (mChatService.getState()) {
+    			case BluetoothChatService.STATE_CONNECTED:
+    				connectMenuItem.setVisible(false);
+    				disconnectMenuItem.setVisible(true);
+    				resumeMenuItem.setVisible(false);
+    				pauseMenuItem.setVisible(true);
+    				break;
+    			case BluetoothChatService.STATE_NONE:
+    			case BluetoothChatService.STATE_CONNECTING:
+    			default:
+    				connectMenuItem.setVisible(true);
+    				disconnectMenuItem.setVisible(false);
+    				resumeMenuItem.setVisible(false);
+    				pauseMenuItem.setVisible(false);
+    				break;
+    			}
+    		}
+    	}       
     }
-    
+
     private boolean paused = false;
-    
+
     private void onPauseChanged() {
-		if (mChatService != null && mChatService.getState() == BluetoothChatService.STATE_CONNECTED) {
-			if (pauseMenuItem != null) {
-				if (paused) {
-					pauseMenuItem.setVisible(false);
-					resumeMenuItem.setVisible(true);
-				}
-				else {
-					pauseMenuItem.setVisible(true);
-					resumeMenuItem.setVisible(false);
-				}
-			}
-		}
-		else {
-			pauseMenuItem.setVisible(false);
-			resumeMenuItem.setVisible(false);
-		}
+    	if (mChatService != null && mChatService.getState() == BluetoothChatService.STATE_CONNECTED) {
+    		if (paused) {
+    			pauseMenuItem.setVisible(false);
+    			resumeMenuItem.setVisible(true);
+    		}
+    		else {
+    			pauseMenuItem.setVisible(true);
+    			resumeMenuItem.setVisible(false);
+    		}
+    	}
+    	else {
+    		pauseMenuItem.setVisible(false);
+    		resumeMenuItem.setVisible(false);
+    	}
     }
+    
+    private boolean menuReady = false;
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -376,6 +377,8 @@ public class BluetoothViewer extends Activity {
         pauseMenuItem = menu.findItem(R.id.menu_pause_on);
         resumeMenuItem = menu.findItem(R.id.menu_pause_off);
         onPauseChanged();
+        
+        menuReady = true;
         
         return true;
     }
