@@ -412,7 +412,7 @@ public class BluetoothChatService {
 				try {
 	            	String line = reader.readLine();
 	            	if (line != null) {
-	                    mHandler.obtainMessage(BluetoothChat.MESSAGE_READ, line.length(), -1, line.toCharArray())
+	                    mHandler.obtainMessage(BluetoothChat.MESSAGE_READ, line.length(), -1, line.getBytes())
                         .sendToTarget();
 	            	}
 				} catch (IOException e) {
