@@ -1,4 +1,1 @@
-test with real device
-	send "suspend" works?
-
 make device list scrollable when too long

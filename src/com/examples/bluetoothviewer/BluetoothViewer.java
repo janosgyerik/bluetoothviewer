@@ -213,6 +213,7 @@ public class BluetoothViewer extends Activity {
 
         // Check that there's actually something to send
         if (message.length() > 0) {
+        	message += "\n";
             // Get the message bytes and tell the BluetoothChatService to write
             byte[] send = message.getBytes();
             mChatService.write(send);
@@ -230,7 +231,7 @@ public class BluetoothViewer extends Activity {
             // If the action is a key-up event on the return key, send the message
             if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
                 String message = view.getText().toString();
-                sendMessage(message + "\n");
+                sendMessage(message);
             }
             if(D) Log.i(TAG, "END onEditorAction");
             return true;
