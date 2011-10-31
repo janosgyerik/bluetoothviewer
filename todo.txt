@@ -1,11 +1,27 @@
 marketplace
 -----------
-application icon with bluetooth
 remove unnecessary code
 do not open keyboard on start
 connect button
+rename package, com.examples is not really cool
+review manifest
+	make sure everything is correct
+	remove everything that is not necessary
+android best practices
 release on marketplace
+announcement
+	launchpad project
+	twitter
+	blog
 
 good to have
 ------------
+better application icon with droid + bluetooth crossover
 make device list scrollable when too long
+option to save to file
+remember recently sent text messages
+hexa mode
+option to cut off first n characters
+	show full text when clicked on the list item
+clear button
+adjustable font size
