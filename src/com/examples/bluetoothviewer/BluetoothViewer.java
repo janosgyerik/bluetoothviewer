@@ -148,7 +148,7 @@ public class BluetoothViewer extends Activity {
         mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
         mConversationView = (ListView) findViewById(R.id.in);
         mConversationView.setAdapter(mConversationArrayAdapter);
-
+        
         // Initialize the compose field with a listener for the return key
         mOutEditText = (EditText) findViewById(R.id.edit_text_out);
         mOutEditText.setOnEditorActionListener(mWriteListener);
@@ -250,8 +250,7 @@ public class BluetoothViewer extends Activity {
                 if(D) Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
                 switch (msg.arg1) {
                 case BluetoothChatService.STATE_CONNECTED:
-                    mTitle.setText(R.string.title_connected_to);
-                    mTitle.append(mConnectedDeviceName);
+                    mTitle.setText(mConnectedDeviceName);
                     mConversationArrayAdapter.clear();
                     break;
                 case BluetoothChatService.STATE_CONNECTING:

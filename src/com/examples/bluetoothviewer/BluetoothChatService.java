@@ -91,11 +91,6 @@ public class BluetoothChatService {
     /**
      * Start the ConnectThread to initiate a connection to a remote device.
      * @param device  The BluetoothDevice to connect
-     * @throws InvocationTargetException 
-     * @throws IllegalAccessException 
-     * @throws NoSuchMethodException 
-     * @throws IllegalArgumentException 
-     * @throws SecurityException 
      */
     public synchronized void connect(BluetoothDevice device) {
         if (D) Log.d(TAG, "connect to: " + device);
