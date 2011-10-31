@@ -1,1 +1,11 @@
+marketplace
+-----------
+application icon with bluetooth
+remove unnecessary code
+do not open keyboard on start
+connect button
+release on marketplace
+
+good to have
+------------
 make device list scrollable when too long
