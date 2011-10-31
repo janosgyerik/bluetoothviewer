@@ -11,6 +11,7 @@
         <activity
             android:label="@string/app_name"
             android:name=".BluetoothViewer"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="nosensor" >
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />

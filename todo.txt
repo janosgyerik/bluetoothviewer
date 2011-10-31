@@ -1,27 +1,37 @@
 marketplace
 -----------
-remove unnecessary code
-do not open keyboard on start
-connect button
-rename package, com.examples is not really cool
-review manifest
+- remove unnecessary code
+- toolbar when connected
+	text input
+	disconnect
+	hexa mode toggle
+	clear button
+	record on/off toggle
+	settings
+- toolbar when not connected
+	connect
+	settings
+- rename package, com.examples is not really cool
+- review manifest
 	make sure everything is correct
-	remove everything that is not necessary
-android best practices
-release on marketplace
-announcement
+	remove anything that is not necessary
+- better application icon with droid + bluetooth crossover
+- android best practices
+- release on marketplace
+- announcement
 	launchpad project
 	twitter
 	blog
 
-good to have
-------------
-better application icon with droid + bluetooth crossover
-make device list scrollable when too long
-option to save to file
-remember recently sent text messages
-hexa mode
-option to cut off first n characters
+settings app for defaults
+-------------------------
+- hexa mode
+- record on/off
+
+other good to have
+------------------
+- make device list scrollable when too long
+- remember recently sent text messages
+- option to cut off first n characters
 	show full text when clicked on the list item
-clear button
-adjustable font size
+- adjustable font size
