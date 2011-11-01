@@ -34,7 +34,5 @@
     <string name="button_scan">Scan for devices</string>
 
     <!-- Options Menu -->
-    <string name="menu_pause_on">Pause</string>
-    <string name="menu_pause_off">Resume</string>
     <string name="menu_quit">Quit</string>
 </resources>

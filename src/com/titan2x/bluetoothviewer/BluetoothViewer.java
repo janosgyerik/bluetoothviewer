@@ -78,6 +78,8 @@ public class BluetoothViewer extends Activity {
     // Toolbar
     private ImageButton mToolbarConnectButton;
     private ImageButton mToolbarDisconnectButton;
+    private ImageButton mToolbarPauseButton;
+    private ImageButton mToolbarPlayButton;
 
     // Name of the connected device
     private String mConnectedDeviceName = null;
@@ -89,6 +91,10 @@ public class BluetoothViewer extends Activity {
     private BluetoothAdapter mBluetoothAdapter = null;
     // Member object for the chat services
     private BluetoothChatService mChatService = null;
+
+    // State variables
+    private boolean paused = false;
+    private boolean connected = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,6 +124,22 @@ public class BluetoothViewer extends Activity {
         mToolbarDisconnectButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View v) {
 				disconnectDevices();
+			}
+        });
+        
+        mToolbarPauseButton = (ImageButton) findViewById(R.id.toolbar_btn_pause);
+        mToolbarPauseButton.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				paused = true;
+				onPausedStateChanged();
+			}
+        });
+        
+        mToolbarPlayButton = (ImageButton) findViewById(R.id.toolbar_btn_play);
+        mToolbarPlayButton.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				paused = false;
+				onPausedStateChanged();
 			}
         });
         
@@ -318,13 +340,14 @@ public class BluetoothViewer extends Activity {
                 if(D) Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
                 switch (msg.arg1) {
                 case BluetoothChatService.STATE_CONNECTED:
+                	connected = true;
                     mTitle.setText(mConnectedDeviceName);
                     break;
                 case BluetoothChatService.STATE_CONNECTING:
                     mTitle.setText(R.string.title_connecting);
                     break;
-                case BluetoothChatService.STATE_LISTEN:
                 case BluetoothChatService.STATE_NONE:
+                	connected = false;
                     mTitle.setText(R.string.title_not_connected);
                     break;
                 }
@@ -387,88 +410,60 @@ public class BluetoothViewer extends Activity {
             }
         }
     }
-
-    private MenuItem pauseMenuItem = null;
-    private MenuItem resumeMenuItem = null;
-    
-    private void onBluetoothStateChanged() {
-    	if (mChatService != null) {
-    		switch (mChatService.getState()) {
-    		case BluetoothChatService.STATE_CONNECTED:
-    			mToolbarConnectButton.setVisibility(View.GONE);
-    			mToolbarDisconnectButton.setVisibility(View.VISIBLE);
-    			mSendTextContainer.setVisibility(View.VISIBLE);
-    			break;
-    		case BluetoothChatService.STATE_NONE:
-    		case BluetoothChatService.STATE_CONNECTING:
-    		default:
-    			mToolbarConnectButton.setVisibility(View.VISIBLE);
-    			mToolbarDisconnectButton.setVisibility(View.GONE);
-    			mSendTextContainer.setVisibility(View.GONE);
-    			break;
-    		}
-    	}       
-    }
-
-    private boolean paused = false;
-
-    private void onPauseChanged() {
-    	if (mChatService != null && mChatService.getState() == BluetoothChatService.STATE_CONNECTED) {
-    		if (paused) {
-    			pauseMenuItem.setVisible(false);
-    			resumeMenuItem.setVisible(true);
-    		}
-    		else {
-    			pauseMenuItem.setVisible(true);
-    			resumeMenuItem.setVisible(false);
-    		}
-    	}
-    	else {
-    		pauseMenuItem.setVisible(false);
-    		resumeMenuItem.setVisible(false);
-    	}
-    }
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         
-        /*
-        connectMenuItem = menu.findItem(R.id.scan);
-        disconnectMenuItem = menu.findItem(R.id.menu_disconnect);
-        disconnectMenuItem.setVisible(false);
-        
-        pauseMenuItem = menu.findItem(R.id.menu_pause_on);
-        pauseMenuItem.setVisible(false);
-        resumeMenuItem = menu.findItem(R.id.menu_pause_off);
-        resumeMenuItem.setVisible(false);
-        */
-        
         return true;
     }
     
-    private void disconnectDevices() {
-    	if (mChatService != null) mChatService.stop();
-    	
-    	onBluetoothStateChanged();
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.menu_pause_on:
-        	paused = true;
-        	onPauseChanged();
-        	return true;
-        case R.id.menu_pause_off:
-        	paused = false;
-        	onPauseChanged();
-        	return true;
         case R.id.menu_quit:
         	this.finish();
         }
         return false;
     }
 
+    private void disconnectDevices() {
+    	if (mChatService != null) mChatService.stop();
+    	
+    	onBluetoothStateChanged();
+    }
+
+    private void onBluetoothStateChanged() {
+    	if (connected) {
+			mToolbarConnectButton.setVisibility(View.GONE);
+			mToolbarDisconnectButton.setVisibility(View.VISIBLE);
+			mSendTextContainer.setVisibility(View.VISIBLE);
+    	}
+    	else {
+			mToolbarConnectButton.setVisibility(View.VISIBLE);
+			mToolbarDisconnectButton.setVisibility(View.GONE);
+			mSendTextContainer.setVisibility(View.GONE);
+    	}
+		paused = false;
+    	onPausedStateChanged();
+    }
+
+    private void onPausedStateChanged() {
+    	if (connected) {
+	    	if (paused) {
+	    		mToolbarPlayButton.setVisibility(View.VISIBLE);
+	    		mToolbarPauseButton.setVisibility(View.GONE);
+	    	}
+	    	else {
+	    		mToolbarPlayButton.setVisibility(View.GONE);
+	    		mToolbarPauseButton.setVisibility(View.VISIBLE);
+	    	}
+    	}
+    	else {
+    		mToolbarPlayButton.setVisibility(View.GONE);
+    		mToolbarPauseButton.setVisibility(View.GONE);
+    	}
+    }
+    
 }

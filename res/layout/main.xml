@@ -69,6 +69,18 @@
             style="@style/toolbarButton"
             android:src="@drawable/toolbar_btn_disconnect"
             android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/toolbar_btn_pause"
+            style="@style/toolbarButton"
+            android:src="@drawable/toolbar_btn_pause"
+            android:visibility="gone" />
+
+        <ImageButton
+            android:id="@+id/toolbar_btn_play"
+            style="@style/toolbarButton"
+            android:src="@drawable/toolbar_btn_play"
+            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>

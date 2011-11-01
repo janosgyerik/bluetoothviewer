@@ -1,6 +1,5 @@
 essential for first release
 ---------------------------
-- data reader pause / resume
 - full code review
 - better application icon with droid + bluetooth crossover
 - better toolbar icons
@@ -11,7 +10,6 @@ essential for first release
 - review manifest
 	make sure everything is correct
 	remove anything that is not necessary
-- correct handling of resume
 
 
 optimization for marketplace release

@@ -56,7 +56,6 @@ public class BluetoothChatService {
 
     // Constants that indicate the current connection state
     public static final int STATE_NONE = 0;       // we're doing nothing
-    public static final int STATE_LISTEN = 1;     // now listening for incoming connections
     public static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
     public static final int STATE_CONNECTED = 3;  // now connected to a remote device
 
@@ -181,7 +180,7 @@ public class BluetoothChatService {
      * Indicate that the connection attempt failed and notify the UI Activity.
      */
     private void connectionFailed() {
-        setState(STATE_LISTEN);
+        setState(STATE_NONE);
 
         // Send a failure message back to the Activity
         Message msg = mHandler.obtainMessage(BluetoothViewer.MESSAGE_TOAST);
@@ -195,7 +194,7 @@ public class BluetoothChatService {
      * Indicate that the connection was lost and notify the UI Activity.
      */
     private void connectionLost() {
-        setState(STATE_LISTEN);
+        setState(STATE_NONE);
 
         // Send a failure message back to the Activity
         Message msg = mHandler.obtainMessage(BluetoothViewer.MESSAGE_TOAST);

@@ -20,21 +20,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menu_pause_on"
-        android:icon="@android:drawable/ic_media_pause"
-        android:title="@string/menu_pause_on"
-        android:visible="false"/>
-
-    <item
-        android:id="@+id/menu_pause_off"
-        android:icon="@android:drawable/ic_media_play"
-        android:title="@string/menu_pause_off"
-        android:visible="false"/>
-
-    <item
         android:id="@+id/menu_quit"
         android:icon="@android:drawable/ic_lock_power_off"
         android:title="@string/menu_quit"
         android:visible="true"/>
-    
+
 </menu>
