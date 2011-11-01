@@ -2,10 +2,12 @@ essential for first release
 ---------------------------
 - data reader pause / resume
 - full code review
-- graphics generator
 - better application icon with droid + bluetooth crossover
 - better toolbar icons
-- better toolbar bg
+	! connect
+	! disconnect
+	? pause
+	? resume
 - review manifest
 	make sure everything is correct
 	remove anything that is not necessary
@@ -35,6 +37,7 @@ settings app for defaults values when connected
 - launch from menu, not toolbar
 - view mode: text/hexa
 - record on/off
+- prepend timestamps to messages
 
 
 low priority good to have
