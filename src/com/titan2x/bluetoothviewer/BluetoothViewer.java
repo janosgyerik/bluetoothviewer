@@ -17,7 +17,9 @@
  * along with BluetoothViewer.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.examples.bluetoothviewer;
+package com.titan2x.bluetoothviewer;
+
+import com.titan2x.bluetoothviewer.R;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -176,6 +178,7 @@ public class BluetoothViewer extends Activity {
         mConversationView = (ListView) findViewById(R.id.in);
         mConversationView.setAdapter(mConversationArrayAdapter);
         
+        /*
         mConversationArrayAdapter.add("some example text");
         mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
         mConversationArrayAdapter.add("some example text");
@@ -212,6 +215,7 @@ public class BluetoothViewer extends Activity {
         mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
         mConversationArrayAdapter.add("some example text");
         mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        */
 
         // Initialize the compose field with a listener for the return key
         mOutEditText = (EditText) findViewById(R.id.edit_text_out);
@@ -415,8 +419,6 @@ public class BluetoothViewer extends Activity {
     	}
     }
     
-    private boolean menuReady = false;
-    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -432,7 +434,6 @@ public class BluetoothViewer extends Activity {
         resumeMenuItem = menu.findItem(R.id.menu_pause_off);
         resumeMenuItem.setVisible(false);
         */
-        menuReady = true;
         
         return true;
     }

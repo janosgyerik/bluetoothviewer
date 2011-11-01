@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.examples.bluetoothviewer"
+    package="com.titan2x.bluetoothviewer"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -30,7 +30,7 @@
             android:noHistory="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
             <intent-filter >
-                <action android:name="com.examples.bluetoothviewer.action.REQUEST_ENABLE" />
+                <action android:name="com.titan2x.bluetoothviewer.action.REQUEST_ENABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

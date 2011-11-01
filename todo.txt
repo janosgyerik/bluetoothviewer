@@ -1,9 +1,8 @@
 essential for first release
 ---------------------------
-- correct handling of resume
-- remove unnecessary code
-- rename app to BtViewer otherwise the name won't fit on the icon
-- rename package, com.examples is not really cool
+- add intro text
+- data reader pause / resume
+- full code review
 - graphics generator
 - better application icon with droid + bluetooth crossover
 - better toolbar icons
@@ -11,6 +10,7 @@ essential for first release
 - review manifest
 	make sure everything is correct
 	remove anything that is not necessary
+- correct handling of resume
 
 
 optimization for marketplace release
