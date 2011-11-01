@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="inlineWeightedButton" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#222</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="toolbarButton" parent="@style/inlineWeightedButton">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="datetime" parent="@android:style/TextAppearance.Medium">
+        <item name="android:typeface">monospace</item>
+        <item name="android:padding">3dip</item>
+    </style>
+
+    <style name="list_title" parent="@android:style/TextAppearance.Small">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">#777</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:paddingLeft">5dp</item>
+    </style>
+
+    <style name="weighted_list_section">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="fill_width">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+</resources>

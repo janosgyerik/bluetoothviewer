@@ -38,6 +38,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,6 +71,11 @@ public class BluetoothViewer extends Activity {
     private ListView mConversationView;
     private EditText mOutEditText;
     private Button mSendButton;
+    private View mSendTextContainer;
+    
+    // Toolbar
+    private ImageButton mToolbarConnectButton;
+    private ImageButton mToolbarDisconnectButton;
 
     // Name of the connected device
     private String mConnectedDeviceName = null;
@@ -96,7 +102,23 @@ public class BluetoothViewer extends Activity {
         mTitle = (TextView) findViewById(R.id.title_left_text);
         mTitle.setText(R.string.app_name);
         mTitle = (TextView) findViewById(R.id.title_right_text);
+        
+        mSendTextContainer = (View) findViewById(R.id.send_text_container);
+        
+        mToolbarConnectButton = (ImageButton) findViewById(R.id.toolbar_btn_connect);
+        mToolbarConnectButton.setOnClickListener(new OnClickListener() {
+        	public void onClick(View v) {
+        		startDeviceListActivity();
+        	}
+        });
 
+        mToolbarDisconnectButton = (ImageButton) findViewById(R.id.toolbar_btn_disconnect);
+        mToolbarDisconnectButton.setOnClickListener(new OnClickListener(){
+			public void onClick(View v) {
+				disconnectDevices();
+			}
+        });
+        
         // Get local Bluetooth adapter
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -106,6 +128,11 @@ public class BluetoothViewer extends Activity {
             finish();
             return;
         }
+    }
+    
+    private void startDeviceListActivity() {
+        Intent serverIntent = new Intent(this, DeviceListActivity.class);
+        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
     }
 
     @Override
@@ -149,6 +176,43 @@ public class BluetoothViewer extends Activity {
         mConversationView = (ListView) findViewById(R.id.in);
         mConversationView.setAdapter(mConversationArrayAdapter);
         
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+        mConversationArrayAdapter.add("some example text");
+        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
+
         // Initialize the compose field with a listener for the return key
         mOutEditText = (EditText) findViewById(R.id.edit_text_out);
         mOutEditText.setOnEditorActionListener(mWriteListener);
@@ -169,6 +233,8 @@ public class BluetoothViewer extends Activity {
 
         // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
+        
+        onBluetoothStateChanged();
     }
 
     @Override
@@ -190,18 +256,6 @@ public class BluetoothViewer extends Activity {
         if (mChatService != null) mChatService.stop();
         if(D) Log.e(TAG, "--- ON DESTROY ---");
     }
-
-    /*
-    private void ensureDiscoverable() {
-        if(D) Log.d(TAG, "ensure discoverable");
-        if (mBluetoothAdapter.getScanMode() !=
-            BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-            Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
-            startActivity(discoverableIntent);
-        }
-    }
-    */
 
     /**
      * Sends a message.
@@ -251,7 +305,6 @@ public class BluetoothViewer extends Activity {
                 switch (msg.arg1) {
                 case BluetoothChatService.STATE_CONNECTED:
                     mTitle.setText(mConnectedDeviceName);
-                    mConversationArrayAdapter.clear();
                     break;
                 case BluetoothChatService.STATE_CONNECTING:
                     mTitle.setText(R.string.title_connecting);
@@ -321,26 +374,23 @@ public class BluetoothViewer extends Activity {
         }
     }
 
-    private MenuItem connectMenuItem = null;
-    private MenuItem disconnectMenuItem = null;
     private MenuItem pauseMenuItem = null;
     private MenuItem resumeMenuItem = null;
     
     private void onBluetoothStateChanged() {
-    	if (! menuReady) return;
     	if (mChatService != null) {
     		switch (mChatService.getState()) {
     		case BluetoothChatService.STATE_CONNECTED:
-    			connectMenuItem.setVisible(false);
-    			disconnectMenuItem.setVisible(true);
-    			onPauseChanged();
+    			mToolbarConnectButton.setVisibility(View.GONE);
+    			mToolbarDisconnectButton.setVisibility(View.VISIBLE);
+    			mSendTextContainer.setVisibility(View.VISIBLE);
     			break;
     		case BluetoothChatService.STATE_NONE:
     		case BluetoothChatService.STATE_CONNECTING:
     		default:
-    			connectMenuItem.setVisible(true);
-    			disconnectMenuItem.setVisible(false);
-    			onPauseChanged();
+    			mToolbarConnectButton.setVisibility(View.VISIBLE);
+    			mToolbarDisconnectButton.setVisibility(View.GONE);
+    			mSendTextContainer.setVisibility(View.GONE);
     			break;
     		}
     	}       
@@ -370,8 +420,9 @@ public class BluetoothViewer extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu, menu);
+        inflater.inflate(R.menu.main, menu);
         
+        /*
         connectMenuItem = menu.findItem(R.id.scan);
         disconnectMenuItem = menu.findItem(R.id.menu_disconnect);
         disconnectMenuItem.setVisible(false);
@@ -380,27 +431,21 @@ public class BluetoothViewer extends Activity {
         pauseMenuItem.setVisible(false);
         resumeMenuItem = menu.findItem(R.id.menu_pause_off);
         resumeMenuItem.setVisible(false);
-        
+        */
         menuReady = true;
         
         return true;
+    }
+    
+    private void disconnectDevices() {
+    	if (mChatService != null) mChatService.stop();
+    	
+    	onBluetoothStateChanged();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.scan:
-            // Launch the DeviceListActivity to see devices and do scan
-            Intent serverIntent = new Intent(this, DeviceListActivity.class);
-            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
-            return true;
-        case R.id.discoverable:
-            // Ensure this device is discoverable by others
-            //ensureDiscoverable();
-            return true;
-        case R.id.menu_disconnect:
-        	if (mChatService != null) mChatService.stop();
-        	return true;
         case R.id.menu_pause_on:
         	paused = true;
         	onPauseChanged();

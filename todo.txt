@@ -1,37 +1,51 @@
-marketplace
------------
+essential for first release
+---------------------------
+- correct handling of resume
 - remove unnecessary code
-- toolbar when connected
-	text input
-	disconnect
-	hexa mode toggle
-	clear button
-	record on/off toggle
-	settings
-- toolbar when not connected
-	connect
-	settings
+- rename app to BtViewer otherwise the name won't fit on the icon
+- menu
+	quit
 - rename package, com.examples is not really cool
+- graphics generator
+- better application icon with droid + bluetooth crossover
+- better toolbar icons
+- better toolbar bg
 - review manifest
 	make sure everything is correct
 	remove anything that is not necessary
-- better application icon with droid + bluetooth crossover
+
+
+optimization for marketplace release
+------------------------------------
 - android best practices
-- release on marketplace
+- perform release on marketplace
 - announcement
 	launchpad project
 	twitter
 	blog
 
-settings app for defaults
--------------------------
-- hexa mode
+
+future releases
+---------------
+- toolbar: record on/off
+- toolbar: ascii/hexa switch
+- toolbar: clear button
+- files app to view recorded data
+
+
+settings app for defaults values when connected
+-----------------------------------------------
+- launch from menu, not toolbar
+- view mode: text/hexa
 - record on/off
 
-other good to have
-------------------
+
+low priority good to have
+-------------------------
 - make device list scrollable when too long
 - remember recently sent text messages
 - option to cut off first n characters
 	show full text when clicked on the list item
 - adjustable font size
+
+
