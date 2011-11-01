@@ -1,6 +1,5 @@
 essential for first release
 ---------------------------
-- add intro text
 - data reader pause / resume
 - full code review
 - graphics generator
