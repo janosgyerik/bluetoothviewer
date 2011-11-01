@@ -3,8 +3,6 @@ essential for first release
 - correct handling of resume
 - remove unnecessary code
 - rename app to BtViewer otherwise the name won't fit on the icon
-- menu
-	quit
 - rename package, com.examples is not really cool
 - graphics generator
 - better application icon with droid + bluetooth crossover

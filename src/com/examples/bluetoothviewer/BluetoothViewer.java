@@ -454,6 +454,8 @@ public class BluetoothViewer extends Activity {
         	paused = false;
         	onPauseChanged();
         	return true;
+        case R.id.menu_quit:
+        	this.finish();
         }
         return false;
     }
