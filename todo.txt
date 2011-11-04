@@ -1,12 +1,13 @@
 essential for first release
 ---------------------------
 - full code review
-- better application icon with droid + bluetooth crossover
-- better toolbar icons
-	! connect
-	! disconnect
-	? pause
-	? resume
+- improve graphics
+	- better background
+	- better toolbar icons
+		! connect
+		! disconnect
+		? pause
+		? resume
 - review manifest
 	make sure everything is correct
 	remove anything that is not necessary
