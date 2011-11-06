@@ -38,10 +38,14 @@ ldpi: $(ldpi_target)
 
 mdpi: $(mdpi_target)
 
-all: $(hdpi_target) $(ldpi_target) $(mdpi_target) $(launchpad_target) $(market_target)
+lp launchpad: $(launchpad_target)
+
+market: $(market_target)
+
+all: hdpi ldpi mdpi launchpad market
 
 clean: 
-	rm $(hdpi_target) $(ldpi_target) $(mdpi_target)
+	rm $(hdpi_target) $(ldpi_target) $(mdpi_target) $(launchpad_target) $(market_target)
 
 $(hdpi_dir)/toolbar_%.png: $(src_dir)/toolbar_%.png
 	convert -geometry 72x $< $@
