@@ -3,3 +3,8 @@ bin
 gen
 launchpad
 market
+local.properties
+build.xml
+proguard.cfg
+./keys
+./libs

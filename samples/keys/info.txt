@@ -1,0 +1,28 @@
+storepass = the_pass
+keypass =   the_other_pass
+
+$ keytool -genkey -v -keystore keys/ecocitizen.keystore -validity 10000 -keyalg RSA
+Enter keystore password:  
+Re-enter new password: 
+What is your first and last name?
+  [Unknown]:  Janos Gyerik
+What is the name of your organizational unit?
+  [Unknown]:  titan2x
+What is the name of your organization?
+  [Unknown]:  titan2x
+What is the name of your City or Locality?
+  [Unknown]:  Tsukuba
+What is the name of your State or Province?
+  [Unknown]:  Ibaraki
+What is the two-letter country code for this unit?
+  [Unknown]:  JP
+Is CN=Janos Gyerik, OU=titan2x, O=titan2x, L=Tsukuba, ST=Ibaraki, C=JP correct?
+  [no]:  yes
+
+Generating 1,024 bit RSA key pair and self-signed certificate (SHA1withRSA) with a validity of 10,000 days
+        for: CN=Janos Gyerik, OU=titan2x, O=titan2x, L=Tsukuba, ST=Ibaraki, C=JP
+Enter key password for <mykey>
+        (RETURN if same as keystore password):  
+Re-enter new password: 
+[Storing keys/ecocitizen.keystore]
+
