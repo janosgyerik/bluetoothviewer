@@ -42,7 +42,7 @@ import android.util.Log;
 public class BluetoothChatService {
     // Debugging
     private static final String TAG = "BluetoothChatService";
-    private static final boolean D = true;
+    private static final boolean D = false;
 
     // Unique UUID for this application
     private static final UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");

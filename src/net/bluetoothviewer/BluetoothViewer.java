@@ -51,7 +51,7 @@ import android.widget.Toast;
 public class BluetoothViewer extends Activity {
     // Debugging
     private static final String TAG = "BluetoothViewer";
-    private static final boolean D = true;
+    private static final boolean D = false;
 
     // Message types sent from the BluetoothService Handler
     public static final int MESSAGE_STATE_CHANGE = 1;

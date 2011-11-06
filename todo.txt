@@ -1,14 +1,3 @@
-release procedure
------------------
-create release-1.0 branch on launchpad
-switch to release branch
-remove Log calls
-remove android:debuggable
-release build, signed properly
-test well
-upload to market
-
-
 future releases
 ---------------
 - toolbar: record on/off
