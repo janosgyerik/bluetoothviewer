@@ -53,14 +53,14 @@ public class BluetoothViewer extends Activity {
     private static final String TAG = "BluetoothViewer";
     private static final boolean D = true;
 
-    // Message types sent from the BluetoothChatService Handler
+    // Message types sent from the BluetoothService Handler
     public static final int MESSAGE_STATE_CHANGE = 1;
     public static final int MESSAGE_READ = 2;
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_NAME = 4;
     public static final int MESSAGE_TOAST = 5;
 
-    // Key names received from the BluetoothChatService Handler
+    // Key names received from the BluetoothService Handler
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
 
@@ -89,8 +89,8 @@ public class BluetoothViewer extends Activity {
     private StringBuffer mOutStringBuffer;
     // Local Bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter = null;
-    // Member object for the chat services
-    private BluetoothChatService mChatService = null;
+    // Member object for the Bluetooth services
+    private BluetoothChatService mBluetoothService = null;
 
     // State variables
     private boolean paused = false;
@@ -165,13 +165,13 @@ public class BluetoothViewer extends Activity {
         if(D) Log.e(TAG, "++ ON START ++");
 
         // If BT is not on, request that it be enabled.
-        // setupChat() will then be called during onActivityResult
+        // setupUserInterface() will then be called during onActivityResult
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-        // Otherwise, setup the chat session
+        // Otherwise, setup the Bluetooth session
         } else {
-            if (mChatService == null) setupChat();
+            if (mBluetoothService == null) setupUserInterface();
         }
     }
 
@@ -179,65 +179,15 @@ public class BluetoothViewer extends Activity {
     public synchronized void onResume() {
         super.onResume();
         if(D) Log.e(TAG, "+ ON RESUME +");
-
-        // Performing this check in onResume() covers the case in which BT was
-        // not enabled during onStart(), so we were paused to enable it...
-        // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
-        if (mChatService != null) {
-            // Only if the state is STATE_NONE, do we know that we haven't started already
-            if (mChatService.getState() == BluetoothChatService.STATE_NONE) {
-              // Start the Bluetooth chat services
-              //mChatService.start();
-            }
-        }
     }
 
-    private void setupChat() {
-        Log.d(TAG, "setupChat()");
+    private void setupUserInterface() {
+        Log.d(TAG, "setupUserInterface()");
 
         // Initialize the array adapter for the conversation thread
         mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
         mConversationView = (ListView) findViewById(R.id.in);
         mConversationView.setAdapter(mConversationArrayAdapter);
-        
-        /*
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        mConversationArrayAdapter.add("some example text");
-        mConversationArrayAdapter.add("a longer example text that will not fit on a single line");
-        */
         
         mConversationArrayAdapter.add("Welcome to Bluetooth Viewer!");
         mConversationArrayAdapter.add("This is a simple application that " +
@@ -264,8 +214,8 @@ public class BluetoothViewer extends Activity {
             }
         });
 
-        // Initialize the BluetoothChatService to perform bluetooth connections
-        mChatService = new BluetoothChatService(mHandler);
+        // Initialize the BluetoothService to perform Bluetooth connections
+        mBluetoothService = new BluetoothChatService(mHandler);
 
         // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
@@ -288,8 +238,8 @@ public class BluetoothViewer extends Activity {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        // Stop the Bluetooth chat services
-        if (mChatService != null) mChatService.stop();
+        // Stop the Bluetooth services
+        if (mBluetoothService != null) mBluetoothService.stop();
         if(D) Log.e(TAG, "--- ON DESTROY ---");
     }
 
@@ -299,7 +249,7 @@ public class BluetoothViewer extends Activity {
      */
     private void sendMessage(String message) {
         // Check that we're actually connected before trying anything
-        if (mChatService.getState() != BluetoothChatService.STATE_CONNECTED) {
+        if (mBluetoothService.getState() != BluetoothChatService.STATE_CONNECTED) {
             Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -307,9 +257,9 @@ public class BluetoothViewer extends Activity {
         // Check that there's actually something to send
         if (message.length() > 0) {
         	message += "\n";
-            // Get the message bytes and tell the BluetoothChatService to write
+            // Get the message bytes and tell the BluetoothService to write
             byte[] send = message.getBytes();
-            mChatService.write(send);
+            mBluetoothService.write(send);
 
             // Reset out string buffer to zero and clear the edit text field
             mOutStringBuffer.setLength(0);
@@ -331,7 +281,7 @@ public class BluetoothViewer extends Activity {
         }
     };
 
-    // The Handler that gets information back from the BluetoothChatService
+    // The Handler that gets information back from the BluetoothService
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -394,16 +344,16 @@ public class BluetoothViewer extends Activity {
                 // Get the BLuetoothDevice object
                 BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
                 // Attempt to connect to the device
-                mChatService.connect(device);
+                mBluetoothService.connect(device);
             }
             break;
         case REQUEST_ENABLE_BT:
             // When the request to enable Bluetooth returns
             if (resultCode == Activity.RESULT_OK) {
-                // Bluetooth is now enabled, so set up a chat session
-                setupChat();
+                // Bluetooth is now enabled, so set up a Bluetooth session
+                setupUserInterface();
             } else {
-                // User did not enable Bluetooth or an error occured
+                // User did not enable Bluetooth or an error occurred
                 Log.d(TAG, "BT not enabled");
                 Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
                 finish();
@@ -429,7 +379,7 @@ public class BluetoothViewer extends Activity {
     }
 
     private void disconnectDevices() {
-    	if (mChatService != null) mChatService.stop();
+    	if (mBluetoothService != null) mBluetoothService.stop();
     	
     	onBluetoothStateChanged();
     }
