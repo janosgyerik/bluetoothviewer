@@ -71,15 +71,6 @@ $(mdpi_dir)/launcher_%.png: $(src_dir)/launcher_%.png
 	convert -geometry 48x $< $@
 	identify $@
 
-$(hdpi_dir)/background_%.png: $(src_dir)/background_%.png
-	cp $< $@ # todo
-
-$(ldpi_dir)/background_%.png: $(src_dir)/background_%.png
-	cp $< $@ # todo
-
-$(mdpi_dir)/background_%.png: $(src_dir)/background_%.png
-	cp $< $@ # todo
-
 launchpad/icon.png: $(src_dir)/launcher_main.png
 	@mkdir -p $(@D)
 	convert -geometry 14x $< $@
