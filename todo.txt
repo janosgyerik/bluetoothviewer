@@ -1,6 +1,7 @@
 essential for first release
 ---------------------------
 - full code review
+- background image
 - review manifest
 	make sure everything is correct
 	remove anything that is not necessary
