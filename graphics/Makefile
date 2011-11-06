@@ -24,8 +24,12 @@ names:=$(patsubst $(src_dir)/%,%,$(wildcard $(src_dir)/*.png))
 hdpi_target:=$(patsubst %,$(hdpi_dir)/%,$(names))
 ldpi_target:=$(patsubst %,$(ldpi_dir)/%,$(names))
 mdpi_target:=$(patsubst %,$(mdpi_dir)/%,$(names))
+launchpad_target:=launchpad/icon.png launchpad/logo.png launchpad/brand.png
+market_target:=market/android.png
 
-default:
+default: help
+
+help:
 	@cat Makefile.readme
 
 hdpi: $(hdpi_target)
@@ -34,17 +38,62 @@ ldpi: $(ldpi_target)
 
 mdpi: $(mdpi_target)
 
-all: $(hdpi_target) $(ldpi_target) $(mdpi_target)
+all: $(hdpi_target) $(ldpi_target) $(mdpi_target) $(launchpad_target) $(market_target)
 
-$(hdpi_dir)/%.png: $(src_dir)/%.png
+clean: 
+	rm $(hdpi_target) $(ldpi_target) $(mdpi_target)
+
+$(hdpi_dir)/toolbar_%.png: $(src_dir)/toolbar_%.png
 	convert -geometry 72x $< $@
 	identify $@
 
-$(ldpi_dir)/%.png: $(src_dir)/%.png
+$(ldpi_dir)/toolbar_%.png: $(src_dir)/toolbar_%.png
 	convert -geometry 36x $< $@
 	identify $@
 
-$(mdpi_dir)/%.png: $(src_dir)/%.png
+$(mdpi_dir)/toolbar_%.png: $(src_dir)/toolbar_%.png
 	convert -geometry 48x $< $@
 	identify $@
 
+$(hdpi_dir)/launcher_%.png: $(src_dir)/launcher_%.png
+	convert -geometry 72x $< $@
+	identify $@
+
+$(ldpi_dir)/launcher_%.png: $(src_dir)/launcher_%.png
+	convert -geometry 36x $< $@
+	identify $@
+
+$(mdpi_dir)/launcher_%.png: $(src_dir)/launcher_%.png
+	convert -geometry 48x $< $@
+	identify $@
+
+$(hdpi_dir)/background_%.png: $(src_dir)/background_%.png
+	cp $< $@ # todo
+
+$(ldpi_dir)/background_%.png: $(src_dir)/background_%.png
+	cp $< $@ # todo
+
+$(mdpi_dir)/background_%.png: $(src_dir)/background_%.png
+	cp $< $@ # todo
+
+launchpad/icon.png: $(src_dir)/launcher_main.png
+	@mkdir -p $(@D)
+	convert -geometry 14x $< $@
+	identify $@
+
+launchpad/logo.png: $(src_dir)/launcher_main.png
+	@mkdir -p $(@D)
+	convert -geometry 64x $< $@
+	identify $@
+
+launchpad/brand.png: $(src_dir)/launcher_main.png
+	@mkdir -p $(@D)
+	convert -geometry 192x $< $@
+	identify $@
+
+market/android.png: $(src_dir)/launcher_main.png
+	@mkdir -p $(@D)
+	convert -geometry 512x $< $@
+	identify $@
+
+# eof
