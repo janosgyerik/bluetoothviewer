@@ -1,7 +1,6 @@
 essential for first release
 ---------------------------
 - full code review
-- background image
 - script for release build, signed properly
 
 
