@@ -2,19 +2,20 @@ essential for first release
 ---------------------------
 - full code review
 - background image
-- review manifest
-	make sure everything is correct
-	remove anything that is not necessary
+- script for release build, signed properly
 
 
-optimization for marketplace release
-------------------------------------
-- android best practices
-- perform release on marketplace
-- announcement
-	launchpad project
-	twitter
-	blog
+release procedure
+-----------------
+set android:versionCode=1 (increasing integer)
+set android:versionName=1.0.0
+create release-1.0 branch on launchpad
+switch to release branch
+remove Log calls
+remove android:debuggable
+release build, signed properly
+test well
+upload to market
 
 
 future releases
