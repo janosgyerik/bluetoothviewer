@@ -17,9 +17,9 @@
  * along with BluetoothViewer.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.titan2x.bluetoothviewer;
+package net.bluetoothviewer;
 
-import com.titan2x.bluetoothviewer.R;
+import net.bluetoothviewer.R;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;

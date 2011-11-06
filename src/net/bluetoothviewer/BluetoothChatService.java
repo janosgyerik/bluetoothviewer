@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.titan2x.bluetoothviewer;
+package net.bluetoothviewer;
 
 import java.io.BufferedReader;
 import java.io.IOException;

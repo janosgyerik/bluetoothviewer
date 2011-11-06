@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-package com.titan2x.bluetoothviewer;
+package net.bluetoothviewer;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import com.titan2x.bluetoothviewer.R;
+import net.bluetoothviewer.R;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
