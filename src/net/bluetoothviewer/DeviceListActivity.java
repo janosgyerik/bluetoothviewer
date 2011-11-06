@@ -194,14 +194,11 @@ public class DeviceListActivity extends Activity {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 // Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                // If it's already paired, skip it, because it's been listed already
-                if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-                	String address = device.getAddress();
-                	if (! mNewDevicesSet.contains(address)) {
-                		mNewDevicesSet.add(address);
-                		mNewDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
-                	}
-                }
+            	String address = device.getAddress();
+            	if (! mNewDevicesSet.contains(address)) {
+            		mNewDevicesSet.add(address);
+            		mNewDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
+            	}
             // When discovery is finished, change the Activity title
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 setProgressBarIndeterminateVisibility(false);
