@@ -1,7 +1,5 @@
 release procedure
 -----------------
-set android:versionCode=1 (increasing integer)
-set android:versionName=1.0.0
 create release-1.0 branch on launchpad
 switch to release branch
 remove Log calls
