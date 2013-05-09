@@ -8,3 +8,4 @@ build.xml
 proguard.cfg
 ./keys
 ./libs
+tmp
