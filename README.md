@@ -1,7 +1,10 @@
 BluetoothViewer
 ===============
-A simple Android app that can: 1. connect to any Bluetooth device 2.
-display incoming raw data 3. send raw data to the Bluetooth device.
+A simple Android app that can:
+
+1. Connect to any Bluetooth device
+2. Display incoming raw data
+3. Send raw data to the Bluetooth device
 
 The app is intended as a Bluetooth connection debugging tool. You can
 confirm successful pairing, monitor incoming raw data and see exactly
