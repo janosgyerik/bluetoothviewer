@@ -19,7 +19,7 @@ what is being transmitted from the Bluetooth device.
 
 Roadmap
 -------
-We plan to add the following features in the future:
+I plan to add the following features in the future:
 
 * Option to see data in hexadecimal format instead of ascii,
   for debugging binary data
@@ -34,8 +34,7 @@ We plan to add the following features in the future:
 
 Contributing code
 -----------------
-We happily accept contributions in whatever way is convenient for
-you, for example:
+You can contribute improvements in whatever way is convenient for you, for example:
 
 * Create a Pull Request on GitHub:
   https://github.com/janosgyerik/bluetoothviewer
@@ -48,8 +47,8 @@ you, for example:
 
 Donations
 ---------
-If you found this project helpful and feel generous, we happily
-accept donations via paypal at info@janosgyerik.com
+If you find this app helpful and feel generous,
+I would appreciate your donation via paypal at info@janosgyerik.com
 
 
 Disclaimer
