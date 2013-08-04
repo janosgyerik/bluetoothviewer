@@ -21,13 +21,14 @@
     <string name="send">Send</string>
     <string name="not_connected">You are not connected to a device</string>
     <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Viewer.</string>
+    <string name="bt_not_enabled">Bluetooth is not enabled. The app cannot function like this.</string>
     <string name="title_connecting">connecting...</string>
     <string name="title_not_connected">not connected</string>
 
     <!--  DeviceListActivity -->
     <string name="scanning">Scanning for devices...</string>
-    <string name="select_device">Select a device to connect</string>
-    <string name="none_paired">No devices have been paired</string>
+    <string name="select_device">Select a device to connect to</string>
+    <string name="none_paired">No paired devices</string>
     <string name="none_found">No devices found</string>
     <string name="title_paired_devices">Paired Devices</string>
     <string name="title_other_devices">Other Available Devices</string>
@@ -42,6 +43,6 @@
     <string name="welcome_github_pre">You can find the source code and report bugs on GitHub:</string>
     <string name="welcome_github">https://github.com/janosgyerik/bluetoothviewer</string>
     <string name="welcome_please_rate">If you like this app, please rate it.</string>
-    <string name="welcome_please_buy">If you want to support the developer, please buy the full version.</string>
+    <string name="welcome_please_buy">To support the developer, please buy the full version.</string>
 
 </resources>
