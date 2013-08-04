@@ -189,15 +189,13 @@ public class BluetoothViewer extends Activity {
         mConversationView = (ListView) findViewById(R.id.in);
         mConversationView.setAdapter(mConversationArrayAdapter);
 
-        mConversationArrayAdapter.add("Welcome to Bluetooth Viewer!");
-        mConversationArrayAdapter.add("This is a simple application that " +
-                "can connect to any Bluetooth device and show incoming raw data. ");
-        mConversationArrayAdapter.add("Use the toolbar below to connect / disconnect " +
-                "and perform other operations on the remote device.");
-        mConversationArrayAdapter.add("In order to work, Bluetooth must be enabled on " +
-                "your device, and you must pair with the remote device first.");
-        mConversationArrayAdapter.add("For more info and to report bugs, see the project website: " +
-                "http://launchpad.net/bluetoothviewer");
+        mConversationArrayAdapter.add(getString(R.string.welcome_1));
+        mConversationArrayAdapter.add(getString(R.string.welcome_2));
+        mConversationArrayAdapter.add(getString(R.string.welcome_3));
+        mConversationArrayAdapter.add(getString(R.string.welcome_github_pre));
+        mConversationArrayAdapter.add(getString(R.string.welcome_github));
+        mConversationArrayAdapter.add(getString(R.string.welcome_please_rate));
+        mConversationArrayAdapter.add(getString(R.string.welcome_please_buy));
 
         // Initialize the compose field with a listener for the return key
         mOutEditText = (EditText) findViewById(R.id.edit_text_out);

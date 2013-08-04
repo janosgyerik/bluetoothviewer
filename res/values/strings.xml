@@ -35,4 +35,13 @@
 
     <!-- Options Menu -->
     <string name="menu_quit">Quit</string>
+
+    <string name="welcome_1">Welcome to Bluetooth Viewer!</string>
+    <string name="welcome_2">This app is a simple Bluetooth connection debugging tool.</string>
+    <string name="welcome_3">Connect to any Bluetooth device and see incoming raw data.</string>
+    <string name="welcome_github_pre">You can find the source code and report bugs on GitHub:</string>
+    <string name="welcome_github">https://github.com/janosgyerik/bluetoothviewer</string>
+    <string name="welcome_please_rate">If you like this app, please rate it.</string>
+    <string name="welcome_please_buy">If you want to support the developer, please buy the full version.</string>
+
 </resources>
