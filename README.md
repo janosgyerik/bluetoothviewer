@@ -1,14 +1,13 @@
 BluetoothViewer
 ===============
-A simple Android app that can:
+This app is a simple Bluetooth connection debugging tool:
 
 1. Connect to any Bluetooth device
 2. Display incoming raw data
 3. Send raw data to the Bluetooth device
 
-The app is intended as a Bluetooth connection debugging tool. You can
-confirm successful pairing, monitor incoming raw data and see exactly
-what is being transmitted from the Bluetooth device.
+You can confirm successful pairing, monitor incoming raw data and see
+exactly what is being transmitted from the Bluetooth device.
 
 * Project homepage:
   http://blog.ecomobilecitizen.com/android/bluetoothviewer/
