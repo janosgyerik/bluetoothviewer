@@ -16,6 +16,7 @@
 
 <resources>
     <string name="app_name">Bluetooth Viewer</string>
+    <string name="app_name_lite">Bluetooth Viewer (LITE)</string>
 
     <!--  BluetoothViewer -->
     <string name="send">Send</string>

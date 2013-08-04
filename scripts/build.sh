@@ -1,8 +1,8 @@
-#!/bin/sh -e
+#!/bin/bash -e
 #
 # SCRIPT: build.sh
-# AUTHOR: Janos Gyerik <info@janosgyerik.com>
-# DATE:   2011-02-10
+# AUTHOR: Janos Gyerik <info@titan2x.com>
+# DATE:   2012-03-18
 # REV:    1.0.D (Valid are A, B, D, T and P)
 #               (For Alpha, Beta, Dev, Test and Production)
 #
@@ -79,22 +79,13 @@ eval "set -- $args"  # save arguments in $@. Use "$@" in for loops, not $@
 
 
 msg() {
-    echo '* '$* ...
-}
-
-warn() {
-    echo 'WARNING: '$*
-}
-
-fatal() {
-    echo 'ERROR: '$*
-    exit 1
+    echo '*' $*
 }
 
 randstring() {
     md5sum=$(which md5sum 2>/dev/null || which md5)
     POS=2
-    LEN=8
+    LEN=12
     str=$(echo $1 $$ $(date +%S) | $md5sum | $md5sum)
     echo ${str:$POS:$LEN}
 }
@@ -107,16 +98,15 @@ test -f local.properties -a -f build.xml || {
 }
 
 projectname=$(grep project.name build.xml | head -n 1 | sed -e 's/.*project name="\([^"]*\)".*/\1/')
-keys_dir=./keys
-keys_config=$keys_dir/config.sh
 
+keys_config=./keys/config.sh
 if test $setup_keys = on; then
     test -f $keys_config || {
-        mkdir -p $keys_dir
+        mkdir -p keys
         cat<<EOF >$keys_config
 #!/bin/sh
 
-keystore=$keys_dir/$projectname.keystore
+keystore=keys/$projectname.keystore
 alias=mykey
 
 storepass=$(randstring store)
@@ -125,9 +115,9 @@ keypass=$(randstring key)
 # eof
 EOF
     }
-    . $keys_config
-    test -f $keystore || {
-        keytool -genkey -v -keystore $keystore -storepass $storepass -keypass $keypass -validity 10000 -keyalg RSA
+    test -f keys/$projectname.keystore || {
+        . $keys_config
+        keytool -genkey -v -keystore keys/$projectname.keystore -storepass $storepass -keypass $keypass -validity 10000 -keyalg RSA
     }
 fi
 
@@ -136,14 +126,6 @@ if test $build = on; then
         ant debug
     fi
     if test $release = on; then
-        if ! test -f $keys_config; then
-            warn 'Key store configuration does not exist.'
-            warn 'This probably means you are trying to create a release'
-            warn 'build for the very first time. Re-run this script with'
-            warn 'the --setup-keys flag to create a key store, and then'
-            warn 'try to create the release build again.'
-            fatal 'Cannot create release build without key store, exiting.'
-        fi
         msg ant build
         ant release
         msg jarsigner
