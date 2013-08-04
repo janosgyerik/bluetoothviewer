@@ -4,6 +4,7 @@
 /keys/
 /local.properties
 /proguard-project.txt
+out/
 # Intellij project files
 *.iml
 *.ipr
