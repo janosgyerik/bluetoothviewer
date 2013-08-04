@@ -74,7 +74,7 @@ public class BluetoothViewer extends Activity {
     private EditText mOutEditText;
     private Button mSendButton;
     private View mSendTextContainer;
-    
+
     // Toolbar
     private ImageButton mToolbarConnectButton;
     private ImageButton mToolbarDisconnectButton;
@@ -99,7 +99,7 @@ public class BluetoothViewer extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(D) Log.e(TAG, "+++ ON CREATE +++");
+        if (D) Log.e(TAG, "+++ ON CREATE +++");
 
         // Set up the window layout
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
@@ -110,39 +110,39 @@ public class BluetoothViewer extends Activity {
         mTitle = (TextView) findViewById(R.id.title_left_text);
         mTitle.setText(R.string.app_name);
         mTitle = (TextView) findViewById(R.id.title_right_text);
-        
+
         mSendTextContainer = (View) findViewById(R.id.send_text_container);
-        
+
         mToolbarConnectButton = (ImageButton) findViewById(R.id.toolbar_btn_connect);
         mToolbarConnectButton.setOnClickListener(new OnClickListener() {
-        	public void onClick(View v) {
-        		startDeviceListActivity();
-        	}
+            public void onClick(View v) {
+                startDeviceListActivity();
+            }
         });
 
         mToolbarDisconnectButton = (ImageButton) findViewById(R.id.toolbar_btn_disconnect);
-        mToolbarDisconnectButton.setOnClickListener(new OnClickListener(){
-			public void onClick(View v) {
-				disconnectDevices();
-			}
+        mToolbarDisconnectButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                disconnectDevices();
+            }
         });
-        
+
         mToolbarPauseButton = (ImageButton) findViewById(R.id.toolbar_btn_pause);
-        mToolbarPauseButton.setOnClickListener(new OnClickListener(){
-			public void onClick(View v) {
-				paused = true;
-				onPausedStateChanged();
-			}
+        mToolbarPauseButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                paused = true;
+                onPausedStateChanged();
+            }
         });
-        
+
         mToolbarPlayButton = (ImageButton) findViewById(R.id.toolbar_btn_play);
-        mToolbarPlayButton.setOnClickListener(new OnClickListener(){
-			public void onClick(View v) {
-				paused = false;
-				onPausedStateChanged();
-			}
+        mToolbarPlayButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                paused = false;
+                onPausedStateChanged();
+            }
         });
-        
+
         // Get local Bluetooth adapter
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -153,7 +153,7 @@ public class BluetoothViewer extends Activity {
             return;
         }
     }
-    
+
     private void startDeviceListActivity() {
         Intent serverIntent = new Intent(this, DeviceListActivity.class);
         startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
@@ -162,14 +162,14 @@ public class BluetoothViewer extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-        if(D) Log.e(TAG, "++ ON START ++");
+        if (D) Log.e(TAG, "++ ON START ++");
 
         // If BT is not on, request that it be enabled.
         // setupUserInterface() will then be called during onActivityResult
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-        // Otherwise, setup the Bluetooth session
+            // Otherwise, setup the Bluetooth session
         } else {
             if (mBluetoothService == null) setupUserInterface();
         }
@@ -178,7 +178,7 @@ public class BluetoothViewer extends Activity {
     @Override
     public synchronized void onResume() {
         super.onResume();
-        if(D) Log.e(TAG, "+ ON RESUME +");
+        if (D) Log.e(TAG, "+ ON RESUME +");
     }
 
     private void setupUserInterface() {
@@ -188,16 +188,16 @@ public class BluetoothViewer extends Activity {
         mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
         mConversationView = (ListView) findViewById(R.id.in);
         mConversationView.setAdapter(mConversationArrayAdapter);
-        
+
         mConversationArrayAdapter.add("Welcome to Bluetooth Viewer!");
         mConversationArrayAdapter.add("This is a simple application that " +
-        		"can connect to any Bluetooth device and show incoming raw data. ");
+                "can connect to any Bluetooth device and show incoming raw data. ");
         mConversationArrayAdapter.add("Use the toolbar below to connect / disconnect " +
-        		"and perform other operations on the remote device.");
+                "and perform other operations on the remote device.");
         mConversationArrayAdapter.add("In order to work, Bluetooth must be enabled on " +
-        		"your device, and you must pair with the remote device first.");
+                "your device, and you must pair with the remote device first.");
         mConversationArrayAdapter.add("For more info and to report bugs, see the project website: " +
-        		"http://launchpad.net/bluetoothviewer");
+                "http://launchpad.net/bluetoothviewer");
 
         // Initialize the compose field with a listener for the return key
         mOutEditText = (EditText) findViewById(R.id.edit_text_out);
@@ -219,20 +219,20 @@ public class BluetoothViewer extends Activity {
 
         // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
-        
+
         onBluetoothStateChanged();
     }
 
     @Override
     public synchronized void onPause() {
         super.onPause();
-        if(D) Log.e(TAG, "- ON PAUSE -");
+        if (D) Log.e(TAG, "- ON PAUSE -");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if(D) Log.e(TAG, "-- ON STOP --");
+        if (D) Log.e(TAG, "-- ON STOP --");
     }
 
     @Override
@@ -240,12 +240,13 @@ public class BluetoothViewer extends Activity {
         super.onDestroy();
         // Stop the Bluetooth services
         if (mBluetoothService != null) mBluetoothService.stop();
-        if(D) Log.e(TAG, "--- ON DESTROY ---");
+        if (D) Log.e(TAG, "--- ON DESTROY ---");
     }
 
     /**
      * Sends a message.
-     * @param message  A string of text to send.
+     *
+     * @param message A string of text to send.
      */
     private void sendMessage(String message) {
         // Check that we're actually connected before trying anything
@@ -256,7 +257,7 @@ public class BluetoothViewer extends Activity {
 
         // Check that there's actually something to send
         if (message.length() > 0) {
-        	message += "\n";
+            message += "\n";
             // Get the message bytes and tell the BluetoothService to write
             byte[] send = message.getBytes();
             mBluetoothService.write(send);
@@ -269,151 +270,148 @@ public class BluetoothViewer extends Activity {
 
     // The action listener for the EditText widget, to listen for the return key
     private TextView.OnEditorActionListener mWriteListener =
-        new TextView.OnEditorActionListener() {
-        public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-            // If the action is a key-up event on the return key, send the message
-            if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
-                String message = view.getText().toString();
-                sendMessage(message);
-            }
-            if(D) Log.i(TAG, "END onEditorAction");
-            return true;
-        }
-    };
+            new TextView.OnEditorActionListener() {
+                public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+                    // If the action is a key-up event on the return key, send the message
+                    if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
+                        String message = view.getText().toString();
+                        sendMessage(message);
+                    }
+                    if (D) Log.i(TAG, "END onEditorAction");
+                    return true;
+                }
+            };
 
     // The Handler that gets information back from the BluetoothService
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-            case MESSAGE_STATE_CHANGE:
-                if(D) Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
-                switch (msg.arg1) {
-                case BluetoothChatService.STATE_CONNECTED:
-                	connected = true;
-                    mTitle.setText(mConnectedDeviceName);
+                case MESSAGE_STATE_CHANGE:
+                    if (D) Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
+                    switch (msg.arg1) {
+                        case BluetoothChatService.STATE_CONNECTED:
+                            connected = true;
+                            mTitle.setText(mConnectedDeviceName);
+                            break;
+                        case BluetoothChatService.STATE_CONNECTING:
+                            mTitle.setText(R.string.title_connecting);
+                            break;
+                        case BluetoothChatService.STATE_NONE:
+                            connected = false;
+                            mTitle.setText(R.string.title_not_connected);
+                            break;
+                    }
+                    onBluetoothStateChanged();
                     break;
-                case BluetoothChatService.STATE_CONNECTING:
-                    mTitle.setText(R.string.title_connecting);
+                case MESSAGE_WRITE:
+                    byte[] writeBuf = (byte[]) msg.obj;
+                    // construct a string from the buffer
+                    String writeMessage = new String(writeBuf);
+                    mConversationArrayAdapter.add(">>> " + writeMessage);
+                    if (D) Log.d(TAG, "written = '" + writeMessage + "'");
                     break;
-                case BluetoothChatService.STATE_NONE:
-                	connected = false;
-                    mTitle.setText(R.string.title_not_connected);
+                case MESSAGE_READ:
+                    if (paused) break;
+                    byte[] readBuf = (byte[]) msg.obj;
+                    // construct a string from the valid bytes in the buffer
+                    String readMessage = new String(readBuf, 0, msg.arg1);
+                    if (D) Log.d(TAG, readMessage);
+                    mConversationArrayAdapter.add(readMessage);
                     break;
-                }
-                onBluetoothStateChanged();
-                break;
-            case MESSAGE_WRITE:
-                byte[] writeBuf = (byte[]) msg.obj;
-                // construct a string from the buffer
-                String writeMessage = new String(writeBuf);
-                mConversationArrayAdapter.add(">>> " + writeMessage);
-                if (D) Log.d(TAG, "written = '" + writeMessage + "'");
-                break;
-            case MESSAGE_READ:
-            	if (paused) break;
-                byte[] readBuf = (byte[]) msg.obj;
-                // construct a string from the valid bytes in the buffer
-                String readMessage = new String(readBuf, 0, msg.arg1);
-                if (D) Log.d(TAG, readMessage);
-                mConversationArrayAdapter.add(readMessage);
-                break;
-            case MESSAGE_DEVICE_NAME:
-                // save the connected device's name
-                mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
-                Toast.makeText(getApplicationContext(), "Connected to "
-                               + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
-                break;
-            case MESSAGE_TOAST:
-                Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),
-                               Toast.LENGTH_SHORT).show();
-                break;
+                case MESSAGE_DEVICE_NAME:
+                    // save the connected device's name
+                    mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
+                    Toast.makeText(getApplicationContext(), "Connected to "
+                            + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                    break;
+                case MESSAGE_TOAST:
+                    Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),
+                            Toast.LENGTH_SHORT).show();
+                    break;
             }
         }
     };
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(D) Log.d(TAG, "onActivityResult " + resultCode);
+        if (D) Log.d(TAG, "onActivityResult " + resultCode);
         switch (requestCode) {
-        case REQUEST_CONNECT_DEVICE:
-            // When DeviceListActivity returns with a device to connect
-            if (resultCode == Activity.RESULT_OK) {
-                // Get the device MAC address
-                String address = data.getExtras()
-                                     .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-                // Get the BLuetoothDevice object
-                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-                // Attempt to connect to the device
-                mBluetoothService.connect(device);
-            }
-            break;
-        case REQUEST_ENABLE_BT:
-            // When the request to enable Bluetooth returns
-            if (resultCode == Activity.RESULT_OK) {
-                // Bluetooth is now enabled, so set up a Bluetooth session
-                setupUserInterface();
-            } else {
-                // User did not enable Bluetooth or an error occurred
-                Log.d(TAG, "BT not enabled");
-                Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
-                finish();
-            }
+            case REQUEST_CONNECT_DEVICE:
+                // When DeviceListActivity returns with a device to connect
+                if (resultCode == Activity.RESULT_OK) {
+                    // Get the device MAC address
+                    String address = data.getExtras()
+                            .getString(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
+                    // Get the BLuetoothDevice object
+                    BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+                    // Attempt to connect to the device
+                    mBluetoothService.connect(device);
+                }
+                break;
+            case REQUEST_ENABLE_BT:
+                // When the request to enable Bluetooth returns
+                if (resultCode == Activity.RESULT_OK) {
+                    // Bluetooth is now enabled, so set up a Bluetooth session
+                    setupUserInterface();
+                } else {
+                    // User did not enable Bluetooth or an error occurred
+                    Log.d(TAG, "BT not enabled");
+                    Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
+                    finish();
+                }
         }
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
-        
+
         return true;
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.menu_quit:
-        	this.finish();
+            case R.id.menu_quit:
+                this.finish();
         }
         return false;
     }
 
     private void disconnectDevices() {
-    	if (mBluetoothService != null) mBluetoothService.stop();
-    	
-    	onBluetoothStateChanged();
+        if (mBluetoothService != null) mBluetoothService.stop();
+
+        onBluetoothStateChanged();
     }
 
     private void onBluetoothStateChanged() {
-    	if (connected) {
-			mToolbarConnectButton.setVisibility(View.GONE);
-			mToolbarDisconnectButton.setVisibility(View.VISIBLE);
-			mSendTextContainer.setVisibility(View.VISIBLE);
-    	}
-    	else {
-			mToolbarConnectButton.setVisibility(View.VISIBLE);
-			mToolbarDisconnectButton.setVisibility(View.GONE);
-			mSendTextContainer.setVisibility(View.GONE);
-    	}
-		paused = false;
-    	onPausedStateChanged();
+        if (connected) {
+            mToolbarConnectButton.setVisibility(View.GONE);
+            mToolbarDisconnectButton.setVisibility(View.VISIBLE);
+            mSendTextContainer.setVisibility(View.VISIBLE);
+        } else {
+            mToolbarConnectButton.setVisibility(View.VISIBLE);
+            mToolbarDisconnectButton.setVisibility(View.GONE);
+            mSendTextContainer.setVisibility(View.GONE);
+        }
+        paused = false;
+        onPausedStateChanged();
     }
 
     private void onPausedStateChanged() {
-    	if (connected) {
-	    	if (paused) {
-	    		mToolbarPlayButton.setVisibility(View.VISIBLE);
-	    		mToolbarPauseButton.setVisibility(View.GONE);
-	    	}
-	    	else {
-	    		mToolbarPlayButton.setVisibility(View.GONE);
-	    		mToolbarPauseButton.setVisibility(View.VISIBLE);
-	    	}
-    	}
-    	else {
-    		mToolbarPlayButton.setVisibility(View.GONE);
-    		mToolbarPauseButton.setVisibility(View.GONE);
-    	}
+        if (connected) {
+            if (paused) {
+                mToolbarPlayButton.setVisibility(View.VISIBLE);
+                mToolbarPauseButton.setVisibility(View.GONE);
+            } else {
+                mToolbarPlayButton.setVisibility(View.GONE);
+                mToolbarPauseButton.setVisibility(View.VISIBLE);
+            }
+        } else {
+            mToolbarPlayButton.setVisibility(View.GONE);
+            mToolbarPauseButton.setVisibility(View.GONE);
+        }
     }
-    
+
 }
