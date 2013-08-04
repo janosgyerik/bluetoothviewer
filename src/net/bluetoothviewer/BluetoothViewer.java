@@ -19,8 +19,6 @@
 
 package net.bluetoothviewer;
 
-import net.bluetoothviewer.R;
-
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -34,8 +32,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -70,9 +68,7 @@ public class BluetoothViewer extends Activity {
 
     // Layout Views
     private TextView mTitle;
-    private ListView mConversationView;
     private EditText mOutEditText;
-    private Button mSendButton;
     private View mSendTextContainer;
 
     // Toolbar
@@ -111,7 +107,7 @@ public class BluetoothViewer extends Activity {
         mTitle.setText(R.string.app_name);
         mTitle = (TextView) findViewById(R.id.title_right_text);
 
-        mSendTextContainer = (View) findViewById(R.id.send_text_container);
+        mSendTextContainer = findViewById(R.id.send_text_container);
 
         mToolbarConnectButton = (ImageButton) findViewById(R.id.toolbar_btn_connect);
         mToolbarConnectButton.setOnClickListener(new OnClickListener() {
@@ -150,7 +146,6 @@ public class BluetoothViewer extends Activity {
         if (mBluetoothAdapter == null) {
             Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
             finish();
-            return;
         }
     }
 
@@ -186,7 +181,7 @@ public class BluetoothViewer extends Activity {
 
         // Initialize the array adapter for the conversation thread
         mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
-        mConversationView = (ListView) findViewById(R.id.in);
+        ListView mConversationView = (ListView) findViewById(R.id.in);
         mConversationView.setAdapter(mConversationArrayAdapter);
 
         mConversationArrayAdapter.add(getString(R.string.welcome_1));
@@ -202,7 +197,7 @@ public class BluetoothViewer extends Activity {
         mOutEditText.setOnEditorActionListener(mWriteListener);
 
         // Initialize the send button with a listener that for click events
-        mSendButton = (Button) findViewById(R.id.button_send);
+        Button mSendButton = (Button) findViewById(R.id.button_send);
         mSendButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 // Send a message using content of the edit text widget
