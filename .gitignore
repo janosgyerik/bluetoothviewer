@@ -10,3 +10,5 @@ out/
 *.ipr
 *.iws
 .idea/
+graphics/launchpad/
+graphics/market/
