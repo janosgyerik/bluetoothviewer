@@ -143,10 +143,10 @@ public class BluetoothViewer extends Activity {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         // If the adapter is null, then Bluetooth is not supported
-        if (mBluetoothAdapter == null) {
-            Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
-            finish();
-        }
+//        if (mBluetoothAdapter == null) {
+//            Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
+//            finish();
+//        }
     }
 
     private void startDeviceListActivity() {
@@ -343,15 +343,12 @@ public class BluetoothViewer extends Activity {
                 break;
             case REQUEST_ENABLE_BT:
                 // When the request to enable Bluetooth returns
-                if (resultCode == Activity.RESULT_OK) {
-                    // Bluetooth is now enabled, so set up a Bluetooth session
-                    setupUserInterface();
-                } else {
+                if (resultCode != Activity.RESULT_OK) {
                     // User did not enable Bluetooth or an error occurred
                     Log.d(TAG, "BT not enabled");
-                    Toast.makeText(this, R.string.bt_not_enabled_leaving, Toast.LENGTH_SHORT).show();
-                    finish();
+                    Toast.makeText(this, R.string.bt_not_enabled, Toast.LENGTH_SHORT).show();
                 }
+                setupUserInterface();
         }
     }
 
