@@ -47,6 +47,7 @@ import android.widget.Toast;
 
 import net.bluetoothviewer.util.EmailTools;
 
+
 public class BluetoothViewer extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = BluetoothViewer.class.getSimpleName();
@@ -233,7 +234,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         mConversationArrayAdapter.add(getString(R.string.welcome_github_pre));
         mConversationArrayAdapter.add(getString(R.string.welcome_github));
         mConversationArrayAdapter.add(getString(R.string.welcome_please_rate));
-        mConversationArrayAdapter.add(getString(R.string.welcome_please_buy));
+        //mConversationArrayAdapter.add(getString(R.string.welcome_please_buy));
 
         // Initialize the compose field with a listener for the return key
         mOutEditText = (EditText) findViewById(R.id.edit_text_out);

@@ -32,6 +32,7 @@
         android:title="@string/menu_rate" />
     <item
         android:id="@+id/menu_buy"
-        android:title="@string/menu_buy" />
+        android:title="@string/menu_buy"
+        android:visible="false"/>
 
 </menu>
