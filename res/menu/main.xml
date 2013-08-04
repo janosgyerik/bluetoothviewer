@@ -20,9 +20,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menu_quit"
-        android:icon="@android:drawable/ic_lock_power_off"
-        android:title="@string/menu_quit"
-        android:visible="true"/>
+            android:id="@+id/menu_github"
+            android:title="@string/menu_github"
+            />
+    <item
+            android:id="@+id/menu_rate"
+            android:title="@string/menu_rate"
+            />
+    <item
+            android:id="@+id/menu_buy"
+            android:title="@string/menu_buy"
+            />
 
 </menu>

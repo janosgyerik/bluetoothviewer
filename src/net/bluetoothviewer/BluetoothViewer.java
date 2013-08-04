@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -363,10 +364,21 @@ public class BluetoothViewer extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_quit:
-                this.finish();
+            case R.id.menu_github:
+                openURL(getString(R.string.url_github));
+                break;
+            case R.id.menu_rate:
+                openURL(getString(R.string.url_rate));
+                break;
+            case R.id.menu_buy:
+                openURL(getString(R.string.url_full_app));
+                break;
         }
         return false;
+    }
+
+    private void openURL(String url) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
     }
 
     private void disconnectDevices() {

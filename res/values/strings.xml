@@ -35,7 +35,13 @@
     <string name="button_scan">Scan for devices</string>
 
     <!-- Options Menu -->
-    <string name="menu_quit">Quit</string>
+    <string name="menu_github">Go to GitHub</string>
+    <string name="menu_rate">Rate this app</string>
+    <string name="menu_buy">Buy the full app</string>
+
+    <string name="url_github">https://github.com/janosgyerik/bluetoothviewer</string>
+    <string name="url_rate">market://details?id=net.bluetoothviewer</string>
+    <string name="url_full_app">market://details?id=net.bluetoothviewer.full</string>
 
     <string name="welcome_1">Welcome to Bluetooth Viewer!</string>
     <string name="welcome_2">This app is a simple Bluetooth connection debugging tool.</string>
