@@ -9,9 +9,6 @@ This app is a simple Bluetooth connection debugging tool:
 You can confirm successful pairing, monitor incoming raw data and see
 exactly what is being transmitted from the Bluetooth device.
 
-* Project homepage:
-  http://blog.ecomobilecitizen.com/android/bluetoothviewer/
-
 * Android app on Google Play, with screenshots:
   https://play.google.com/store/apps/details?id=net.bluetoothviewer
 
@@ -38,9 +35,6 @@ You can contribute improvements in whatever way is convenient for you, for examp
 * Create a Pull Request on GitHub:
   https://github.com/janosgyerik/bluetoothviewer
 
-* Create a Merge Proposal on Launchpad:
-  https://launchpad.net/bluetoothviewer
-
 * Email your patches to info@janosgyerik.com
 
 
@@ -54,5 +48,3 @@ Disclaimer
 ----------
 The source code is a modified version of the BluetoothChat sample
 that is included in the Android SDK.
-
-
