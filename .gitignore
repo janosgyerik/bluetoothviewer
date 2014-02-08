@@ -12,3 +12,4 @@ out/
 .idea/
 graphics/launchpad/
 graphics/market/
+.gradle

@@ -1,3 +1,14 @@
+migrate to minsdk14
+-------------------
+- generalize and finish build.sh
+- clear out all warnings in android studio
+- replace title bar
+- rethink ui
+- add device list on a new tab (using android-bootstrap)
+- add hexa view
+- add email option
+
+
 future releases
 ---------------
 - toolbar: record on/off

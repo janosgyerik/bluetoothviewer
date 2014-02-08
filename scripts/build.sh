@@ -2,13 +2,13 @@
 #
 # SCRIPT: build.sh
 # AUTHOR: Janos Gyerik <info@titan2x.com>
-# DATE:   2012-03-18
+# DATE:   2013-11-11
 # REV:    1.0.D (Valid are A, B, D, T and P)
 #               (For Alpha, Beta, Dev, Test and Production)
 #
 # PLATFORM: Not platform dependent
 #
-# PURPOSE: Build the project in debug or release mode and install on a device
+# PURPOSE: Build the project in debug or release mode
 #
 # set -n   # Uncomment to check your syntax, without execution.
 #          # NOTE: Do not forget to put the comment back in or
@@ -20,20 +20,21 @@ usage() {
     test $# = 0 || echo $@
     echo "Usage: $0 [OPTION]... [ARG]..."
     echo
-    echo Build the project in debug or release mode and install on a device
+    echo Build the project in debug or release mode
     echo
     echo Options:
-    echo "  -b, --build          to build or not, default = $build"
-    echo "  -i, --install        to install or not, default = $install"
-    echo "      --uninstall      to uninstall or not, default = $uninstall"
+    echo "  -d, --debug          select debug build, default = $debug"
+    echo "  -r, --release        select release build, default = $release"
+    echo "      --lite           select the lite version, default = $lite"
+    echo "      --full           select the full version, default = $full"
     echo
-    echo "  -d, --debug          build for debug, default = $debug"
-    echo "  -r, --release        build for release, default = $release"
+    echo "  -b, --build          build, default = $build"
+    echo "      --clean          clean, default = $clean"
+    echo "  -i, --install        install selected app, default = $install"
+    echo "  -u, --uninstall      uninstall selected app, default = $uninstall"
+    echo "  -s, --start          start selected app, default = $start"
     echo
-    echo "  -u, --usb            install on USB device, default = $usb"
-    echo "  -e, --emulator       install on emulator, default = $emulator"
-    echo
-    echo "      --setup-keys     Setup key store, default = $setup_keys"
+    echo "  -l, --list           list built apks, default = $list"
     echo
     echo "  -h, --help           Print this help"
     echo
@@ -44,26 +45,30 @@ args=
 #arg=
 #flag=off
 #param=
-build=off
-install=off
-uninstall=off
 debug=off
 release=off
-usb=off
-emulator=off
-setup_keys=off
+lite=off
+full=off
+build=off
+clean=off
+install=off
+uninstall=off
+start=off
+list=off
 while [ $# != 0 ]; do
     case $1 in
     -h|--help) usage ;;
-    -b|--build) build=on ;;
-    -i|--install) install=on ;;
-    --uninstall) uninstall=on ;;
     -d|--debug) debug=on ;;
     -r|--release) release=on ;;
-    -u|--usb) usb=on ;;
-    -e|--emulator) emulator=on ;;
-    --setup-keys) setup_keys=on ;;
-#    --) shift; while [ $# != 0 ]; do args="$args \"$1\""; shift; done; break ;;
+    --lite) lite=on; full=off ;;
+    --full) full=on; lite=off ;;
+    --clean) clean=on ;;
+    -b|--build) build=on ;;
+    -i|--install) install=on; uninstall=off ;;
+    -u|--uninstall) uninstall=on; install=off; start=off ;;
+    -s|--start) start=on ;;
+    -l|--list) list=on ;;
+    --) shift; while [ $# != 0 ]; do args="$args \"$1\""; shift; done; break ;;
     -) usage "Unknown option: $1" ;;
     -?*) usage "Unknown option: $1" ;;
     *) args="$args \"$1\"" ;;  # script that takes multiple arguments
@@ -73,7 +78,7 @@ while [ $# != 0 ]; do
     shift
 done
 
-eval "set -- $args"  # save arguments in $@. Use "$@" in for loops, not $@ 
+eval "set -- $args"  # save arguments in $@. Use "$@" in for loops, not $@
 
 #test $# = 0 && usage
 
@@ -90,27 +95,39 @@ randstring() {
     echo ${str:$POS:$LEN}
 }
 
-cd $(dirname "$0")/..
-
-test -f local.properties -a -f build.xml || {
-    msg local.properties or build.xml missing, runnig android update command
-    android update project --path .
+list() {
+    ls -ltr */build/apk/*-{release,debug*}.apk 2>/dev/null
 }
 
-projectname=$(grep project.name build.xml | head -n 1 | sed -e 's/.*project name="\([^"]*\)".*/\1/')
+run() {
+    echo $*
+    $*
+}
+
+dirname=$(dirname "$0")
+config=$dirname/config.sh
+test -f "$config" && . "$config"
+cd "$dirname"/..
+
+if test -f gradlew; then
+    gradle=./gradlew
+else
+    gradle=gradle
+fi
+
+projectname=$(grep ^include settings.gradle | head -n 1 | sed -e 's/.*://' -e 's/.$//')
 
 keys_config=./keys/config.sh
-if test $setup_keys = on; then
+if test $release = on; then
     test -f $keys_config || {
         mkdir -p keys
         cat<<EOF >$keys_config
 #!/bin/sh
 
-keystore=keys/$projectname.keystore
-alias=mykey
-
-storepass=$(randstring store)
-keypass=$(randstring key)
+export STORE_FILE=$PWD/keys/$projectname.keystore
+export STORE_PASSWORD=$(randstring store)
+export KEY_ALIAS=mykey
+export KEY_PASSWORD=$(randstring key)
 
 # eof
 EOF
@@ -119,40 +136,53 @@ EOF
         . $keys_config
         keytool -genkey -v -keystore keys/$projectname.keystore -storepass $storepass -keypass $keypass -validity 10000 -keyalg RSA
     }
+    . $keys_config
 fi
 
 if test $build = on; then
+    test $clean = on && tasks=clean || tasks=
+    test $debug = on && tasks="$tasks assembleDebug"
+    test $release = on && tasks="$tasks assembleRelease"
+    run $gradle $tasks $*
+    echo
+    list=on
+fi
+
+proj=
+if test $lite = on; then
+    proj=$projectname-lite
+elif test $full = on; then
+    proj=$projectname-full
+else
+    proj=$projectname
+fi
+
+apk=
+if test "$proj"; then 
     if test $debug = on; then
-        ant debug
-    fi
-    if test $release = on; then
-        msg ant build
-        ant release
-        msg jarsigner
-        . $keys_config
-        jarsigner -verbose -keystore $keystore -storepass $storepass -keypass $keypass bin/$projectname-release-unsigned.apk $alias
-        msg zipalign
-        rm -f bin/$projectname-release.apk
-        zipalign -v 4 bin/$projectname-release-unsigned.apk bin/$projectname-release.apk
+        apk=$proj/build/apk/$proj-debug-unaligned.apk
+    elif test $release = on; then
+        apk=$proj/build/apk/$proj-release.apk
     fi
 fi
 
 if test $install = on; then
-    if test $debug = on; then
-        target=bin/$projectname-debug.apk
-        test $usb = on && adb -d install -r $target
-        test $emulator = on && adb -e install -r $target
-    fi
-    if test $release = on; then
-        target=bin/$projectname-release.apk
-        test $usb = on && adb -d install -r $target
-        test $emulator = on && adb -e install -r $target
+    run adb -d install -r $apk
+elif test $uninstall = on; then
+    if test $lite = on; then
+        run adb uninstall com.$projectname.lite
+    elif test $full = on; then
+        run adb uninstall com.$projectname.full
+    else
+        run adb uninstall net.bluetoothviewer
     fi
 fi
 
-if test $uninstall = on; then
-    package=$(grep package= AndroidManifest.xml | sed -e s/.*package=// | cut -f2 -d\")
-    adb uninstall $package
+if test $start = on; then
+    #run adb shell am start -n com.$projectname.lite/$activity
+    run adb shell am start -n net.bluetoothviewer/$activity
 fi
+
+test $list = on && list
 
 # eof

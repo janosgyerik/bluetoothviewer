@@ -1,0 +1,15 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.6.+'
+    }
+}
+
+ext.compileSdkVersion = 14
+ext.buildToolsVersion = "19"
+ext.storeFilePath = System.getenv('STORE_FILE')
+ext.storePassword = System.getenv('STORE_PASSWORD')
+ext.keyAlias = System.getenv('KEY_ALIAS')
+ext.keyPassword = System.getenv('KEY_PASSWORD')
