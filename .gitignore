@@ -13,3 +13,4 @@ out/
 graphics/launchpad/
 graphics/market/
 .gradle
+build
