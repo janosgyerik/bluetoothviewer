@@ -16,10 +16,9 @@
 
 package net.bluetoothviewer;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,16 +26,17 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This Activity appears as a dialog. It lists any paired devices and
@@ -56,7 +56,7 @@ public class DeviceListActivity extends Activity {
     private BluetoothAdapter mBtAdapter;
     private ArrayAdapter<String> mNewDevicesArrayAdapter;
     private Set<String> mNewDevicesSet;
-    
+
     private Button scanButton;
 
     @Override
@@ -139,7 +139,7 @@ public class DeviceListActivity extends Activity {
      */
     private void doDiscovery() {
         if (D) Log.d(TAG, "doDiscovery()");
-        
+
         // clear results of a previous discovery
         mNewDevicesArrayAdapter.clear();
         mNewDevicesSet.clear();
@@ -195,14 +195,14 @@ public class DeviceListActivity extends Activity {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (device != null) {
                     String address = device.getAddress();
-                    if (! mNewDevicesSet.contains(address)) {
+                    if (!mNewDevicesSet.contains(address)) {
                         mNewDevicesSet.add(address);
                         mNewDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
                     }
                 } else {
                     Log.e(TAG, "Could not get parcelable extra from device: " + BluetoothDevice.EXTRA_DEVICE);
                 }
-            // When discovery is finished, change the Activity title
+                // When discovery is finished, change the Activity title
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 setProgressBarIndeterminateVisibility(false);
                 setTitle(R.string.select_device);
