@@ -305,22 +305,27 @@ public class BluetoothViewer extends Activity {
                     mConversationArrayAdapter.add(readMessage);
                     break;
                 case MESSAGE_DEVICE_NAME:
-                    // save the connected device's name
                     {
-                        mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
-                        Context context = getApplicationContext();
-                        if (context != null) {
-                            Toast.makeText(context, "Connected to "
-                                    + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                        Bundle bundle = msg.getData();
+                        if (bundle != null) {
+                            mConnectedDeviceName = bundle.getString(DEVICE_NAME);
+                            Context context = getApplicationContext();
+                            if (context != null) {
+                                Toast.makeText(context, "Connected to "
+                                        + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                     break;
                 case MESSAGE_TOAST:
                     {
-                        Context context = getApplicationContext();
-                        if (context != null) {
-                            Toast.makeText(context, msg.getData().getString(TOAST),
-                                    Toast.LENGTH_SHORT).show();
+                        Bundle bundle = msg.getData();
+                        if (bundle != null) {
+                            Context context = getApplicationContext();
+                            if (context != null) {
+                                Toast.makeText(context, msg.getData().getString(TOAST),
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                     break;
