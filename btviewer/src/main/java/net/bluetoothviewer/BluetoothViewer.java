@@ -45,12 +45,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * This is the main Activity that displays the current session.
- */
 public class BluetoothViewer extends Activity {
-    // Debugging
-    private static final String TAG = "BluetoothViewer";
+
+    private static final String TAG = BluetoothViewer.class.getSimpleName();
     private static final boolean D = true;
 
     // Message types sent from the BluetoothService Handler
@@ -79,15 +76,10 @@ public class BluetoothViewer extends Activity {
     private ImageButton mToolbarPauseButton;
     private ImageButton mToolbarPlayButton;
 
-    // Name of the connected device
     private String mConnectedDeviceName = null;
-    // Array adapter for the conversation thread
     private ArrayAdapter<String> mConversationArrayAdapter;
-    // String buffer for outgoing messages
     private StringBuffer mOutStringBuffer;
-    // Local Bluetooth adapter
     private BluetoothAdapter mBluetoothAdapter = null;
-    // Member object for the Bluetooth services
     private BluetoothChatService mBluetoothService = null;
 
     // State variables
@@ -97,7 +89,6 @@ public class BluetoothViewer extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (D) Log.e(TAG, "+++ ON CREATE +++");
 
         // Set up the window layout
         requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
@@ -141,14 +132,7 @@ public class BluetoothViewer extends Activity {
             }
         });
 
-        // Get local Bluetooth adapter
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        // If the adapter is null, then Bluetooth is not supported
-//        if (mBluetoothAdapter == null) {
-//            Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
-//            finish();
-//        }
     }
 
     private void startDeviceListActivity() {
@@ -159,29 +143,16 @@ public class BluetoothViewer extends Activity {
     @Override
     public void onStart() {
         super.onStart();
-        if (D) Log.e(TAG, "++ ON START ++");
 
-        // If BT is not on, request that it be enabled.
-        // setupUserInterface() will then be called during onActivityResult
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-            // Otherwise, setup the Bluetooth session
-        } else {
-            if (mBluetoothService == null) setupUserInterface();
+        } else if (mBluetoothService == null) {
+            setupUserInterface();
         }
     }
 
-    @Override
-    public synchronized void onResume() {
-        super.onResume();
-        if (D) Log.e(TAG, "+ ON RESUME +");
-    }
-
     private void setupUserInterface() {
-        Log.d(TAG, "setupUserInterface()");
-
-        // Initialize the array adapter for the conversation thread
         mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
         ListView mConversationView = (ListView) findViewById(R.id.in);
         mConversationView.setAdapter(mConversationArrayAdapter);
@@ -198,48 +169,30 @@ public class BluetoothViewer extends Activity {
         mOutEditText = (EditText) findViewById(R.id.edit_text_out);
         mOutEditText.setOnEditorActionListener(mWriteListener);
 
-        // Initialize the send button with a listener that for click events
+        // Initialize the send button with a listener for click events
         Button mSendButton = (Button) findViewById(R.id.button_send);
         mSendButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                // Send a message using content of the edit text widget
                 TextView view = (TextView) findViewById(R.id.edit_text_out);
                 sendMessage(view.getText());
             }
         });
 
-        // Initialize the BluetoothService to perform Bluetooth connections
         mBluetoothService = new BluetoothChatService(mHandler);
 
-        // Initialize the buffer for outgoing messages
         mOutStringBuffer = new StringBuffer("");
 
         onBluetoothStateChanged();
     }
 
     @Override
-    public synchronized void onPause() {
-        super.onPause();
-        if (D) Log.e(TAG, "- ON PAUSE -");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (D) Log.e(TAG, "-- ON STOP --");
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
-        // Stop the Bluetooth services
         if (mBluetoothService != null) mBluetoothService.stop();
-        if (D) Log.e(TAG, "--- ON DESTROY ---");
     }
 
     private void sendMessage(CharSequence chars) {
         if (chars.length() > 0) {
-            // Check that we're actually connected before trying anything
             if (mBluetoothService.getState() != BluetoothChatService.STATE_CONNECTED) {
                 Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
                 return;
@@ -254,15 +207,12 @@ public class BluetoothViewer extends Activity {
         }
     }
 
-    // The action listener for the EditText widget, to listen for the return key
     private TextView.OnEditorActionListener mWriteListener =
             new TextView.OnEditorActionListener() {
                 public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-                    // If the action is a key-up event on the return key, send the message
                     if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
                         sendMessage(view.getText());
                     }
-                    if (D) Log.i(TAG, "END onEditorAction");
                     return true;
                 }
             };
@@ -273,7 +223,7 @@ public class BluetoothViewer extends Activity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MESSAGE_STATE_CHANGE:
-                    if (D) Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
+                    Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
                     switch (msg.arg1) {
                         case BluetoothChatService.STATE_CONNECTED:
                             connected = true;
@@ -291,15 +241,13 @@ public class BluetoothViewer extends Activity {
                     break;
                 case MESSAGE_WRITE:
                     byte[] writeBuf = (byte[]) msg.obj;
-                    // construct a string from the buffer
                     String writeMessage = new String(writeBuf);
                     mConversationArrayAdapter.add(">>> " + writeMessage);
-                    if (D) Log.d(TAG, "written = '" + writeMessage + "'");
+                    Log.i(TAG, "written = '" + writeMessage + "'");
                     break;
                 case MESSAGE_READ:
                     if (paused) break;
                     byte[] readBuf = (byte[]) msg.obj;
-                    // construct a string from the valid bytes in the buffer
                     String readMessage = new String(readBuf, 0, msg.arg1);
                     if (D) Log.d(TAG, readMessage);
                     mConversationArrayAdapter.add(readMessage);
@@ -334,24 +282,20 @@ public class BluetoothViewer extends Activity {
     };
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (D) Log.d(TAG, "onActivityResult " + resultCode);
+        Log.i(TAG, "onActivityResult " + resultCode);
         switch (requestCode) {
             case REQUEST_CONNECT_DEVICE:
                 // When DeviceListActivity returns with a device to connect
                 if (resultCode == Activity.RESULT_OK) {
-                    // Get the device MAC address
                     String address = data.getStringExtra(DeviceListActivity.EXTRA_DEVICE_ADDRESS);
-                    // Get the BluetoothDevice object
                     BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
-                    // Attempt to connect to the device
                     mBluetoothService.connect(device);
                 }
                 break;
             case REQUEST_ENABLE_BT:
                 // When the request to enable Bluetooth returns
                 if (resultCode != Activity.RESULT_OK) {
-                    // User did not enable Bluetooth or an error occurred
-                    Log.d(TAG, "BT not enabled");
+                    Log.i(TAG, "BT not enabled");
                     Toast.makeText(this, R.string.bt_not_enabled, Toast.LENGTH_SHORT).show();
                 }
                 setupUserInterface();
@@ -420,5 +364,4 @@ public class BluetoothViewer extends Activity {
             mToolbarPauseButton.setVisibility(View.GONE);
         }
     }
-
 }
