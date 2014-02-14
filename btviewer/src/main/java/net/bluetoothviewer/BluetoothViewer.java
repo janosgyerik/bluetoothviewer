@@ -22,6 +22,7 @@ package net.bluetoothviewer;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -305,13 +306,23 @@ public class BluetoothViewer extends Activity {
                     break;
                 case MESSAGE_DEVICE_NAME:
                     // save the connected device's name
-                    mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
-                    Toast.makeText(getApplicationContext(), "Connected to "
-                            + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                    {
+                        mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
+                        Context context = getApplicationContext();
+                        if (context != null) {
+                            Toast.makeText(context, "Connected to "
+                                    + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+                        }
+                    }
                     break;
                 case MESSAGE_TOAST:
-                    Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST),
-                            Toast.LENGTH_SHORT).show();
+                    {
+                        Context context = getApplicationContext();
+                        if (context != null) {
+                            Toast.makeText(context, msg.getData().getString(TOAST),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
                     break;
             }
         }
