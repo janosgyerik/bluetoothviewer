@@ -203,8 +203,7 @@ public class BluetoothViewer extends Activity {
             public void onClick(View v) {
                 // Send a message using content of the edit text widget
                 TextView view = (TextView) findViewById(R.id.edit_text_out);
-                String message = view.getText().toString();
-                sendMessage(message);
+                sendMessage(view.getText());
             }
         });
 
@@ -237,26 +236,18 @@ public class BluetoothViewer extends Activity {
         if (D) Log.e(TAG, "--- ON DESTROY ---");
     }
 
-    /**
-     * Sends a message.
-     *
-     * @param message A string of text to send.
-     */
-    private void sendMessage(String message) {
-        // Check that we're actually connected before trying anything
-        if (mBluetoothService.getState() != BluetoothChatService.STATE_CONNECTED) {
-            Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
-            return;
-        }
+    private void sendMessage(CharSequence chars) {
+        if (chars.length() > 0) {
+            // Check that we're actually connected before trying anything
+            if (mBluetoothService.getState() != BluetoothChatService.STATE_CONNECTED) {
+                Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        // Check that there's actually something to send
-        if (message.length() > 0) {
-            message += "\n";
-            // Get the message bytes and tell the BluetoothService to write
-            byte[] send = message.getBytes();
-            mBluetoothService.write(send);
+            String message = chars.toString() + "\n";
 
-            // Reset out string buffer to zero and clear the edit text field
+            mBluetoothService.write(message.getBytes());
+
             mOutStringBuffer.setLength(0);
             mOutEditText.setText(mOutStringBuffer);
         }
@@ -268,8 +259,7 @@ public class BluetoothViewer extends Activity {
                 public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
                     // If the action is a key-up event on the return key, send the message
                     if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
-                        String message = view.getText().toString();
-                        sendMessage(message);
+                        sendMessage(view.getText());
                     }
                     if (D) Log.i(TAG, "END onEditorAction");
                     return true;
