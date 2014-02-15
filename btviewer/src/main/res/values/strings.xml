@@ -23,7 +23,8 @@
     <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Viewer.</string>
     <string name="bt_not_enabled">Bluetooth is not enabled. The app cannot function like this.</string>
 
-    <string name="btstatus_connecting">connecting…</string>
+    <string name="btstatus_connecting_to_fmt">connecting to: %s</string>
+    <string name="btstatus_connected_to_fmt">connected to: %s</string>
     <string name="btstatus_not_connected">not connected</string>
 
     <!--  DeviceListActivity -->

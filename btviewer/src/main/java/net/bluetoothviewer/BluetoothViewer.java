@@ -22,7 +22,6 @@ package net.bluetoothviewer;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,17 +48,6 @@ public class BluetoothViewer extends Activity {
     private static final String TAG = BluetoothViewer.class.getSimpleName();
     private static final boolean D = true;
 
-    // Message types sent from the BluetoothService Handler
-    public static final int MESSAGE_STATE_CHANGE = 1;
-    public static final int MESSAGE_READ = 2;
-    public static final int MESSAGE_WRITE = 3;
-    public static final int MESSAGE_DEVICE_NAME = 4;
-    public static final int MESSAGE_TOAST = 5;
-
-    // Key names received from the BluetoothService Handler
-    public static final String DEVICE_NAME = "device_name";
-    public static final String TOAST = "toast";
-
     // Intent request codes
     private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
@@ -75,7 +63,6 @@ public class BluetoothViewer extends Activity {
     private ImageButton mToolbarPauseButton;
     private ImageButton mToolbarPlayButton;
 
-    private String mConnectedDeviceName = null;
     private ArrayAdapter<String> mConversationArrayAdapter;
     private StringBuffer mOutStringBuffer;
     private BluetoothAdapter mBluetoothAdapter = null;
@@ -84,6 +71,48 @@ public class BluetoothViewer extends Activity {
     // State variables
     private boolean paused = false;
     private boolean connected = false;
+    // The Handler that gets information back from the BluetoothService
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case BluetoothChatService.MSG_CONNECTED:
+                    connected = true;
+                    mStatusView.setText(formatStatusMessage(R.string.btstatus_connected_to_fmt, msg.obj));
+                    onBluetoothStateChanged();
+                    break;
+                case BluetoothChatService.MSG_CONNECTING:
+                    mStatusView.setText(formatStatusMessage(R.string.btstatus_connecting_to_fmt, msg.obj));
+                    onBluetoothStateChanged();
+                    break;
+                case BluetoothChatService.MSG_NOT_CONNECTED:
+                    connected = false;
+                    mStatusView.setText(R.string.btstatus_not_connected);
+                    onBluetoothStateChanged();
+                    break;
+                case BluetoothChatService.MSG_BYTES_WRITTEN:
+                    String written = new String((byte[]) msg.obj);
+                    mConversationArrayAdapter.add(">>> " + written);
+                    Log.i(TAG, "written = '" + written + "'");
+                    break;
+                case BluetoothChatService.MSG_LINE_READ:
+                    if (paused) break;
+                    String readMessage = (String)msg.obj;
+                    if (D) Log.d(TAG, readMessage);
+                    mConversationArrayAdapter.add(readMessage);
+                    break;
+            }
+        }
+    };
+    private TextView.OnEditorActionListener mWriteListener =
+            new TextView.OnEditorActionListener() {
+                public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
+                        sendMessage(view.getText());
+                    }
+                    return true;
+                }
+            };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -200,77 +229,10 @@ public class BluetoothViewer extends Activity {
         }
     }
 
-    private TextView.OnEditorActionListener mWriteListener =
-            new TextView.OnEditorActionListener() {
-                public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_NULL && event.getAction() == KeyEvent.ACTION_UP) {
-                        sendMessage(view.getText());
-                    }
-                    return true;
-                }
-            };
-
-    // The Handler that gets information back from the BluetoothService
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case MESSAGE_STATE_CHANGE:
-                    Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
-                    switch (msg.arg1) {
-                        case BluetoothChatService.STATE_CONNECTED:
-                            connected = true;
-                            mStatusView.setText(mConnectedDeviceName);
-                            break;
-                        case BluetoothChatService.STATE_CONNECTING:
-                            mStatusView.setText(R.string.btstatus_connecting);
-                            break;
-                        case BluetoothChatService.STATE_NONE:
-                            connected = false;
-                            mStatusView.setText(R.string.btstatus_not_connected);
-                            break;
-                    }
-                    onBluetoothStateChanged();
-                    break;
-                case MESSAGE_WRITE:
-                    byte[] writeBuf = (byte[]) msg.obj;
-                    String writeMessage = new String(writeBuf);
-                    mConversationArrayAdapter.add(">>> " + writeMessage);
-                    Log.i(TAG, "written = '" + writeMessage + "'");
-                    break;
-                case MESSAGE_READ:
-                    if (paused) break;
-                    byte[] readBuf = (byte[]) msg.obj;
-                    String readMessage = new String(readBuf, 0, msg.arg1);
-                    if (D) Log.d(TAG, readMessage);
-                    mConversationArrayAdapter.add(readMessage);
-                    break;
-                case MESSAGE_DEVICE_NAME: {
-                    Bundle bundle = msg.getData();
-                    if (bundle != null) {
-                        mConnectedDeviceName = bundle.getString(DEVICE_NAME);
-                        Context context = getApplicationContext();
-                        if (context != null) {
-                            Toast.makeText(context, "Connected to "
-                                    + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-                break;
-                case MESSAGE_TOAST: {
-                    Bundle bundle = msg.getData();
-                    if (bundle != null) {
-                        Context context = getApplicationContext();
-                        if (context != null) {
-                            Toast.makeText(context, msg.getData().getString(TOAST),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-                break;
-            }
-        }
-    };
+    private String formatStatusMessage(int formatResId, Object obj) {
+        String deviceName = (String) obj;
+        return getString(formatResId, deviceName);
+    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(TAG, "onActivityResult " + resultCode);
