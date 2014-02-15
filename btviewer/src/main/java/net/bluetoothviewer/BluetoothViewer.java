@@ -82,10 +82,21 @@ public class BluetoothViewer extends Activity {
                     onBluetoothStateChanged();
                     break;
                 case BluetoothChatService.MSG_CONNECTING:
+                    connected = false;
                     mStatusView.setText(formatStatusMessage(R.string.btstatus_connecting_to_fmt, msg.obj));
                     onBluetoothStateChanged();
                     break;
                 case BluetoothChatService.MSG_NOT_CONNECTED:
+                    connected = false;
+                    mStatusView.setText(R.string.btstatus_not_connected);
+                    onBluetoothStateChanged();
+                    break;
+                case BluetoothChatService.MSG_CONNECTION_FAILED:
+                    connected = false;
+                    mStatusView.setText(R.string.btstatus_not_connected);
+                    onBluetoothStateChanged();
+                    break;
+                case BluetoothChatService.MSG_CONNECTION_LOST:
                     connected = false;
                     mStatusView.setText(R.string.btstatus_not_connected);
                     onBluetoothStateChanged();
