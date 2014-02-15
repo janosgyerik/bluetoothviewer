@@ -65,7 +65,7 @@ public class BluetoothViewer extends Activity {
     private static final int REQUEST_ENABLE_BT = 2;
 
     // Layout Views
-//    private TextView mTitle;
+    private TextView mStatusView;
     private EditText mOutEditText;
     private View mSendTextContainer;
 
@@ -90,6 +90,8 @@ public class BluetoothViewer extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.main);
+
+        mStatusView = (TextView) findViewById(R.id.btstatus);
 
         mSendTextContainer = findViewById(R.id.send_text_container);
 
@@ -218,14 +220,14 @@ public class BluetoothViewer extends Activity {
                     switch (msg.arg1) {
                         case BluetoothChatService.STATE_CONNECTED:
                             connected = true;
-//                            mTitle.setText(mConnectedDeviceName);
+                            mStatusView.setText(mConnectedDeviceName);
                             break;
                         case BluetoothChatService.STATE_CONNECTING:
-//                            mTitle.setText(R.string.title_connecting);
+                            mStatusView.setText(R.string.btstatus_connecting);
                             break;
                         case BluetoothChatService.STATE_NONE:
                             connected = false;
-//                            mTitle.setText(R.string.title_not_connected);
+                            mStatusView.setText(R.string.btstatus_not_connected);
                             break;
                     }
                     onBluetoothStateChanged();

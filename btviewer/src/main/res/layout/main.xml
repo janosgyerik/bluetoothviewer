@@ -24,6 +24,15 @@
     android:background="@drawable/background_main"
     android:orientation="vertical">
 
+    <TextView android:id="@+id/btstatus"
+        android:layout_gravity="right"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/btstatus_not_connected"
+        />
+
     <ListView
         android:id="@+id/in"
         android:layout_width="fill_parent"
