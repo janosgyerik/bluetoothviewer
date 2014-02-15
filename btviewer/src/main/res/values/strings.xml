@@ -22,11 +22,11 @@
     <string name="not_connected">You are not connected to a device</string>
     <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Viewer.</string>
     <string name="bt_not_enabled">Bluetooth is not enabled. The app cannot function like this.</string>
-    <string name="title_connecting">connecting...</string>
+    <string name="title_connecting">connecting…</string>
     <string name="title_not_connected">not connected</string>
 
     <!--  DeviceListActivity -->
-    <string name="scanning">Scanning for devices...</string>
+    <string name="scanning">Scanning for devices…</string>
     <string name="select_device">Select a device to connect to</string>
     <string name="none_paired">No paired devices</string>
     <string name="none_found">No devices found</string>
