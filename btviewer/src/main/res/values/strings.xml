@@ -37,7 +37,7 @@
     <string name="button_scan">Scan for devices</string>
 
     <!-- Options Menu -->
-    <string name="menu_github">Go to GitHub</string>
+    <string name="menu_github">View source on GitHub</string>
     <string name="menu_rate">Rate this app</string>
     <string name="menu_buy">Buy the full app</string>
 
