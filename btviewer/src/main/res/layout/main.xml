@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright (C) 2010 Janos Gyerik
     
     This file is part of BluetoothViewer.
@@ -19,11 +18,11 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="fill_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/background_main"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <ListView
         android:id="@+id/in"
@@ -38,7 +37,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/edit_text_out"
@@ -46,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_weight="1"
-            android:inputType="text"/>
+            android:inputType="text" />
 
         <Button
             android:id="@+id/button_send"
@@ -59,35 +58,35 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/toolbarbg"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/toolbar_btn_connect"
             style="@style/toolbarButton"
             android:src="@drawable/toolbar_btn_connect"
             android:visibility="gone"
-            tools:ignore="ContentDescription"/>
+            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/toolbar_btn_disconnect"
             style="@style/toolbarButton"
             android:src="@drawable/toolbar_btn_disconnect"
             android:visibility="gone"
-            tools:ignore="ContentDescription"/>
+            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/toolbar_btn_pause"
             style="@style/toolbarButton"
             android:src="@drawable/toolbar_btn_pause"
             android:visibility="gone"
-            tools:ignore="ContentDescription"/>
+            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/toolbar_btn_play"
             style="@style/toolbarButton"
             android:src="@drawable/toolbar_btn_play"
             android:visibility="gone"
-            tools:ignore="ContentDescription"/>
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
 </LinearLayout>
