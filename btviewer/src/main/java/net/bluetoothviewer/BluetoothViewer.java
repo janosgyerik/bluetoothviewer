@@ -35,7 +35,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -66,7 +65,7 @@ public class BluetoothViewer extends Activity {
     private static final int REQUEST_ENABLE_BT = 2;
 
     // Layout Views
-    private TextView mTitle;
+//    private TextView mTitle;
     private EditText mOutEditText;
     private View mSendTextContainer;
 
@@ -90,15 +89,7 @@ public class BluetoothViewer extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Set up the window layout
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.main);
-        getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_title);
-
-        // Set up the custom title
-        mTitle = (TextView) findViewById(R.id.title_left_text);
-        mTitle.setText(R.string.app_name);
-        mTitle = (TextView) findViewById(R.id.title_right_text);
 
         mSendTextContainer = findViewById(R.id.send_text_container);
 
@@ -227,14 +218,14 @@ public class BluetoothViewer extends Activity {
                     switch (msg.arg1) {
                         case BluetoothChatService.STATE_CONNECTED:
                             connected = true;
-                            mTitle.setText(mConnectedDeviceName);
+//                            mTitle.setText(mConnectedDeviceName);
                             break;
                         case BluetoothChatService.STATE_CONNECTING:
-                            mTitle.setText(R.string.title_connecting);
+//                            mTitle.setText(R.string.title_connecting);
                             break;
                         case BluetoothChatService.STATE_NONE:
                             connected = false;
-                            mTitle.setText(R.string.title_not_connected);
+//                            mTitle.setText(R.string.title_not_connected);
                             break;
                     }
                     onBluetoothStateChanged();

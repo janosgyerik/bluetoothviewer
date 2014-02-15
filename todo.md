@@ -1,6 +1,5 @@
 next
 ----
-- update sdk version
 - eliminate deprecated elements
 - option to shave off first n characters
 - option to prepend timestamp
