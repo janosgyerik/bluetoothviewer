@@ -28,7 +28,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.UUID;
 
 /**
  * This class does all the work for setting up and managing Bluetooth
@@ -243,14 +243,15 @@ public class BluetoothViewerService {
             mmDevice = device;
             BluetoothSocket tmp = null;
 
-            Log.i(TAG, "calling device.createRfcommSocket with channel 1 ...");
             try {
                 // call hidden method, see BluetoothDevice source code for more details:
                 // https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/bluetooth/BluetoothDevice.java
-                Method m = device.getClass().getMethod("createRfcommSocket", new Class[]{ int.class });
-                tmp = (BluetoothSocket) m.invoke(device, 1);  // channel = 1
-                Log.i(TAG, "setting socket to result of createRfcommSocket");
-            } catch (Exception e) {
+                //Method m = device.getClass().getMethod("createRfcommSocket", new Class[]{ int.class });
+                //tmp = (BluetoothSocket) m.invoke(device, 1);  // channel = 1
+                UUID uuid = UUID.fromString("the-uuid-of-your-device");
+                Log.i(TAG, "calling device.createRfcommSocketToServiceRecord with UUID = " + uuid);
+                tmp = device.createRfcommSocketToServiceRecord(uuid);
+            } catch (IOException e) {
                 Log.e(TAG, e.getMessage(), e);
             }
             mmSocket = tmp;
