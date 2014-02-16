@@ -166,15 +166,18 @@ public class BluetoothViewerService {
      */
     public synchronized void stop() {
         if (D) Log.d(TAG, "stop");
-        if (mConnectedThread != null) mConnectedThread.shutdown();
+
         if (mConnectThread != null) {
             mConnectThread.cancel();
             mConnectThread = null;
         }
+
         if (mConnectedThread != null) {
+            mConnectedThread.shutdown();
             mConnectedThread.cancel();
             mConnectedThread = null;
         }
+
         setState(STATE_NONE);
         sendMessage(MSG_NOT_CONNECTED);
     }
