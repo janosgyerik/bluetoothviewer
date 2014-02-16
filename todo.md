@@ -1,11 +1,11 @@
 next
 ----
-- better diagnostics for example when trying to connect to a macbook
-    - my macbook wants to treat the connection as a headset
-      ... which may be ok like that, but the app should handle it better
+- make it possible to connect to specific UUID
+- make it possible to connect to specific channel
 - easier testing
     - dummy bt device for testing
     - setup robotium and create some ui tests
+- clean up TODOs in the source code
 - transform lines
     - delete first n characters
     - delete until first occurrence of

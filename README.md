@@ -2,7 +2,7 @@ BluetoothViewer
 ===============
 This app is a simple Bluetooth connection debugging tool:
 
-1. Connect to any Bluetooth device
+1. Connect to a Bluetooth device
 2. Display incoming raw data
 3. Send raw data to the Bluetooth device
 
@@ -13,12 +13,40 @@ exactly what is being transmitted from the Bluetooth device.
   https://play.google.com/store/apps/details?id=net.bluetoothviewer
 
 
-Roadmap
--------
-I plan to add the following features in the future:
+Limitations
+-----------
+The app only works with certain types of Bluetooth devices:
 
-* Option to see data in hexadecimal format instead of ascii,
-  for debugging binary data
+- Devices that work in *server mode*. That is, devices that
+  listen to and accept incoming Bluetooth connections.
+
+- Devices that accept connections on *channel=1*
+
+- Devices that don't require a specific UUID during connection.
+
+- Devices that can be paired.
+
+All these conditions are required, at least for now.
+I plan to add in the next release the option to set the channel,
+and to set a specific UUID.
+
+Another limitation is that the current version shows incoming
+data in ASCII format. If your device sends binary data, that
+won't be very readable. I plan two features to help with that:
+
+- Add a hexadecimal view that can be easily switched on/off
+
+- Make it possible to send the received data as an attachment
+
+Finally, keep in mind that some devices need some sort of
+"activation signal" first before they would start sending data.
+This depends on the device, and you would have to look at the
+technical documentation of your device to figure this out.
+
+
+Feature ideas
+-------------
+I plan to add the following features in the future:
 
 * Option to add timestamp to incoming messages
 
@@ -26,6 +54,8 @@ I plan to add the following features in the future:
 
 * Design a plugin framework for customized views tailored to specific
   Bluetooth sensors
+
+For more details, see the more detailed (but quite crude) `todo.md` file.
 
 
 Contributing code
