@@ -66,7 +66,7 @@ public class BluetoothViewer extends Activity {
     private ArrayAdapter<String> mConversationArrayAdapter;
     private StringBuffer mOutStringBuffer;
     private BluetoothAdapter mBluetoothAdapter = null;
-    private BluetoothChatService mBluetoothService = null;
+    private BluetoothViewerService mBluetoothService = null;
 
     // State variables
     private boolean paused = false;
@@ -76,37 +76,37 @@ public class BluetoothViewer extends Activity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case BluetoothChatService.MSG_CONNECTED:
+                case BluetoothViewerService.MSG_CONNECTED:
                     connected = true;
                     mStatusView.setText(formatStatusMessage(R.string.btstatus_connected_to_fmt, msg.obj));
                     onBluetoothStateChanged();
                     break;
-                case BluetoothChatService.MSG_CONNECTING:
+                case BluetoothViewerService.MSG_CONNECTING:
                     connected = false;
                     mStatusView.setText(formatStatusMessage(R.string.btstatus_connecting_to_fmt, msg.obj));
                     onBluetoothStateChanged();
                     break;
-                case BluetoothChatService.MSG_NOT_CONNECTED:
+                case BluetoothViewerService.MSG_NOT_CONNECTED:
                     connected = false;
                     mStatusView.setText(R.string.btstatus_not_connected);
                     onBluetoothStateChanged();
                     break;
-                case BluetoothChatService.MSG_CONNECTION_FAILED:
+                case BluetoothViewerService.MSG_CONNECTION_FAILED:
                     connected = false;
                     mStatusView.setText(R.string.btstatus_not_connected);
                     onBluetoothStateChanged();
                     break;
-                case BluetoothChatService.MSG_CONNECTION_LOST:
+                case BluetoothViewerService.MSG_CONNECTION_LOST:
                     connected = false;
                     mStatusView.setText(R.string.btstatus_not_connected);
                     onBluetoothStateChanged();
                     break;
-                case BluetoothChatService.MSG_BYTES_WRITTEN:
+                case BluetoothViewerService.MSG_BYTES_WRITTEN:
                     String written = new String((byte[]) msg.obj);
                     mConversationArrayAdapter.add(">>> " + written);
                     Log.i(TAG, "written = '" + written + "'");
                     break;
-                case BluetoothChatService.MSG_LINE_READ:
+                case BluetoothViewerService.MSG_LINE_READ:
                     if (paused) break;
                     String readMessage = (String)msg.obj;
                     if (D) Log.d(TAG, readMessage);
@@ -211,7 +211,7 @@ public class BluetoothViewer extends Activity {
             }
         });
 
-        mBluetoothService = new BluetoothChatService(mHandler);
+        mBluetoothService = new BluetoothViewerService(mHandler);
 
         mOutStringBuffer = new StringBuffer("");
 
@@ -226,7 +226,7 @@ public class BluetoothViewer extends Activity {
 
     private void sendMessage(CharSequence chars) {
         if (chars.length() > 0) {
-            if (mBluetoothService.getState() != BluetoothChatService.STATE_CONNECTED) {
+            if (mBluetoothService.getState() != BluetoothViewerService.STATE_CONNECTED) {
                 Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT).show();
                 return;
             }

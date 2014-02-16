@@ -37,9 +37,9 @@ import java.util.UUID;
  * incoming connections, a thread for connecting with a device, and a
  * thread for performing data transmissions when connected.
  */
-public class BluetoothChatService {
+public class BluetoothViewerService {
 
-    private static final String TAG = BluetoothChatService.class.getSimpleName();
+    private static final String TAG = BluetoothViewerService.class.getSimpleName();
     private static final boolean D = true;
 
     private static final UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
@@ -64,11 +64,11 @@ public class BluetoothChatService {
 
 
     /**
-     * Prepare a new BluetoothChat session.
+     * Prepare a new Bluetooth session.
      *
      * @param handler A Handler to send messages back to the UI Activity
      */
-    public BluetoothChatService(Handler handler) {
+    public BluetoothViewerService(Handler handler) {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         mState = STATE_NONE;
         mHandler = handler;
@@ -279,7 +279,7 @@ public class BluetoothChatService {
             }
 
             // Reset the ConnectThread because we're done
-            synchronized (BluetoothChatService.this) {
+            synchronized (BluetoothViewerService.this) {
                 mConnectThread = null;
             }
 
