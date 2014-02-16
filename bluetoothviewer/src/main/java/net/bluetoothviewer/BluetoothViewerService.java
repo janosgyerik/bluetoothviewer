@@ -29,7 +29,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.UUID;
 
 /**
  * This class does all the work for setting up and managing Bluetooth
@@ -41,8 +40,6 @@ public class BluetoothViewerService {
 
     private static final String TAG = BluetoothViewerService.class.getSimpleName();
     private static final boolean D = true;
-
-    private static final UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
 
     private static final int STATE_NONE = 0;       // we're doing nothing
     private static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
@@ -246,14 +243,15 @@ public class BluetoothViewerService {
             mmDevice = device;
             BluetoothSocket tmp = null;
 
-            // Get a BluetoothSocket for a connection with the
-            // given BluetoothDevice
+            Log.i(TAG, "calling device.createRfcommSocket with channel 1 ...");
             try {
-                device.createRfcommSocketToServiceRecord(MY_UUID);
-                Method m = device.getClass().getMethod("createRfcommSocket", new Class[]{int.class});
-                tmp = (BluetoothSocket) m.invoke(device, 1);
-            } catch (IOException e) {
-                Log.e(TAG, "create() failed", e);
+                // call hidden method, see BluetoothDevice source code for more details:
+                // https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/bluetooth/BluetoothDevice.java
+                Method m = device.getClass().getMethod("createRfcommSocket", new Class[]{ int.class });
+                tmp = (BluetoothSocket) m.invoke(device, 1);  // channel = 1
+                Log.i(TAG, "setting socket to result of createRfcommSocket");
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage(), e);
             }
             mmSocket = tmp;
         }
