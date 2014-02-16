@@ -3,6 +3,7 @@
 *.ipr
 *.iws
 .idea
+local.properties
 
 # gradle files
 .gradle
