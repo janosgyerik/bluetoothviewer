@@ -10,5 +10,6 @@ Cmd Shift a         find action by name
 Cmd o               open class
 Cmd Shift o         open file
 Cmd Option l        reformat code
-Ctrl Tab            switch between editor tabs
-
+Control Tab         switch between editor tabs
+Control o           override methods
+Option /            expand word
