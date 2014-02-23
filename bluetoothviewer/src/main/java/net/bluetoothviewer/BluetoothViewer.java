@@ -52,6 +52,8 @@ public class BluetoothViewer extends Activity {
     private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
 
+    private static final String SAVED_PENDING_REQUEST_ENABLE_BT = "PENDING_REQUEST_ENABLE_BT";
+
     // Layout Views
     private TextView mStatusView;
     private EditText mOutEditText;
@@ -71,6 +73,12 @@ public class BluetoothViewer extends Activity {
     // State variables
     private boolean paused = false;
     private boolean connected = false;
+
+    // do not resend request to enable Bluetooth
+    // if there is a request already in progress
+    // See: https://code.google.com/p/android/issues/detail?id=24931#c1
+    private boolean pendingRequestEnableBt = false;
+
     // The Handler that gets information back from the BluetoothService
     private final Handler mHandler = new Handler() {
         @Override
@@ -127,7 +135,12 @@ public class BluetoothViewer extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "++onCreate");
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            pendingRequestEnableBt = savedInstanceState.getBoolean(SAVED_PENDING_REQUEST_ENABLE_BT);
+        }
 
         setContentView(R.layout.main);
 
@@ -175,9 +188,11 @@ public class BluetoothViewer extends Activity {
 
     @Override
     public void onStart() {
+        Log.d(TAG, "++onStart");
         super.onStart();
 
-        if (!mBluetoothAdapter.isEnabled()) {
+        if (!mBluetoothAdapter.isEnabled() && !pendingRequestEnableBt) {
+            pendingRequestEnableBt = true;
             Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
         } else if (mBluetoothService == null) {
@@ -258,6 +273,7 @@ public class BluetoothViewer extends Activity {
                 break;
             case REQUEST_ENABLE_BT:
                 // When the request to enable Bluetooth returns
+                pendingRequestEnableBt = false;
                 if (resultCode != Activity.RESULT_OK) {
                     Log.i(TAG, "BT not enabled");
                     Toast.makeText(this, R.string.bt_not_enabled, Toast.LENGTH_SHORT).show();
@@ -327,5 +343,12 @@ public class BluetoothViewer extends Activity {
             mToolbarPlayButton.setVisibility(View.GONE);
             mToolbarPauseButton.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d(TAG, "++onSaveInstanceState");
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(SAVED_PENDING_REQUEST_ENABLE_BT, pendingRequestEnableBt);
     }
 }
