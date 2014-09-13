@@ -83,6 +83,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     private boolean pendingRequestEnableBt = false;
 
     private boolean recordingEnabled;
+    private final StringBuilder recording = new StringBuilder();
 
     // The Handler that gets information back from the BluetoothService
     private final Handler mHandler = new Handler() {
@@ -125,7 +126,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                     if (D) Log.d(TAG, readMessage);
                     mConversationArrayAdapter.add(readMessage);
                     if (recordingEnabled) {
-                        // TODO
+                        recording.append(readMessage).append("\n");
                     }
                     break;
             }
