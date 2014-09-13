@@ -23,10 +23,12 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -43,7 +45,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class BluetoothViewer extends Activity {
+public class BluetoothViewer extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = BluetoothViewer.class.getSimpleName();
     private static final boolean D = true;
@@ -51,6 +53,7 @@ public class BluetoothViewer extends Activity {
     // Intent request codes
     private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
+    private static final int MENU_SETTINGS = 4;
 
     private static final String SAVED_PENDING_REQUEST_ENABLE_BT = "PENDING_REQUEST_ENABLE_BT";
 
@@ -78,6 +81,8 @@ public class BluetoothViewer extends Activity {
     // if there is a request already in progress
     // See: https://code.google.com/p/android/issues/detail?id=24931#c1
     private boolean pendingRequestEnableBt = false;
+
+    private boolean recordingEnabled;
 
     // The Handler that gets information back from the BluetoothService
     private final Handler mHandler = new Handler() {
@@ -116,9 +121,12 @@ public class BluetoothViewer extends Activity {
                     break;
                 case BluetoothViewerService.MSG_LINE_READ:
                     if (paused) break;
-                    String readMessage = (String)msg.obj;
+                    String readMessage = (String) msg.obj;
                     if (D) Log.d(TAG, readMessage);
                     mConversationArrayAdapter.add(readMessage);
+                    if (recordingEnabled) {
+                        // TODO
+                    }
                     break;
             }
         }
@@ -143,6 +151,8 @@ public class BluetoothViewer extends Activity {
         }
 
         setContentView(R.layout.main);
+
+        updateRecordingEnabledFromSettings();
 
         mStatusView = (TextView) findViewById(R.id.btstatus);
 
@@ -179,6 +189,10 @@ public class BluetoothViewer extends Activity {
         });
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+    }
+
+    private void updateRecordingEnabledFromSettings() {
+        recordingEnabled = getSharedPreferences().getBoolean(getString(R.string.pref_record), false);
     }
 
     private void startDeviceListActivity() {
@@ -279,6 +293,10 @@ public class BluetoothViewer extends Activity {
                     Toast.makeText(this, R.string.bt_not_enabled, Toast.LENGTH_SHORT).show();
                 }
                 setupUserInterface();
+                break;
+            case MENU_SETTINGS:
+                updateRecordingEnabledFromSettings();
+                break;
         }
     }
 
@@ -294,7 +312,7 @@ public class BluetoothViewer extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_settings:
-                startActivity(SettingsActivity.class);
+                startActivityForResult(SettingsActivity.class, MENU_SETTINGS);
                 break;
             case R.id.menu_github:
                 openURL(getString(R.string.url_github));
@@ -312,6 +330,11 @@ public class BluetoothViewer extends Activity {
     private void startActivity(Class<?> cls) {
         Intent intent = new Intent(getApplicationContext(), cls);
         startActivity(intent);
+    }
+
+    private void startActivityForResult(Class<?> cls, int requestCode) {
+        Intent intent = new Intent(getApplicationContext(), cls);
+        startActivityForResult(intent, requestCode);
     }
 
     private void openURL(String url) {
@@ -358,5 +381,29 @@ public class BluetoothViewer extends Activity {
         Log.d(TAG, "++onSaveInstanceState");
         super.onSaveInstanceState(outState);
         outState.putBoolean(SAVED_PENDING_REQUEST_ENABLE_BT, pendingRequestEnableBt);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String prefName) {
+        Log.d(TAG, "onSharedPreferenceChanged");
+        if (prefName.equals(getString(R.string.pref_record))) {
+            updateRecordingEnabledFromSettings();
+        }
+    }
+
+    private SharedPreferences getSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(this);
+    }
+
+    @Override
+    protected void onResume() {
+        getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        super.onPause();
     }
 }
