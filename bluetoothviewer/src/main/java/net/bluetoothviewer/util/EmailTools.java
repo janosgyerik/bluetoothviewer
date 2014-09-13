@@ -35,7 +35,6 @@ public abstract class EmailTools {
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType(MESSAGE_TYPE);
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{context.getString(R.string.email_address)});
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, message);
 
@@ -48,9 +47,5 @@ public abstract class EmailTools {
 
     public static void send(Context context, int subjectID, String message) {
         send(context, context.getString(subjectID), message);
-    }
-
-    public static void send(Context context, int subjectID) {
-        send(context, context.getString(subjectID), "");
     }
 }

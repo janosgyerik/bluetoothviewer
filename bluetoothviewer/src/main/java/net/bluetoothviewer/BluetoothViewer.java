@@ -45,6 +45,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.bluetoothviewer.util.EmailTools;
+
 public class BluetoothViewer extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = BluetoothViewer.class.getSimpleName();
@@ -312,9 +314,6 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_settings:
-                startActivityForResult(SettingsActivity.class, MENU_SETTINGS);
-                break;
             case R.id.menu_github:
                 openURL(getString(R.string.url_github));
                 break;
@@ -323,6 +322,12 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                 break;
             case R.id.menu_buy:
                 openURL(getString(R.string.url_full_app));
+                break;
+            case R.id.menu_settings:
+                startActivityForResult(SettingsActivity.class, MENU_SETTINGS);
+                break;
+            case R.id.menu_email_recorded_data:
+                EmailTools.send(this, R.string.subject_recorded_data, recording.toString());
                 break;
         }
         return false;
