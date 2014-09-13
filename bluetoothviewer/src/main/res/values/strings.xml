@@ -52,5 +52,8 @@
     <string name="welcome_github">https://github.com/janosgyerik/bluetoothviewer</string>
     <string name="welcome_please_rate">If you like this app, please rate it.</string>
     <string name="welcome_please_buy">To support the developer, please buy the full version.</string>
+    <string name="email_address"><![CDATA[BluetoothViewer &lt;info@janosgyerik.com&gt;]]></string>
+    <string name="email_client_chooser">Choose an email app…</string>
+    <string name="no_email_client">Could not find an email client, cannot send message :(</string>
 
 </resources>
