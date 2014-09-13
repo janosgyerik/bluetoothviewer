@@ -124,11 +124,11 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                     break;
                 case BluetoothViewerService.MSG_LINE_READ:
                     if (paused) break;
-                    String readMessage = (String) msg.obj;
-                    if (D) Log.d(TAG, readMessage);
-                    mConversationArrayAdapter.add(readMessage);
+                    String line = (String) msg.obj;
+                    if (D) Log.d(TAG, line);
+                    mConversationArrayAdapter.add(line);
                     if (recordingEnabled) {
-                        recording.append(readMessage).append("\n");
+                        recording.append(line).append("\n");
                     }
                     break;
             }
