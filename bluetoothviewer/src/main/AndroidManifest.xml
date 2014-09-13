@@ -30,6 +30,11 @@
             android:configChanges="orientation|keyboardHidden"
             android:label="@string/select_device"
             android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name="net.bluetoothviewer.SettingsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_settings_activity"
+            android:theme="@android:style/Theme.Dialog" />
     </application>
 
 </manifest>

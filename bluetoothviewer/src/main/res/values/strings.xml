@@ -37,6 +37,7 @@
     <string name="button_scan">Scan for devices</string>
 
     <!-- Options Menu -->
+    <string name="menu_settings">Settings</string>
     <string name="menu_github">View source on GitHub</string>
     <string name="menu_rate">Rate this app</string>
     <string name="menu_buy">Buy the full app</string>
@@ -52,8 +53,15 @@
     <string name="welcome_github">https://github.com/janosgyerik/bluetoothviewer</string>
     <string name="welcome_please_rate">If you like this app, please rate it.</string>
     <string name="welcome_please_buy">To support the developer, please buy the full version.</string>
+
     <string name="email_address"><![CDATA[BluetoothViewer &lt;info@janosgyerik.com&gt;]]></string>
     <string name="email_client_chooser">Choose an email app…</string>
     <string name="no_email_client">Could not find an email client, cannot send message :(</string>
+
+    <string name="pref_record">record</string>
+    <string name="summary_record">Record bluetooth data</string>
+    <string name="title_record">Enable recording</string>
+
+    <string name="title_settings_activity">Settings</string>
 
 </resources>

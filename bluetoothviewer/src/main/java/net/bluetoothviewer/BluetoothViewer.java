@@ -293,6 +293,9 @@ public class BluetoothViewer extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_settings:
+                startActivity(SettingsActivity.class);
+                break;
             case R.id.menu_github:
                 openURL(getString(R.string.url_github));
                 break;
@@ -304,6 +307,11 @@ public class BluetoothViewer extends Activity {
                 break;
         }
         return false;
+    }
+
+    private void startActivity(Class<?> cls) {
+        Intent intent = new Intent(getApplicationContext(), cls);
+        startActivity(intent);
     }
 
     private void openURL(String url) {
