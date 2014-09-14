@@ -96,6 +96,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                     connected = true;
                     mStatusView.setText(formatStatusMessage(R.string.btstatus_connected_to_fmt, msg.obj));
                     onBluetoothStateChanged();
+                    recording.setLength(0);
                     break;
                 case BluetoothViewerService.MSG_CONNECTING:
                     connected = false;
