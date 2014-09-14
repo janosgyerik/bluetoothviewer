@@ -57,7 +57,8 @@
 
     <string name="email_client_chooser">Choose an email app…</string>
     <string name="no_email_client">Could not find an email client, cannot send message :(</string>
-    <string name="subject_recorded_data">Recorded data</string>
+    <string name="fmt_subject_recorded_data">Recorded data: %s</string>
+    <string name="fmt_recorded_from">See attached data recorded from bluetooth device: %s</string>
 
     <string name="pref_record">record</string>
     <string name="summary_record">Record bluetooth data</string>

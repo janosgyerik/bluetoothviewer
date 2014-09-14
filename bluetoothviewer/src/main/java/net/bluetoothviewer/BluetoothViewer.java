@@ -85,6 +85,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     private boolean pendingRequestEnableBt = false;
 
     private boolean recordingEnabled;
+    private String deviceName;
     private final StringBuilder recording = new StringBuilder();
 
     // The Handler that gets information back from the BluetoothService
@@ -97,6 +98,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                     mStatusView.setText(formatStatusMessage(R.string.btstatus_connected_to_fmt, msg.obj));
                     onBluetoothStateChanged();
                     recording.setLength(0);
+                    deviceName = msg.obj.toString();
                     break;
                 case BluetoothViewerService.MSG_CONNECTING:
                     connected = false;
@@ -328,7 +330,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                 startActivityForResult(SettingsActivity.class, MENU_SETTINGS);
                 break;
             case R.id.menu_email_recorded_data:
-                EmailTools.send(this, R.string.subject_recorded_data, "", recording.toString());
+                EmailTools.send(this, deviceName, recording.toString());
                 break;
         }
         return false;

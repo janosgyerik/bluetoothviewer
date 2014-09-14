@@ -14,6 +14,8 @@ import net.bluetoothviewer.R;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public abstract class EmailTools {
@@ -22,7 +24,10 @@ public abstract class EmailTools {
 
     private static final String MESSAGE_TYPE = "message/rfc822";
 
-    public static void send(Context context, String subject, String message, String attachmentContent) {
+    public static void send(Context context, String deviceName, String recordedContent) {
+        String subject = String.format(context.getString(R.string.fmt_subject_recorded_data), deviceName);
+        String message = String.format(context.getString(R.string.fmt_recorded_from), deviceName);
+
         String packageName = context.getPackageName();
         PackageManager manager = context.getPackageManager();
         try {
@@ -43,16 +48,17 @@ public abstract class EmailTools {
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, message);
 
-        if (attachmentContent != null) {
+        if (recordedContent != null) {
             try {
-                String filename = "btviewer.dat";
+                SimpleDateFormat format = new SimpleDateFormat("_yyyyMMdd_HHMM");
+                String filename = deviceName + format.format(new Date()) + ".dat";
                 FileOutputStream ostream = context.openFileOutput(filename, Context.MODE_WORLD_READABLE);
-                ostream.write(attachmentContent.getBytes());
+                ostream.write(recordedContent.getBytes());
                 ostream.close();
                 File attachment = context.getFileStreamPath(filename);
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(attachment));
             } catch (IOException e) {
-                Log.e(TAG, "could not create temp file", e);
+                Log.e(TAG, "could not create temp file for attachment :(", e);
             }
         }
 
@@ -61,9 +67,5 @@ public abstract class EmailTools {
         } catch (ActivityNotFoundException ex) {
             Toast.makeText(context, context.getString(R.string.no_email_client), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public static void send(Context context, int subjectID, String message, String attachmentContent) {
-        send(context, context.getString(subjectID), message, attachmentContent);
     }
 }
