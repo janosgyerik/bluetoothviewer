@@ -14,8 +14,6 @@ import net.bluetoothviewer.R;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 
 public abstract class EmailTools {
@@ -48,18 +46,15 @@ public abstract class EmailTools {
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, message);
 
-        if (recordedContent != null) {
-            try {
-                SimpleDateFormat format = new SimpleDateFormat("_yyyyMMdd_HHMM");
-                String filename = deviceName + format.format(new Date()) + ".dat";
-                FileOutputStream ostream = context.openFileOutput(filename, Context.MODE_WORLD_READABLE);
-                ostream.write(recordedContent.getBytes());
-                ostream.close();
-                File attachment = context.getFileStreamPath(filename);
-                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(attachment));
-            } catch (IOException e) {
-                Log.e(TAG, "could not create temp file for attachment :(", e);
-            }
+        try {
+            String filename = deviceName + ".dat";
+            FileOutputStream ostream = context.openFileOutput(filename, Context.MODE_WORLD_READABLE);
+            ostream.write(recordedContent.getBytes());
+            ostream.close();
+            File attachment = context.getFileStreamPath(filename);
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(attachment));
+        } catch (IOException e) {
+            Log.e(TAG, "could not create temp file for attachment :(", e);
         }
 
         try {
