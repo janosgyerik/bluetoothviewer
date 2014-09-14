@@ -327,7 +327,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                 startActivityForResult(SettingsActivity.class, MENU_SETTINGS);
                 break;
             case R.id.menu_email_recorded_data:
-                EmailTools.send(this, R.string.subject_recorded_data, recording.toString());
+                EmailTools.send(this, R.string.subject_recorded_data, "", recording.toString());
                 break;
         }
         return false;

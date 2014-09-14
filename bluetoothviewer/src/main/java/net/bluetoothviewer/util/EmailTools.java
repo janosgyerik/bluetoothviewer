@@ -5,10 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
 import net.bluetoothviewer.R;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 
 public abstract class EmailTools {
@@ -17,7 +22,7 @@ public abstract class EmailTools {
 
     private static final String MESSAGE_TYPE = "message/rfc822";
 
-    public static void send(Context context, String subject, String message) {
+    public static void send(Context context, String subject, String message, String attachmentContent) {
         String packageName = context.getPackageName();
         PackageManager manager = context.getPackageManager();
         try {
@@ -38,6 +43,19 @@ public abstract class EmailTools {
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, message);
 
+        if (attachmentContent != null) {
+            try {
+                String filename = "btviewer.dat";
+                FileOutputStream ostream = context.openFileOutput(filename, Context.MODE_WORLD_READABLE);
+                ostream.write(attachmentContent.getBytes());
+                ostream.close();
+                File attachment = context.getFileStreamPath(filename);
+                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(attachment));
+            } catch (IOException e) {
+                Log.e(TAG, "could not create temp file", e);
+            }
+        }
+
         try {
             context.startActivity(Intent.createChooser(intent, context.getString(R.string.email_client_chooser)));
         } catch (ActivityNotFoundException ex) {
@@ -45,7 +63,7 @@ public abstract class EmailTools {
         }
     }
 
-    public static void send(Context context, int subjectID, String message) {
-        send(context, context.getString(subjectID), message);
+    public static void send(Context context, int subjectID, String message, String attachmentContent) {
+        send(context, context.getString(subjectID), message, attachmentContent);
     }
 }
