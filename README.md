@@ -1,5 +1,6 @@
 BluetoothViewer
 ===============
+
 This app is a simple Bluetooth connection debugging tool:
 
 1. Connect to a Bluetooth device
@@ -15,6 +16,7 @@ exactly what is being transmitted from the Bluetooth device.
 
 Limitations
 -----------
+
 The app only works with certain types of Bluetooth devices:
 
 - Devices that work in *server mode*. That is, devices that
@@ -46,6 +48,7 @@ technical documentation of your device to figure this out.
 
 Feature ideas
 -------------
+
 I plan to add the following features in the future:
 
 * Option to add timestamp to incoming messages
@@ -60,6 +63,7 @@ For more details, see the more detailed (but quite crude) `todo.md` file.
 
 Contributing code
 -----------------
+
 You can contribute improvements in whatever way is convenient for you, for example:
 
 * Create a Pull Request on GitHub:
@@ -68,13 +72,15 @@ You can contribute improvements in whatever way is convenient for you, for examp
 * Email your patches to info@janosgyerik.com
 
 
-Donations
----------
-If you find this app helpful and feel generous,
-I would appreciate your donation via paypal at info@janosgyerik.com
+Sponsors
+--------
+
+* Alan Haddy (www.ipegcorp.com): option to record incoming Bluetooth
+  data and send as email attachment
 
 
 Disclaimer
 ----------
+
 The source code is a modified version of the BluetoothChat sample
 that is included in the Android SDK.
