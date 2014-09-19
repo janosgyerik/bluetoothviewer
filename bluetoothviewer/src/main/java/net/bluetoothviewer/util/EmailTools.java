@@ -14,6 +14,8 @@ import net.bluetoothviewer.R;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public abstract class EmailTools {
@@ -41,7 +43,8 @@ public abstract class EmailTools {
     }
 
     private static void addAttachmentToIntent(Context context, String deviceName, String recordedContent, Intent intent) {
-        String filename = deviceName + ".dat";
+        SimpleDateFormat dateFormat = new SimpleDateFormat("_yyyyMMdd_HHmm");
+        String filename = deviceName + dateFormat.format(new Date()) + ".dat";
         try {
             FileOutputStream ostream = context.openFileOutput(filename, Context.MODE_WORLD_READABLE);
             ostream.write(recordedContent.getBytes());
