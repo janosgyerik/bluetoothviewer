@@ -24,6 +24,19 @@ public abstract class EmailTools {
 
     private static final String MESSAGE_TYPE = "message/rfc822";
 
+    public static void send(Context context, String deviceName, String recordedContent) {
+        String subject = String.format(context.getString(R.string.fmt_subject_recorded_data), deviceName);
+        String message = String.format(context.getString(R.string.fmt_recorded_from), deviceName);
+        message += getPackageInfo(context);
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType(MESSAGE_TYPE);
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        addAttachmentToIntent(context, deviceName, recordedContent, intent);
+        launchEmailApp(context, intent);
+    }
+
     private static String getPackageInfo(Context context) {
         String packageName = context.getPackageName();
         PackageManager manager = context.getPackageManager();
@@ -62,18 +75,5 @@ public abstract class EmailTools {
         } catch (ActivityNotFoundException ex) {
             Toast.makeText(context, context.getString(R.string.no_email_client), Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public static void send(Context context, String deviceName, String recordedContent) {
-        String subject = String.format(context.getString(R.string.fmt_subject_recorded_data), deviceName);
-        String message = String.format(context.getString(R.string.fmt_recorded_from), deviceName);
-        message += getPackageInfo(context);
-
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType(MESSAGE_TYPE);
-        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.putExtra(Intent.EXTRA_TEXT, message);
-        addAttachmentToIntent(context, deviceName, recordedContent, intent);
-        launchEmailApp(context, intent);
     }
 }
