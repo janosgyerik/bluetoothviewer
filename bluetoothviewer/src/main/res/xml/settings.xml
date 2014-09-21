@@ -8,4 +8,11 @@
         android:title="@string/title_record" />
         />
 
+    <EditTextPreference
+        android:checked="false"
+        android:key="@string/pref_default_email"
+        android:summary="@string/summary_default_email"
+        android:title="@string/title_default_email" />
+    />
+
 </PreferenceScreen>

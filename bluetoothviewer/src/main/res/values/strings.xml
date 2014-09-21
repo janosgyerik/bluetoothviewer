@@ -64,6 +64,10 @@
     <string name="summary_record">Record bluetooth data</string>
     <string name="title_record">Enable recording</string>
 
+    <string name="pref_default_email">default_email</string>
+    <string name="summary_default_email">Set default email address to send recordings</string>
+    <string name="title_default_email">Default email address</string>
+
     <string name="title_settings_activity">Settings</string>
     <string name="msg_nothing_recorded">Nothing recorded, nothing to send.</string>
     <string name="msg_nothing_recorded_recording_disabled">Nothing recorded. Enable recording in the Settings menu.</string>
