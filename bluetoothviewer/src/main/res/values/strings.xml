@@ -65,5 +65,7 @@
     <string name="title_record">Enable recording</string>
 
     <string name="title_settings_activity">Settings</string>
+    <string name="msg_nothing_recorded">Nothing recorded, nothing to send.</string>
+    <string name="msg_nothing_recorded_recording_disabled">Nothing recorded. Enable recording in the Settings menu.</string>
 
 </resources>
