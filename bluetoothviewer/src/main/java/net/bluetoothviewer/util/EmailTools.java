@@ -24,13 +24,14 @@ public abstract class EmailTools {
 
     private static final String MESSAGE_TYPE = "message/rfc822";
 
-    public static void send(Context context, String deviceName, String recordedContent) {
+    public static void send(Context context, String defaultEmail, String deviceName, String recordedContent) {
         String subject = String.format(context.getString(R.string.fmt_subject_recorded_data), deviceName);
         String message = String.format(context.getString(R.string.fmt_recorded_from), deviceName);
         message += getPackageInfo(context);
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType(MESSAGE_TYPE);
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ defaultEmail });
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(Intent.EXTRA_TEXT, message);
         addAttachmentToIntent(context, deviceName, recordedContent, intent);

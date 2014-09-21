@@ -85,6 +85,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     private boolean pendingRequestEnableBt = false;
 
     private boolean recordingEnabled;
+    private String defaultEmail;
     private String deviceName;
     private final StringBuilder recording = new StringBuilder();
 
@@ -158,7 +159,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
 
         setContentView(R.layout.main);
 
-        updateRecordingEnabledFromSettings();
+        updateParamsFromSettings();
 
         mStatusView = (TextView) findViewById(R.id.btstatus);
 
@@ -197,8 +198,9 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
 
-    private void updateRecordingEnabledFromSettings() {
+    private void updateParamsFromSettings() {
         recordingEnabled = getSharedPreferences().getBoolean(getString(R.string.pref_record), false);
+        defaultEmail = getSharedPreferences().getString(getString(R.string.pref_default_email), "");
     }
 
     private void startDeviceListActivity() {
@@ -301,7 +303,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                 setupUserInterface();
                 break;
             case MENU_SETTINGS:
-                updateRecordingEnabledFromSettings();
+                updateParamsFromSettings();
                 break;
         }
     }
@@ -331,7 +333,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                 break;
             case R.id.menu_email_recorded_data:
                 if (recording.length() > 0) {
-                    EmailTools.send(this, deviceName, recording.toString());
+                    EmailTools.send(this, defaultEmail, deviceName, recording.toString());
                 } else if (recordingEnabled) {
                     Toast.makeText(this, R.string.msg_nothing_recorded, Toast.LENGTH_LONG).show();
                 } else {
@@ -402,7 +404,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String prefName) {
         Log.d(TAG, "onSharedPreferenceChanged");
         if (prefName.equals(getString(R.string.pref_record))) {
-            updateRecordingEnabledFromSettings();
+            updateParamsFromSettings();
         }
     }
 
