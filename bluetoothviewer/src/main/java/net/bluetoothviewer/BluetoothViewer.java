@@ -333,7 +333,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                 break;
             case R.id.menu_email_recorded_data:
                 if (recording.length() > 0) {
-                    EmailTools.send(this, defaultEmail, deviceName, recording.toString());
+                    EmailTools.sendDeviceRecording(this, defaultEmail, deviceName, recording.toString());
                 } else if (recordingEnabled) {
                     Toast.makeText(this, R.string.msg_nothing_recorded, Toast.LENGTH_LONG).show();
                 } else {
