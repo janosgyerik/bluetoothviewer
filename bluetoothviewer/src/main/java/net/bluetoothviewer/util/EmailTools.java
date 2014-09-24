@@ -24,39 +24,48 @@ public abstract class EmailTools {
 
     private static final String MESSAGE_TYPE = "message/rfc822";
 
+    private static final String HORIZONTAL_RULE = "\n\n---\n\n";
+
     public static void sendDeviceRecording(Context context, String defaultEmail, String deviceName, String recordedContent) {
         String subject = String.format(context.getString(R.string.fmt_subject_recorded_data), deviceName);
-        String message = String.format(context.getString(R.string.fmt_recorded_from), deviceName);
-        message += getPackageInfo(context);
+        String messageHeader = String.format(context.getString(R.string.fmt_recorded_from), deviceName);
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(messageHeader);
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType(MESSAGE_TYPE);
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{ defaultEmail });
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{defaultEmail});
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        intent.putExtra(Intent.EXTRA_TEXT, message);
-        addAttachmentToIntent(context, deviceName, recordedContent, intent);
+        if (!addAttachmentToIntent(context, deviceName, recordedContent, intent)) {
+            builder.append(HORIZONTAL_RULE).append(recordedContent);
+        }
+        builder.append(HORIZONTAL_RULE).append(getPackageInfoString(context));
+
+        intent.putExtra(Intent.EXTRA_TEXT, builder.toString());
         launchEmailApp(context, intent);
     }
 
-    private static String getPackageInfo(Context context) {
-        String packageName = context.getPackageName();
-        PackageManager manager = context.getPackageManager();
-        try {
-            PackageInfo info;
-            if (manager != null) {
-                info = manager.getPackageInfo(packageName, 0);
-                if (info != null) {
-                    return String.format("\n\n--\n[App: %s Version: %d/%s]",
-                            packageName, info.versionCode, info.versionName);
-                }
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            Log.e(TAG, "Could not get package info", e);
-        }
-        return "";
+    private static String getPackageInfoString(Context context) {
+        PackageInfo info = getPackageInfo(context);
+        return String.format("[App: %s Version: %d/%s]",
+                context.getPackageName(), info.versionCode, info.versionName);
     }
 
-    private static void addAttachmentToIntent(Context context, String deviceName, String recordedContent, Intent intent) {
+    private static PackageInfo getPackageInfo(Context context) {
+        String packageName = context.getPackageName();
+        PackageManager manager = context.getPackageManager();
+        if (manager != null) {
+            try {
+                return manager.getPackageInfo(packageName, 0);
+            } catch (PackageManager.NameNotFoundException e) {
+                Log.e(TAG, "Could not get package info", e);
+            }
+        }
+        return new PackageInfo();
+    }
+
+    private static boolean addAttachmentToIntent(Context context, String deviceName, String recordedContent, Intent intent) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("_yyyyMMdd_HHmm");
         String filename = deviceName + dateFormat.format(new Date()) + ".dat";
         try {
@@ -65,8 +74,10 @@ public abstract class EmailTools {
             ostream.close();
             File attachment = context.getFileStreamPath(filename);
             intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(attachment));
+            return true;
         } catch (IOException e) {
             Log.e(TAG, "could not create temp file for attachment :(", e);
+            return false;
         }
     }
 
