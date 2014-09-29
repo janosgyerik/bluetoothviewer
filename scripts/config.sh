@@ -1,0 +1,1 @@
+activity=net.bluetoothviewer.BluetoothViewer

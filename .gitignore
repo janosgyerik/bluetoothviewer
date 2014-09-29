@@ -1,12 +1,17 @@
-/bin/
-/build.xml
-/gen/
-/keys/
-/local.properties
-/proguard-project.txt
-out/
 # Intellij project files
 *.iml
 *.ipr
 *.iws
-.idea/
+.idea
+local.properties
+
+# gradle files
+.gradle
+build
+
+# misc
+tmp
+/keys
+/graphics/launchpad/
+/graphics/market/
+.DS_Store

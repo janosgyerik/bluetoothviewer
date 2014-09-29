@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+    Copyright (C) 2010 Janos Gyerik
+
+    This file is part of BluetoothViewer.
+
+    BluetoothViewer is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    BluetoothViewer is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with BluetoothViewer.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_settings"
+        android:title="@string/menu_settings" />
+    <item
+        android:id="@+id/menu_email_recorded_data"
+        android:title="@string/menu_email_recorded_data" />
+    <item
+        android:id="@+id/menu_github"
+        android:title="@string/menu_github" />
+    <item
+        android:id="@+id/menu_rate"
+        android:title="@string/menu_rate" />
+    <item
+        android:id="@+id/menu_buy"
+        android:title="@string/menu_buy"
+        android:visible="false" />
+
+</menu>
