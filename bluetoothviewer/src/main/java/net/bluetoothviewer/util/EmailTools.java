@@ -18,13 +18,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public abstract class EmailTools {
+public class EmailTools {
 
     private static final String TAG = EmailTools.class.getSimpleName();
 
     private static final String MESSAGE_TYPE = "message/rfc822";
 
     private static final String HORIZONTAL_RULE = "\n\n---\n\n";
+
+    private EmailTools() {
+        // prevent creating utility class
+    }
 
     public static void sendDeviceRecording(Context context, String defaultEmail, String deviceName, String recordedContent) {
         String subject = String.format(context.getString(R.string.fmt_subject_recorded_data), deviceName);
