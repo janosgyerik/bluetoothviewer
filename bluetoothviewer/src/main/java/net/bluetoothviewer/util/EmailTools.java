@@ -31,16 +31,16 @@ public abstract class EmailTools {
         String messageHeader = String.format(context.getString(R.string.fmt_recorded_from), deviceName);
 
         StringBuilder builder = new StringBuilder();
-        builder.append(messageHeader);
+        builder.append(messageHeader).append(HORIZONTAL_RULE);
 
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType(MESSAGE_TYPE);
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{defaultEmail});
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         if (!addAttachmentToIntent(context, deviceName, recordedContent, intent)) {
-            builder.append(HORIZONTAL_RULE).append(recordedContent);
+            builder.append(recordedContent).append(HORIZONTAL_RULE);
         }
-        builder.append(HORIZONTAL_RULE).append(getPackageInfoString(context));
+        builder.append(getPackageInfoString(context));
 
         intent.putExtra(Intent.EXTRA_TEXT, builder.toString());
         launchEmailApp(context, intent);
