@@ -6,10 +6,12 @@ import android.content.Intent;
 
 public class Utils
 {
-    public final static int THEME_WHITE = 1;
-    public final static int THEME_BLACK = 2;
+    public final static int THEME_WHITE = 0;
+    public final static int THEME_BLACK = 1;
 
-    public static int sTheme = Utils.THEME_WHITE;
+    private static int sTheme = Utils.THEME_WHITE;
+
+    private static int numThemes = 2; // Hard coded value determined from above momentarily
 
     /**
      * Set the theme of the Activity, and restart it by creating a new Activity of the same type.
@@ -35,5 +37,11 @@ public class Utils
                 activity.setTheme(R.style.DarkTheme);
                 break;
         }
+    }
+
+    public static void toggleThemes(Activity activity){
+        sTheme = (sTheme+1) % numThemes;
+        changeToTheme(activity, sTheme);
+
     }
 }

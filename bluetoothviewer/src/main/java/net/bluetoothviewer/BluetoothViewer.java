@@ -330,12 +330,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                 openURL(getString(R.string.url_full_app));
                 break;
             case R.id.toggle_theme:
-                if(Utils.sTheme == Utils.THEME_WHITE){
-                    Utils.changeToTheme(this, Utils.THEME_BLACK);
-                } else if (Utils.sTheme == Utils.THEME_BLACK){
-                    Utils.changeToTheme(this, Utils.THEME_WHITE);
-                }
-
+                Utils.toggleThemes(this);
                 break;
             case R.id.menu_settings:
                 startActivityForResult(SettingsActivity.class, MENU_SETTINGS);
