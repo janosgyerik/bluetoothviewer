@@ -64,6 +64,7 @@ public class DeviceListActivity extends Activity {
 
         mActionAdapter = getActionBar();
 
+        if (D) Log.d(TAG, "ERROR>>>>>>>>>>>>>>>>>>>>>");
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.device_list);
 
