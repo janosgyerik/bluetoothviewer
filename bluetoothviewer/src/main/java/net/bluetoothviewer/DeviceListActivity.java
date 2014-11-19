@@ -80,20 +80,8 @@ public class DeviceListActivity extends Activity {
             }
         });
 
-        //ArrayAdapter<String> pairedDevicesAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
         mNewDevicesArrayAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
         mNewDevicesSet = new HashSet<String>();
-
-        /**
-        ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
-        pairedListView.setAdapter(pairedDevicesAdapter);
-        pairedListView.setOnItemClickListener(mDeviceClickListener);
-
-
-        ListView newDevicesListView = (ListView) findViewById(R.id.new_devices);
-        newDevicesListView.setAdapter(mNewDevicesArrayAdapter);
-        newDevicesListView.setOnItemClickListener(mDeviceClickListener);
-         **/
 
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(mReceiver, filter);
@@ -108,12 +96,10 @@ public class DeviceListActivity extends Activity {
         if (pairedDevices != null && !pairedDevices.isEmpty()) {
             findViewById(R.id.title_paired_devices).setVisibility(View.VISIBLE);
             for (BluetoothDevice device : pairedDevices) {
-                //pairedDevicesAdapter.add(device.getName() + "\n" + device.getAddress());
                 mActionAdapter.setSubtitle(device.getName() + "\n" + device.getAddress());
             }
         } else {
             String noDevices = getResources().getText(R.string.none_paired).toString();
-            //pairedDevicesAdapter.add(noDevices);
             mActionAdapter.setSubtitle(noDevices);
         }
     }
@@ -181,7 +167,6 @@ public class DeviceListActivity extends Activity {
                     String address = device.getAddress();
                     if (!mNewDevicesSet.contains(address)) {
                         mNewDevicesSet.add(address);
-                        //mNewDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
                         mActionAdapter.setSubtitle(device.getName() + "\n" + device.getAddress());
                     }
                 } else {
@@ -192,7 +177,6 @@ public class DeviceListActivity extends Activity {
                 setTitle(R.string.select_device);
                 if (mNewDevicesSet.isEmpty()) {
                     String noDevices = getResources().getText(R.string.none_found).toString();
-                    //mNewDevicesArrayAdapter.add(noDevices);
                     mActionAdapter.setSubtitle(noDevices);
                 }
                 scanButton.setVisibility(View.VISIBLE);

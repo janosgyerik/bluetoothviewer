@@ -40,7 +40,6 @@ public class AnimatedAdapter extends ArrayAdapter<String> {
 
             holder = new Holder();
             holder.textview = (TextView) convertView.findViewById(android.R.id.text1);
-            holder.textview.setTextColor(0xFFFFFFFF);
             holder.textview.setBackgroundResource(0);
 
             convertView.setTag(holder);
@@ -50,7 +49,10 @@ public class AnimatedAdapter extends ArrayAdapter<String> {
 
         holder.textview.setText(str);
 
+        // Choose whatever animation you want
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.push_left_in);
+        //Animation animation = AnimationUtils.loadAnimation(context, R.anim.push_up_in);
+        //Animation animation = AnimationUtils.loadAnimation(context, R.anim.wave_in);
 
         animation.setDuration(500);
         convertView.startAnimation(animation);

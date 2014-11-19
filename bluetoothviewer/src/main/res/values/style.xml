@@ -3,6 +3,7 @@
 
     <style name="DarkTheme" parent="@android:style/Theme.Holo.Light">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:textColor">#000000</item>
         <item name="android:windowActionBarOverlay">false</item>
     </style>
 

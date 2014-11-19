@@ -22,7 +22,6 @@ package net.bluetoothviewer;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -30,7 +29,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -39,17 +37,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import net.bluetoothviewer.util.EmailTools;
-
 import java.util.ArrayList;
+import net.bluetoothviewer.util.EmailTools;
 
 public class BluetoothViewer extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -229,7 +224,6 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
 
     private void setupUserInterface() {
         mConversationArrayAdapter = new AnimatedAdapter(this, new ArrayList<String>());
-        //mConversationArrayAdapter = (AnimatedAdapter) new ArrayAdapter<String>(this, R.layout.message);
         ListView mConversationView = (ListView) findViewById(R.id.in);
         mConversationView.setAdapter(mConversationArrayAdapter);
 
