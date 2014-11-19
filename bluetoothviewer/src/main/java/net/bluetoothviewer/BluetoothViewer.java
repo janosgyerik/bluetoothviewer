@@ -22,6 +22,7 @@ package net.bluetoothviewer;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -29,6 +30,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -46,6 +48,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.bluetoothviewer.util.EmailTools;
+
+import java.util.ArrayList;
 
 public class BluetoothViewer extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -70,7 +74,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     private ImageButton mToolbarPauseButton;
     private ImageButton mToolbarPlayButton;
 
-    private ArrayAdapter<String> mConversationArrayAdapter;
+    private AnimatedAdapter mConversationArrayAdapter;
     private StringBuffer mOutStringBuffer;
     private BluetoothAdapter mBluetoothAdapter = null;
     private BluetoothViewerService mBluetoothService = null;
@@ -224,7 +228,8 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     }
 
     private void setupUserInterface() {
-        mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
+        mConversationArrayAdapter = new AnimatedAdapter(this, new ArrayList<String>());
+        //mConversationArrayAdapter = (AnimatedAdapter) new ArrayAdapter<String>(this, R.layout.message);
         ListView mConversationView = (ListView) findViewById(R.id.in);
         mConversationView.setAdapter(mConversationArrayAdapter);
 
@@ -427,5 +432,4 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         super.onPause();
     }
-
 }
