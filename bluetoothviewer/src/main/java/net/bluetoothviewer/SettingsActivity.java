@@ -3,10 +3,7 @@ package net.bluetoothviewer;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
-
 public class SettingsActivity extends PreferenceActivity {
-
-    private int mChoice;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

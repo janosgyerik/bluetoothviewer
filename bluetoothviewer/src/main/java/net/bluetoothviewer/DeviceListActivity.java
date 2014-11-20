@@ -16,7 +16,6 @@
 
 package net.bluetoothviewer;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -52,7 +51,6 @@ public class DeviceListActivity extends Activity {
     public static String EXTRA_DEVICE_ADDRESS = "device_address";
 
     private BluetoothAdapter mBtAdapter;
-    private ActionBar mActionAdapter;
     private ArrayAdapter<String> mNewDevicesArrayAdapter;
     private Set<String> mNewDevicesSet;
 
@@ -62,9 +60,6 @@ public class DeviceListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mActionAdapter = getActionBar();
-
-        if (D) Log.d(TAG, "ERROR>>>>>>>>>>>>>>>>>>>>>");
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.device_list);
 
@@ -83,6 +78,15 @@ public class DeviceListActivity extends Activity {
         mNewDevicesArrayAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
         mNewDevicesSet = new HashSet<String>();
 
+        ArrayAdapter<String> pairedDevicesAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
+        ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
+        pairedListView.setAdapter(pairedDevicesAdapter);
+        pairedListView.setOnItemClickListener(mDeviceClickListener);
+
+        ListView newDevicesListView = (ListView) findViewById(R.id.new_devices);
+        newDevicesListView.setAdapter(mNewDevicesArrayAdapter);
+        newDevicesListView.setOnItemClickListener(mDeviceClickListener);
+
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         registerReceiver(mReceiver, filter);
 
@@ -96,11 +100,11 @@ public class DeviceListActivity extends Activity {
         if (pairedDevices != null && !pairedDevices.isEmpty()) {
             findViewById(R.id.title_paired_devices).setVisibility(View.VISIBLE);
             for (BluetoothDevice device : pairedDevices) {
-                mActionAdapter.setSubtitle(device.getName() + "\n" + device.getAddress());
+                pairedDevicesAdapter.add(device.getName() + "\n" + device.getAddress());
             }
         } else {
             String noDevices = getResources().getText(R.string.none_paired).toString();
-            mActionAdapter.setSubtitle(noDevices);
+            pairedDevicesAdapter.add(noDevices);
         }
     }
 
@@ -167,7 +171,7 @@ public class DeviceListActivity extends Activity {
                     String address = device.getAddress();
                     if (!mNewDevicesSet.contains(address)) {
                         mNewDevicesSet.add(address);
-                        mActionAdapter.setSubtitle(device.getName() + "\n" + device.getAddress());
+                        mNewDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
                     }
                 } else {
                     Log.e(TAG, "Could not get parcelable extra from device: " + BluetoothDevice.EXTRA_DEVICE);
@@ -177,7 +181,7 @@ public class DeviceListActivity extends Activity {
                 setTitle(R.string.select_device);
                 if (mNewDevicesSet.isEmpty()) {
                     String noDevices = getResources().getText(R.string.none_found).toString();
-                    mActionAdapter.setSubtitle(noDevices);
+                    mNewDevicesArrayAdapter.add(noDevices);
                 }
                 scanButton.setVisibility(View.VISIBLE);
             }

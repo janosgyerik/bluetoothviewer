@@ -151,7 +151,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "++onCreate");
         super.onCreate(savedInstanceState);
-        Utils.onActivityCreateSetTheme(this);
+        ThemeUtils.onActivityCreateSetTheme(this);
 
         if (savedInstanceState != null) {
             pendingRequestEnableBt = savedInstanceState.getBoolean(SAVED_PENDING_REQUEST_ENABLE_BT);
@@ -329,7 +329,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                 openURL(getString(R.string.url_full_app));
                 break;
             case R.id.toggle_theme:
-                Utils.toggleThemes(this);
+                ThemeUtils.cycleThemes(this);
                 break;
             case R.id.menu_settings:
                 startActivityForResult(SettingsActivity.class, MENU_SETTINGS);
