@@ -22,6 +22,9 @@
         android:id="@+id/menu_settings"
         android:title="@string/menu_settings" />
     <item
+        android:id="@+id/cycle_themes"
+        android:title="Next Theme" />
+    <item
         android:id="@+id/menu_email_recorded_data"
         android:title="@string/menu_email_recorded_data" />
     <item

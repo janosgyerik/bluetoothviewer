@@ -37,14 +37,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import java.util.ArrayList;
 import net.bluetoothviewer.util.EmailTools;
 
 public class BluetoothViewer extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -70,7 +69,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     private ImageButton mToolbarPauseButton;
     private ImageButton mToolbarPlayButton;
 
-    private ArrayAdapter<String> mConversationArrayAdapter;
+    private AnimatedAdapter mConversationArrayAdapter;
     private StringBuffer mOutStringBuffer;
     private BluetoothAdapter mBluetoothAdapter = null;
     private BluetoothViewerService mBluetoothService = null;
@@ -152,6 +151,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "++onCreate");
         super.onCreate(savedInstanceState);
+        ThemeUtils.onActivityCreateSetTheme(this);
 
         if (savedInstanceState != null) {
             pendingRequestEnableBt = savedInstanceState.getBoolean(SAVED_PENDING_REQUEST_ENABLE_BT);
@@ -223,7 +223,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     }
 
     private void setupUserInterface() {
-        mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
+        mConversationArrayAdapter = new AnimatedAdapter(this, new ArrayList<String>());
         ListView mConversationView = (ListView) findViewById(R.id.in);
         mConversationView.setAdapter(mConversationArrayAdapter);
 
@@ -327,6 +327,9 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                 break;
             case R.id.menu_buy:
                 openURL(getString(R.string.url_full_app));
+                break;
+            case R.id.cycle_themes:
+                ThemeUtils.cycleThemes(this);
                 break;
             case R.id.menu_settings:
                 startActivityForResult(SettingsActivity.class, MENU_SETTINGS);
