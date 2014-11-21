@@ -3,6 +3,7 @@ package net.bluetoothviewer;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
+
 public class SettingsActivity extends PreferenceActivity {
 
     @Override
@@ -10,6 +11,5 @@ public class SettingsActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings);
         setContentView(R.layout.settings_activity);
-
     }
 }
