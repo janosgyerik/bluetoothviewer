@@ -7,6 +7,7 @@ public class ThemeUtils {
     public final static int THEME_WHITE = 0;
     public final static int THEME_BLACK = 1;
 
+     //TODO: Use Shared Preferences to store the current theme of the app
     private static Themes mTheme = Themes.BLACK;
 
     private static enum Themes {

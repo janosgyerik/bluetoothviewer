@@ -27,7 +27,11 @@ public class AnimatedAdapter<T> extends ArrayAdapter<T> {
     }
 
     private static class Holder {
-        private TextView mTextview;
+        private final TextView mTextview;
+
+        public Holder(TextView textview){
+            mTextview = textview;
+        }
     }
 
     @Override
@@ -38,8 +42,7 @@ public class AnimatedAdapter<T> extends ArrayAdapter<T> {
         if (convertView == null) {
             convertView = mInflater.inflate(android.R.layout.simple_list_item_1, null);
 
-            holder = new Holder();
-            holder.mTextview = (TextView) convertView.findViewById(android.R.id.text1);
+            holder = new Holder((TextView) convertView.findViewById(android.R.id.text1));
             holder.mTextview.setBackgroundResource(REMOVE_BACKGROUND);
 
             convertView.setTag(holder);
