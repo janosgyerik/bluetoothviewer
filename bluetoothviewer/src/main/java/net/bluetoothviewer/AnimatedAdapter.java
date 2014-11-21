@@ -1,7 +1,7 @@
 package net.bluetoothviewer;
 
 import java.util.ArrayList;
-
+import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +16,8 @@ public class AnimatedAdapter<T> extends ArrayAdapter<T> {
     private static final int REMOVE_BACKGROUND = 0;
 
     private final Context mContext;
-    private LayoutInflater mInflater;
-    private ArrayList<T> mList;
+    private final LayoutInflater mInflater;
+    private final List<T> mList;
 
     public AnimatedAdapter(Context context, ArrayList<T> list) {
         super(context, R.layout.message, list);
@@ -33,28 +33,26 @@ public class AnimatedAdapter<T> extends ArrayAdapter<T> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final T elem = this.mList.get(position);
-        final Holder mHolder;
+        final Holder holder;
 
         if (convertView == null) {
             convertView = mInflater.inflate(android.R.layout.simple_list_item_1, null);
 
-            mHolder = new Holder();
-            mHolder.mTextview = (TextView) convertView.findViewById(android.R.id.text1);
-            mHolder.mTextview.setBackgroundResource(REMOVE_BACKGROUND);
+            holder = new Holder();
+            holder.mTextview = (TextView) convertView.findViewById(android.R.id.text1);
+            holder.mTextview.setBackgroundResource(REMOVE_BACKGROUND);
 
-            convertView.setTag(mHolder);
+            convertView.setTag(holder);
         } else {
-            mHolder = (Holder) convertView.getTag();
+            holder = (Holder) convertView.getTag();
         }
 
-        mHolder.mTextview.setText(elem.toString());
+        holder.mTextview.setText(elem.toString());
 
-        // Choose whatever animation you want as defined in /res/anim/
-        Animation mAnimation = AnimationUtils.loadAnimation(mContext, R.anim.push_left_in);
-        mAnimation.setDuration(DURATION);
-        convertView.startAnimation(mAnimation);
+        Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.push_left_in);
+        animation.setDuration(DURATION);
+        convertView.startAnimation(animation);
 
-        // Return the animation as a view
         return convertView;
     }
 }

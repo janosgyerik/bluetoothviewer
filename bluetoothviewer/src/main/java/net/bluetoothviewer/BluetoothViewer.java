@@ -328,7 +328,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
             case R.id.menu_buy:
                 openURL(getString(R.string.url_full_app));
                 break;
-            case R.id.toggle_theme:
+            case R.id.cycle_themes:
                 ThemeUtils.cycleThemes(this);
                 break;
             case R.id.menu_settings:

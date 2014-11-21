@@ -9,7 +9,7 @@ public class ThemeUtils {
 
     private static Themes mTheme = Themes.BLACK;
 
-    private enum Themes {
+    private static enum Themes {
         BLACK, WHITE;
     }
 
@@ -25,16 +25,15 @@ public class ThemeUtils {
         }
     }
 
-    public static void cycleThemes(Activity activity) {
-        mTheme = Themes.values()[(mTheme.ordinal()+1)%Themes.values().length];
-        changeToTheme(activity, mTheme);
-    }
-
     /**
      * Set the theme of the Activity, and restart it by creating a new Activity of the same type.
      */
-    private static void changeToTheme(Activity activity, Themes theme) {
-        mTheme = theme;
+    public static void cycleThemes(Activity activity) {
+        mTheme = Themes.values()[(mTheme.ordinal() + 1) % Themes.values().length];
+        restartActivity(activity);
+    }
+
+    private static void restartActivity(Activity activity) {
         activity.finish(); // Finish activity in order to recreate activity with new theme
         activity.startActivity(new Intent(activity, activity.getClass()));
     }
