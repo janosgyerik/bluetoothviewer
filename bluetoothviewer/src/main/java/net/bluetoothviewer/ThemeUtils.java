@@ -12,8 +12,7 @@ public class ThemeUtils {
         BLACK, WHITE
     }
 
-    /** Set the theme of the activity, according to the configuration. */
-    public static void onActivityCreateSetTheme(Activity activity) {
+    public static void updateTheme(Activity activity) {
         switch (currentTheme) {
             case BLACK:
                 activity.setTheme(R.style.LightTheme);
