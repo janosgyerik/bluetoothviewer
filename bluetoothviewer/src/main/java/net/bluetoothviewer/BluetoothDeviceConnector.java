@@ -78,8 +78,10 @@ public class BluetoothDeviceConnector implements DeviceConnector {
         return BluetoothAdapter.getDefaultAdapter();
     }
 
+    @Override
     public synchronized void connect() {
         BluetoothDevice device = getBluetoothAdapter().getRemoteDevice(mAddress);
+        connect(device);
     }
 
     /**
@@ -155,7 +157,8 @@ public class BluetoothDeviceConnector implements DeviceConnector {
     /**
      * Stop all threads
      */
-    public synchronized void stop() {
+    @Override
+    public synchronized void disconnect() {
         if (D) Log.d(TAG, "shutdown");
 
         if (mConnectThread != null) {
@@ -173,13 +176,18 @@ public class BluetoothDeviceConnector implements DeviceConnector {
         mHandler.sendNotConnected();
     }
 
+    @Override
+    public void sendAsciiMessage(CharSequence chars) {
+        write((chars.toString() + "\n").getBytes());
+    }
+
     /**
      * Write to the ConnectedThread in an unsynchronized manner
      *
      * @param out The bytes to write
      * @see ConnectedThread#write(byte[])
      */
-    public void write(byte[] out) {
+    private void write(byte[] out) {
         // Create temporary object
         ConnectedThread r;
         // Synchronize a copy of the ConnectedThread

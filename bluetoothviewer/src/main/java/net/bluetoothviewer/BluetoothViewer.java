@@ -65,7 +65,6 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     private ImageButton mToolbarPlayButton;
 
     private ArrayAdapter<String> mConversationArrayAdapter;
-    private final DeviceManager mDeviceManager = null;
     private DeviceConnector mDeviceConnector;
 
     // State variables
@@ -247,12 +246,12 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mDeviceManager.shutdown();
+        mDeviceConnector.disconnect();
     }
 
     private void sendMessage(CharSequence chars) {
         if (chars.length() > 0) {
-            mDeviceManager.sendAsciiMessage(chars);
+            mDeviceConnector.sendAsciiMessage(chars);
             mOutEditText.setText("");
         }
     }
@@ -338,8 +337,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     }
 
     private void disconnectDevices() {
-        if (mDeviceManager != null) mDeviceManager.shutdown();
-
+        mDeviceConnector.disconnect();
         onBluetoothStateChanged();
     }
 
