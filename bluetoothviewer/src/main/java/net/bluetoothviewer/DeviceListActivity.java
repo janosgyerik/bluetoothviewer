@@ -50,9 +50,9 @@ public class DeviceListActivity extends Activity {
 
     public static final String EXTRA_DEVICE_CONNECTOR = "DEVICE_CONNECTOR";
 
-    private BluetoothAdapter mBtAdapter;
+    private final BluetoothAdapter mBtAdapter = BluetoothAdapter.getDefaultAdapter();
     private ArrayAdapter<String> mNewDevicesArrayAdapter;
-    private Set<String> mNewDevicesSet;
+    private final Set<String> mNewDevicesSet = new HashSet<String>();
 
     private Button scanButton;
 
@@ -77,7 +77,6 @@ public class DeviceListActivity extends Activity {
 
         ArrayAdapter<String> pairedDevicesAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
         mNewDevicesArrayAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
-        mNewDevicesSet = new HashSet<String>();
 
         ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
         pairedListView.setAdapter(pairedDevicesAdapter);
@@ -92,8 +91,6 @@ public class DeviceListActivity extends Activity {
 
         filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         registerReceiver(mReceiver, filter);
-
-        mBtAdapter = BluetoothAdapter.getDefaultAdapter();
 
         Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
 
