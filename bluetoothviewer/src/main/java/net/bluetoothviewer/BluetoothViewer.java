@@ -65,7 +65,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     private ImageButton mToolbarPlayButton;
 
     private ArrayAdapter<String> mConversationArrayAdapter;
-    private DeviceConnector mDeviceConnector;
+    private DeviceConnector mDeviceConnector = new NullDeviceConnector();
 
     // State variables
     private boolean paused = false;
