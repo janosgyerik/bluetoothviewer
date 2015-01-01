@@ -48,7 +48,7 @@ public class DeviceListActivity extends Activity {
     private static final String TAG = "DeviceListActivity";
     private static final boolean D = true;
 
-    public static String EXTRA_DEVICE_ADDRESS = "device_address";
+    public static final String EXTRA_DEVICE_CONNECTOR = "DEVICE_CONNECTOR";
 
     private BluetoothAdapter mBtAdapter;
     private ArrayAdapter<String> mNewDevicesArrayAdapter;
@@ -152,7 +152,7 @@ public class DeviceListActivity extends Activity {
                 CharSequence address = info.toString().substring(info.length() - 17);
 
                 Intent intent = new Intent();
-                intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
+//                intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
 
                 setResult(Activity.RESULT_OK, intent);
                 finish();

@@ -19,7 +19,6 @@ package net.bluetoothviewer;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.os.Handler;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -36,25 +35,18 @@ import java.lang.reflect.Method;
  * incoming connections, a thread for connecting with a device, and a
  * thread for performing data transmissions when connected.
  */
-public class BluetoothViewerService {
+public class BluetoothDeviceConnector implements DeviceConnector {
 
-    private static final String TAG = BluetoothViewerService.class.getSimpleName();
+    private static final String TAG = BluetoothDeviceConnector.class.getSimpleName();
     private static final boolean D = true;
 
     private static final int STATE_NONE = 0;       // we're doing nothing
     private static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
-    public static final int STATE_CONNECTED = 3;  // now connected to a remote device
-
-    public static final int MSG_NOT_CONNECTED = 10;
-    public static final int MSG_CONNECTING = 11;
-    public static final int MSG_CONNECTED = 12;
-    public static final int MSG_CONNECTION_FAILED = 13;
-    public static final int MSG_CONNECTION_LOST = 14;
-    public static final int MSG_LINE_READ = 21;
-    public static final int MSG_BYTES_WRITTEN = 22;
+    private static final int STATE_CONNECTED = 3;  // now connected to a remote device
 
     private final BluetoothAdapter mAdapter;
-    private final Handler mHandler;
+    private final MessageHandler mHandler;
+    private final String mAddress;
     private ConnectThread mConnectThread;
     private ConnectedThread mConnectedThread;
     private int mState;
@@ -65,10 +57,11 @@ public class BluetoothViewerService {
      *
      * @param handler A Handler to send messages back to the UI Activity
      */
-    public BluetoothViewerService(Handler handler) {
+    public BluetoothDeviceConnector(MessageHandler handler, String address) {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         mState = STATE_NONE;
         mHandler = handler;
+        mAddress = address;
     }
 
     /**
@@ -81,11 +74,12 @@ public class BluetoothViewerService {
         mState = state;
     }
 
-    /**
-     * Return the current connection state.
-     */
-    public synchronized int getState() {
-        return mState;
+    private BluetoothAdapter getBluetoothAdapter() {
+        return BluetoothAdapter.getDefaultAdapter();
+    }
+
+    public synchronized void connect() {
+        BluetoothDevice device = getBluetoothAdapter().getRemoteDevice(mAddress);
     }
 
     /**
@@ -115,7 +109,7 @@ public class BluetoothViewerService {
             mConnectThread = new ConnectThread(device);
             mConnectThread.start();
             setState(STATE_CONNECTING);
-            sendMessage(MSG_CONNECTING, device.getName());
+            mHandler.sendConnectingTo(device.getName());
         } catch (SecurityException e) {
             Log.e(TAG, e.getMessage(), e);
         } catch (IllegalArgumentException e) {
@@ -155,14 +149,14 @@ public class BluetoothViewerService {
         mConnectedThread.start();
 
         setState(STATE_CONNECTED);
-        sendMessage(MSG_CONNECTED, device.getName());
+        mHandler.sendConnectedTo(device.getName());
     }
 
     /**
      * Stop all threads
      */
     public synchronized void stop() {
-        if (D) Log.d(TAG, "stop");
+        if (D) Log.d(TAG, "shutdown");
 
         if (mConnectThread != null) {
             mConnectThread.cancel();
@@ -176,7 +170,7 @@ public class BluetoothViewerService {
         }
 
         setState(STATE_NONE);
-        sendMessage(MSG_NOT_CONNECTED);
+        mHandler.sendNotConnected();
     }
 
     /**
@@ -197,28 +191,12 @@ public class BluetoothViewerService {
         r.write(out);
     }
 
-    private void sendLineRead(String line) {
-        mHandler.obtainMessage(MSG_LINE_READ, -1, -1, line).sendToTarget();
-    }
-
-    private void sendBytesWritten(byte[] bytes) {
-        mHandler.obtainMessage(MSG_BYTES_WRITTEN, -1, -1, bytes).sendToTarget();
-    }
-
-    private void sendMessage(int messageId, String deviceName) {
-        mHandler.obtainMessage(messageId, -1, -1, deviceName).sendToTarget();
-    }
-
-    private void sendMessage(int messageId) {
-        mHandler.obtainMessage(messageId).sendToTarget();
-    }
-
     /**
      * Indicate that the connection attempt failed and notify the UI Activity.
      */
     private void connectionFailed() {
         setState(STATE_NONE);
-        sendMessage(MSG_CONNECTION_FAILED);
+        mHandler.sendConnectionFailed();
     }
 
     /**
@@ -226,7 +204,7 @@ public class BluetoothViewerService {
      */
     private void connectionLost() {
         setState(STATE_NONE);
-        sendMessage(MSG_CONNECTION_LOST);
+        mHandler.sendConnectionLost();
     }
 
 
@@ -280,7 +258,7 @@ public class BluetoothViewerService {
             }
 
             // Reset the ConnectThread because we're done
-            synchronized (BluetoothViewerService.this) {
+            synchronized (BluetoothDeviceConnector.this) {
                 mConnectThread = null;
             }
 
@@ -348,7 +326,7 @@ public class BluetoothViewerService {
                 try {
                     String line = reader.readLine();
                     if (line != null) {
-                        sendLineRead(line);
+                        mHandler.sendLineRead(line);
                     }
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
@@ -366,7 +344,7 @@ public class BluetoothViewerService {
         public void write(byte[] bytes) {
             try {
                 mmOutStream.write(bytes);
-                sendBytesWritten(bytes);
+                mHandler.sendBytesWritten(bytes);
             } catch (IOException e) {
                 Log.e(TAG, "Exception during write", e);
             }

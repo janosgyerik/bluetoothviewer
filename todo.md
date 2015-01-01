@@ -3,6 +3,17 @@ TODO
 
 Very crude stuff. This is mostly for myself, not intended for other humans.
 
+implement simulator mode for easier testing
+-------------------------------------------
+- mock devices
+    - MockSenspod
+    - GpsTracker - using senspod format
+    - MockZephyr
+- debug mode in prefs
+    - register mock devices
+- when bt is off, add button to enable easily
+- make it work again with bluetooth
+
 next
 ----
 - make it possible to connect to specific UUID
