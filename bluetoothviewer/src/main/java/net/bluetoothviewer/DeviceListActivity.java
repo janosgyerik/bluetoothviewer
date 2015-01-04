@@ -162,7 +162,7 @@ public class DeviceListActivity extends Activity {
             intent.putExtra(Message.DeviceConnectorType.toString(), ConnectorType.Mock);
             Log.d(TAG, "arg2 = " + arg2);
             Log.d(TAG, "arg3 = " + arg3);
-            intent.putExtra(Message.MockFilename.toString(), "test");
+            intent.putExtra(Message.MockFilename.toString(), mMockDevicesAdapter.getItem(arg2));
 
             setResult(Activity.RESULT_OK, intent);
             finish();
