@@ -265,9 +265,22 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         Log.i(TAG, "onActivityResult " + resultCode);
         switch (requestCode) {
             case REQUEST_CONNECT_DEVICE:
-                // When DeviceListActivity returns with a device to connect
+                // When DeviceListActivity returns with connection info to connect devices
+                // TODO it would be better to return a Parcelable instance of a DeviceConnector,
+                //      as in the current approach both the sender and the receiver must know
+                //      how to create a DeviceConnector from its pieces (constructor args).
+                //      It would be better if that logic was in one place,
+                //      and definitely not in this activity
                 if (resultCode == Activity.RESULT_OK) {
-                    mDeviceConnector = (DeviceConnector) data.getParcelableExtra(DeviceListActivity.EXTRA_DEVICE_CONNECTOR);
+                    DeviceListActivity.ConnectorType connectorType =
+                            (DeviceListActivity.ConnectorType) data.getSerializableExtra(DeviceListActivity.Message.DeviceConnectorType.toString());
+                    switch (connectorType) {
+                        case Mock:
+                            mDeviceConnector = new MockSenspodConnector();
+                            break;
+                        case Bluetooth:
+                            break;
+                    }
                     mDeviceConnector.connect();
                 }
                 break;

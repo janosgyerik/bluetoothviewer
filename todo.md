@@ -7,7 +7,7 @@ implement simulator mode for easier testing
 -------------------------------------------
 - mock devices
     - MockSenspod
-    - GpsTracker - using senspod format
+    - AndroidGps - using senspod format
     - MockZephyr
 - debug mode in prefs
     - register mock devices

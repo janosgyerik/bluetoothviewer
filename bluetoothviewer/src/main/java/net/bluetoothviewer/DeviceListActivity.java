@@ -48,11 +48,21 @@ public class DeviceListActivity extends Activity {
     private static final String TAG = "DeviceListActivity";
     private static final boolean D = true;
 
-    public static final String EXTRA_DEVICE_CONNECTOR = "DEVICE_CONNECTOR";
+    public static enum ConnectorType {
+        Bluetooth,
+        Mock
+    }
 
-    private final BluetoothAdapter mBtAdapter = BluetoothAdapter.getDefaultAdapter();
+    public static enum Message {
+        DeviceConnectorType,
+        BluetoothAddress,
+        MockFilename,
+    }
+
+    private final BluetoothAdapterWrapper mBtAdapter = BluetoothAdapterFactory.getBluetoothAdapterWrapper();
     private ArrayAdapter<String> mNewDevicesArrayAdapter;
     private final Set<String> mNewDevicesSet = new HashSet<String>();
+    private ArrayAdapter<String> mMockDevicesAdapter;
 
     private Button scanButton;
 
@@ -75,13 +85,21 @@ public class DeviceListActivity extends Activity {
             }
         });
 
-        ArrayAdapter<String> pairedDevicesAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
-        mNewDevicesArrayAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
+        mMockDevicesAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
+        ListView mockListView = (ListView) findViewById(R.id.mock_devices);
+        mockListView.setAdapter(mMockDevicesAdapter);
+        mockListView.setOnItemClickListener(mMockDeviceClickListener);
+        findViewById(R.id.mock_devices).setVisibility(View.VISIBLE);
+        mMockDevicesAdapter.add("MockSenspod");
+        mMockDevicesAdapter.add("MockZephyr");
+        mMockDevicesAdapter.add("AndroidGps");
 
+        ArrayAdapter<String> pairedDevicesAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
         ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
         pairedListView.setAdapter(pairedDevicesAdapter);
         pairedListView.setOnItemClickListener(mDeviceClickListener);
 
+        mNewDevicesArrayAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
         ListView newDevicesListView = (ListView) findViewById(R.id.new_devices);
         newDevicesListView.setAdapter(mNewDevicesArrayAdapter);
         newDevicesListView.setOnItemClickListener(mDeviceClickListener);
@@ -109,15 +127,13 @@ public class DeviceListActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
 
-        if (mBtAdapter != null) {
-            mBtAdapter.cancelDiscovery();
-        }
+        mBtAdapter.cancelDiscovery();
 
         this.unregisterReceiver(mReceiver);
     }
 
     /**
-     * Start device discover with the BluetoothAdapter
+     * Start device discovery with the BluetoothAdapter
      */
     private void doDiscovery() {
         if (D) Log.d(TAG, "doDiscovery()");
@@ -137,6 +153,22 @@ public class DeviceListActivity extends Activity {
         mBtAdapter.startDiscovery();
     }
 
+    private OnItemClickListener mMockDeviceClickListener = new OnItemClickListener() {
+        public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
+            // Cancel discovery because it's costly and we're about to connect
+            mBtAdapter.cancelDiscovery();
+
+            Intent intent = new Intent();
+            intent.putExtra(Message.DeviceConnectorType.toString(), ConnectorType.Mock);
+            Log.d(TAG, "arg2 = " + arg2);
+            Log.d(TAG, "arg3 = " + arg3);
+            intent.putExtra(Message.MockFilename.toString(), "test");
+
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+        }
+    };
+
     private OnItemClickListener mDeviceClickListener = new OnItemClickListener() {
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
             // Cancel discovery because it's costly and we're about to connect
@@ -146,7 +178,7 @@ public class DeviceListActivity extends Activity {
             CharSequence info = ((TextView) v).getText();
             if (info != null) {
                 // TODO this is not so cool...
-                CharSequence address = info.toString().substring(info.length() - 17);
+//                CharSequence address = info.toString().substring(info.length() - 17);
 
                 Intent intent = new Intent();
 //                intent.putExtra(EXTRA_DEVICE_ADDRESS, address);
