@@ -104,10 +104,10 @@ public class DeviceListActivity extends Activity {
         mockListView.setAdapter(mMockDevicesAdapter);
         mockListView.setOnItemClickListener(mMockDeviceClickListener);
         findViewById(R.id.mock_devices).setVisibility(View.VISIBLE);
-        // TODO use real asset files as input
-        mMockDevicesAdapter.add("MockSenspod");
-        mMockDevicesAdapter.add("MockZephyr");
-        mMockDevicesAdapter.add("AndroidGps");
+        // TODO list assets directory and add dynamically
+        mMockDevicesAdapter.add("Co2SenspodSample.csv");
+        mMockDevicesAdapter.add("PollutionSenspodSample.csv");
+        mMockDevicesAdapter.add("AndroidGpsSample.csv");
 
         ArrayAdapter<BluetoothInfo> pairedDevicesAdapter = new ArrayAdapter<BluetoothInfo>(this, R.layout.device_name);
         ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
