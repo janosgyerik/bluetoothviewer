@@ -14,6 +14,27 @@ implement simulator mode for easier testing
 - when bt is off, add button to enable easily
 - make it work again with bluetooth
 
+better handling of recording
+----------------------------
+- create common interface for receiving messages from devices
+    - BluetoothViewer: specialized class for viewing data
+    - DataRecorder: specialized class for recording data to file
+        - toggled by preferences
+- the implementations are independent and unaware of each other
+
+split the full and lite versions
+--------------------------------
+- move the common code to common library
+- create and confirm lite version
+- create and confirm full version
+
+generalize
+----------
+The viewer and recorder are not really about bluetooth anymore:
+they could receive data from anywhere.
+Rename the classes appropriately.
+The package name can stay the same, for "historical" reasons.
+
 next
 ----
 - make it possible to connect to specific UUID
