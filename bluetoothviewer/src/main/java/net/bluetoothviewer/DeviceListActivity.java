@@ -134,7 +134,7 @@ public class DeviceListActivity extends Activity {
             }
         } else {
             String noDevices = getResources().getText(R.string.none_paired).toString();
-            pairedDevicesAdapter.add(new BluetoothInfo(noDevices, ""));
+            pairedDevicesAdapter.add(new BluetoothInfo(noDevices, "TODO: replace with label"));
         }
     }
 
@@ -226,7 +226,7 @@ public class DeviceListActivity extends Activity {
                 setTitle(R.string.select_device);
                 if (mNewDevicesSet.isEmpty()) {
                     String noDevices = getResources().getText(R.string.none_found).toString();
-                    mNewDevicesArrayAdapter.add(new BluetoothInfo(noDevices, ""));
+                    mNewDevicesArrayAdapter.add(new BluetoothInfo(noDevices, "TODO: replace with label"));
                 }
                 scanButton.setVisibility(View.VISIBLE);
             }
