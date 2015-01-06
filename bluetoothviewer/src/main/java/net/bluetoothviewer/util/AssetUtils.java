@@ -3,12 +3,8 @@ package net.bluetoothviewer.util;
 import android.content.res.AssetManager;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,21 +17,24 @@ public class AssetUtils {
     }
 
     public static List<String> readLinesFromStream(AssetManager assets, String filename) {
+        InputStream inputStream;
         try {
-            InputStream inputStream = assets.open(filename);
-            return readLinesFromStream(inputStream);
+            inputStream = assets.open(filename);
         } catch (IOException e) {
             Log.e(TAG, "Could not open asset file: " + filename);
             return Collections.emptyList();
         }
-    }
-
-    private static List<String> readLinesFromStream(InputStream inputStream) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        String line;
-        List<String> lines = new ArrayList<String>();
-        while ((line = reader.readLine()) != null) {
-            lines.add(line);
+        List<String> lines;
+        try {
+            lines = IOUtils.readLinesFromStream(inputStream);
+        } catch (IOException e) {
+            Log.e(TAG, "Could not read lines from asset file: " + filename);
+            return Collections.emptyList();
+        }
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            Log.w(TAG, "Could not close asset file: " + filename);
         }
         return lines;
     }
