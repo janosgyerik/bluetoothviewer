@@ -329,11 +329,6 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         return false;
     }
 
-    private void startActivity(Class<?> cls) {
-        Intent intent = new Intent(getApplicationContext(), cls);
-        startActivity(intent);
-    }
-
     private void startActivityForResult(Class<?> cls, int requestCode) {
         Intent intent = new Intent(getApplicationContext(), cls);
         startActivityForResult(intent, requestCode);
