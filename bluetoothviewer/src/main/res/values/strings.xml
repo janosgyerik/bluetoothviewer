@@ -20,8 +20,6 @@
     <!--  BluetoothViewer -->
     <string name="send">Send</string>
     <string name="not_connected">You are not connected to a device</string>
-    <string name="bt_not_enabled_leaving">Bluetooth was not enabled. Leaving Bluetooth Viewer.</string>
-    <string name="bt_not_enabled">Bluetooth is not enabled. The app cannot function like this.</string>
 
     <string name="btstatus_connecting_to_fmt">connecting to: %s</string>
     <string name="btstatus_connected_to_fmt">connected to: %s</string>

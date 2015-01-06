@@ -239,10 +239,6 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         return BluetoothAdapter.getDefaultAdapter();
     }
 
-    private void registerBluetoothDataProvider() {
-        // TODO
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -289,9 +285,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                 pendingRequestEnableBt = false;
                 if (resultCode != Activity.RESULT_OK) {
                     Log.i(TAG, "BT not enabled");
-                    Toast.makeText(this, R.string.bt_not_enabled, Toast.LENGTH_SHORT).show();
                 }
-                registerBluetoothDataProvider();
                 break;
             case MENU_SETTINGS:
                 updateParamsFromSettings();
