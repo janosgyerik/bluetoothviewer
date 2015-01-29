@@ -214,6 +214,8 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                 sendMessage(view.getText());
             }
         });
+
+        onBluetoothStateChanged();
     }
 
     private void updateParamsFromSettings() {
@@ -277,7 +279,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                         case Mock:
                             String filename = "PollutionSenspodSample.csv";
                             List<String> lines = AssetUtils.readLinesFromStream(getAssets(), filename);
-                            mDeviceConnector = new MockSenspodConnector(lines);
+                            mDeviceConnector = new MockSenspodConnector(new MessageHandlerImpl(mHandler), lines);
                             break;
                         case Bluetooth:
                             break;
