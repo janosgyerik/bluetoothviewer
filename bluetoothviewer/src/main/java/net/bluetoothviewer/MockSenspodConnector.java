@@ -1,19 +1,25 @@
 package net.bluetoothviewer;
 
+import android.content.res.AssetManager;
+
+import net.bluetoothviewer.util.AssetUtils;
+
 import java.util.List;
 
 public class MockSenspodConnector implements DeviceConnector {
 
     private static final int SLEEP_MILLIS = 1000;
 
+    private final String filename;
+    private final AssetManager assets;
     private final MessageHandler messageHandler;
-    private final List<String> lines;
 
     private volatile boolean running = false;
 
-    public MockSenspodConnector(MessageHandler messageHandler, List<String> lines) {
+    public MockSenspodConnector(String filename, AssetManager assets, MessageHandlerImpl messageHandler) {
+        this.filename = filename;
+        this.assets = assets;
         this.messageHandler = messageHandler;
-        this.lines = lines;
     }
 
     @Override
@@ -25,10 +31,14 @@ public class MockSenspodConnector implements DeviceConnector {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true) {
+                messageHandler.sendConnectingTo(filename);
+                List<String> lines = AssetUtils.readLinesFromStream(assets, filename);
+                messageHandler.sendConnectedTo(filename);
+
+                while (running) {
                     for (String line : lines) {
                         if (!running) {
-                            return;
+                            break;
                         }
                         messageHandler.sendLineRead(line);
                         try {
@@ -38,6 +48,8 @@ public class MockSenspodConnector implements DeviceConnector {
                         }
                     }
                 }
+
+                messageHandler.sendConnectionLost();
             }
         }).start();
     }

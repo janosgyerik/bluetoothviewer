@@ -278,8 +278,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                     switch (connectorType) {
                         case Mock:
                             String filename = "PollutionSenspodSample.csv";
-                            List<String> lines = AssetUtils.readLinesFromStream(getAssets(), filename);
-                            mDeviceConnector = new MockSenspodConnector(new MessageHandlerImpl(mHandler), lines);
+                            mDeviceConnector = new MockSenspodConnector(filename, getAssets(), new MessageHandlerImpl(mHandler));
                             break;
                         case Bluetooth:
                             break;
