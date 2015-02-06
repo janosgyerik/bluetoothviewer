@@ -34,7 +34,18 @@ public class MockSenspodConnector implements DeviceConnector {
             @Override
             public void run() {
                 messageHandler.sendConnectingTo(filename);
-                List<String> lines = AssetUtils.readLinesFromStream(assets, SUBDIR + "/" + filename);
+
+                String mockFilePath = SUBDIR + "/" + filename;
+                List<String> lines = AssetUtils.readLinesFromStream(assets, mockFilePath);
+
+                if (!lines.isEmpty()) {
+                    loopLinesUntilStopped(lines);
+                }
+
+                messageHandler.sendConnectionLost();
+            }
+
+            private void loopLinesUntilStopped(List<String> lines) {
                 messageHandler.sendConnectedTo(filename);
 
                 while (running) {
@@ -50,8 +61,6 @@ public class MockSenspodConnector implements DeviceConnector {
                         }
                     }
                 }
-
-                messageHandler.sendConnectionLost();
             }
         }).start();
     }
