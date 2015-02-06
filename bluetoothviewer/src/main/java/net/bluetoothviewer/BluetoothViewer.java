@@ -273,11 +273,13 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                 //      It would be better if that logic was in one place,
                 //      and definitely not in this activity
                 if (resultCode == Activity.RESULT_OK) {
+                    String connectorTypeMsgId = DeviceListActivity.Message.DeviceConnectorType.toString();
                     DeviceListActivity.ConnectorType connectorType =
-                            (DeviceListActivity.ConnectorType) data.getSerializableExtra(DeviceListActivity.Message.DeviceConnectorType.toString());
+                            (DeviceListActivity.ConnectorType) data.getSerializableExtra(connectorTypeMsgId);
                     switch (connectorType) {
                         case Mock:
-                            String filename = "PollutionSenspodSample.csv";
+                            String filenameMsgId = DeviceListActivity.Message.MockFilename.toString();
+                            String filename = data.getStringExtra(filenameMsgId);
                             mDeviceConnector = new MockSenspodConnector(filename, getAssets(), new MessageHandlerImpl(mHandler));
                             break;
                         case Bluetooth:

@@ -7,14 +7,14 @@ implement simulator mode for easier testing
 -------------------------------------------
 - bug: click on any device triggers the mock connector
 - bug: connect to paired device not working
+- rename mock files dir to just ascii, not senspod
 - mock devices
-    - MockSenspod
-    - AndroidGps - using senspod format
+    + MockSenspod
+    + AndroidGps - using senspod format
     - MockZephyr
 - debug mode in prefs
-    - register mock devices
+    - enable mock devices
 - when bt is off, add button to enable easily
-- make it work again with bluetooth
 
 migrate to modern style
 -----------------------
