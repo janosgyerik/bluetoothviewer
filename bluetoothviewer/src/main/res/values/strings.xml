@@ -26,10 +26,9 @@
     <string name="btstatus_not_connected">not connected</string>
 
     <!--  DeviceListActivity -->
-    <string name="scanning">Scanning…</string>
-    <string name="select_device">Select a device to connect to</string>
-    <string name="none_paired">No paired devices</string>
-    <string name="label_none_found">No devices found</string>
+    <string name="title_select_device">Select a device to connect to</string>
+    <string name="label_scanning">Scanning…</string>
+    <string name="label_no_available_devices">No devices found</string>
     <string name="title_mock_devices">Mock Devices</string>
     <string name="title_paired_devices">Paired Devices</string>
     <string name="title_other_devices">Other Available Devices</string>

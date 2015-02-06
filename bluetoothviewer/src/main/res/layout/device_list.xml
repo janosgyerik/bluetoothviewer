@@ -75,7 +75,7 @@
         android:gravity="center"
         android:paddingBottom="15dp"
         android:paddingTop="15dp"
-        android:text="@string/scanning"
+        android:text="@string/label_scanning"
         android:textSize="18sp"
         android:visibility="gone" />
 
@@ -86,7 +86,7 @@
         android:gravity="center"
         android:paddingBottom="15dp"
         android:paddingTop="15dp"
-        android:text="@string/label_none_found"
+        android:text="@string/label_no_available_devices"
         android:textSize="18sp"
         android:visibility="gone" />
 

@@ -28,7 +28,7 @@
         <activity
             android:name="net.bluetoothviewer.DeviceListActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="@string/select_device"
+            android:label="@string/title_select_device"
             android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name="net.bluetoothviewer.SettingsActivity"
