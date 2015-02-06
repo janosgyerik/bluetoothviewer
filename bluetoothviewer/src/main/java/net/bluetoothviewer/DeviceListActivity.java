@@ -122,14 +122,6 @@ public class DeviceListActivity extends Activity {
         // Set default result to CANCELED, in case the user backs out
         setResult(Activity.RESULT_CANCELED);
 
-        scanButton = (Button) findViewById(R.id.button_scan);
-        scanButton.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                doDiscovery();
-                v.setVisibility(View.GONE);
-            }
-        });
-
         boolean noAvailableDevices = true;
 
         String[] filenames = AssetUtils.listFiles(getResources().getAssets(), MockSenspodConnector.SUBDIR);
@@ -176,6 +168,14 @@ public class DeviceListActivity extends Activity {
 
         filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         registerReceiver(mReceiver, filter);
+
+        scanButton = (Button) findViewById(R.id.button_scan);
+        scanButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                doDiscovery();
+                v.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
