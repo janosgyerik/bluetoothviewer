@@ -8,6 +8,8 @@ import java.util.List;
 
 public class MockSenspodConnector implements DeviceConnector {
 
+    public static final String SUBDIR = "samples/senspod";
+
     private static final int SLEEP_MILLIS = 1000;
 
     private final String filename;
@@ -32,7 +34,7 @@ public class MockSenspodConnector implements DeviceConnector {
             @Override
             public void run() {
                 messageHandler.sendConnectingTo(filename);
-                List<String> lines = AssetUtils.readLinesFromStream(assets, filename);
+                List<String> lines = AssetUtils.readLinesFromStream(assets, SUBDIR + "/" + filename);
                 messageHandler.sendConnectedTo(filename);
 
                 while (running) {

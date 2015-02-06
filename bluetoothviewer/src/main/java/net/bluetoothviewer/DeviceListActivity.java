@@ -23,6 +23,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +34,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+
+import net.bluetoothviewer.util.AssetUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -104,10 +107,11 @@ public class DeviceListActivity extends Activity {
         mockListView.setAdapter(mMockDevicesAdapter);
         mockListView.setOnItemClickListener(mMockDeviceClickListener);
         findViewById(R.id.mock_devices).setVisibility(View.VISIBLE);
-        // TODO list assets directory and add dynamically
-        mMockDevicesAdapter.add("Co2SenspodSample.csv");
-        mMockDevicesAdapter.add("PollutionSenspodSample.csv");
-        mMockDevicesAdapter.add("AndroidGpsSample.csv");
+
+        String[] filenames = AssetUtils.listFiles(getResources().getAssets(), MockSenspodConnector.SUBDIR);
+        for (String filename : filenames) {
+            mMockDevicesAdapter.add(filename);
+        }
 
         ArrayAdapter<BluetoothInfo> pairedDevicesAdapter = new ArrayAdapter<BluetoothInfo>(this, R.layout.device_name);
         ListView pairedListView = (ListView) findViewById(R.id.paired_devices);

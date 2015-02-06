@@ -38,4 +38,12 @@ public class AssetUtils {
         }
         return lines;
     }
+
+    public static String[] listFiles(AssetManager assets, String subdir) {
+        try {
+            return assets.list(subdir);
+        } catch (IOException e) {
+            return new String[0];
+        }
+    }
 }
