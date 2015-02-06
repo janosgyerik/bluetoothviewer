@@ -23,7 +23,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -61,25 +60,56 @@ public class DeviceListActivity extends Activity {
         MockFilename,
     }
 
-    private static class BluetoothInfo {
+    private abstract static class DeviceListEntry {
+        @Override
+        public String toString() {
+            return String.format("%s%n%s", getFirstLine(), getSecondLine());
+        }
+
+        protected abstract String getFirstLine();
+
+        protected String getSecondLine() {
+            return "";
+        }
+    }
+
+    private static class BluetoothDeviceEntry extends DeviceListEntry {
         private final String name;
         private final String address;
 
-        public BluetoothInfo(String name, String address) {
+        public BluetoothDeviceEntry(String name, String address) {
             this.name = name;
             this.address = address;
         }
 
         @Override
-        public String toString() {
-            return String.format("%s%n%s", name, address);
+        protected String getFirstLine() {
+            return name;
+        }
+
+        @Override
+        protected String getSecondLine() {
+            return address;
+        }
+    }
+
+    private static class MockDeviceEntry extends DeviceListEntry {
+        private final String filename;
+
+        public MockDeviceEntry(String filename) {
+            this.filename = filename;
+        }
+
+        @Override
+        protected String getFirstLine() {
+            return filename;
         }
     }
 
     private final BluetoothAdapterWrapper mBtAdapter = BluetoothAdapterFactory.getBluetoothAdapterWrapper();
-    private ArrayAdapter<BluetoothInfo> mNewDevicesArrayAdapter;
+    private ArrayAdapter<BluetoothDeviceEntry> mNewDevicesArrayAdapter;
     private final Set<String> mNewDevicesSet = new HashSet<String>();
-    private ArrayAdapter<String> mMockDevicesAdapter;
+    private ArrayAdapter<MockDeviceEntry> mMockDevicesAdapter;
 
     private Button scanButton;
 
@@ -102,7 +132,7 @@ public class DeviceListActivity extends Activity {
             }
         });
 
-        mMockDevicesAdapter = new ArrayAdapter<String>(this, R.layout.device_name);
+        mMockDevicesAdapter = new ArrayAdapter<MockDeviceEntry>(this, R.layout.device_name);
         ListView mockListView = (ListView) findViewById(R.id.mock_devices);
         mockListView.setAdapter(mMockDevicesAdapter);
         mockListView.setOnItemClickListener(mMockDeviceClickListener);
@@ -110,15 +140,15 @@ public class DeviceListActivity extends Activity {
 
         String[] filenames = AssetUtils.listFiles(getResources().getAssets(), MockSenspodConnector.SUBDIR);
         for (String filename : filenames) {
-            mMockDevicesAdapter.add(filename);
+            mMockDevicesAdapter.add(new MockDeviceEntry(filename));
         }
 
-        ArrayAdapter<BluetoothInfo> pairedDevicesAdapter = new ArrayAdapter<BluetoothInfo>(this, R.layout.device_name);
+        ArrayAdapter<BluetoothDeviceEntry> pairedDevicesAdapter = new ArrayAdapter<BluetoothDeviceEntry>(this, R.layout.device_name);
         ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
         pairedListView.setAdapter(pairedDevicesAdapter);
         pairedListView.setOnItemClickListener(new BluetoothDeviceClickListener(pairedDevicesAdapter));
 
-        mNewDevicesArrayAdapter = new ArrayAdapter<BluetoothInfo>(this, R.layout.device_name);
+        mNewDevicesArrayAdapter = new ArrayAdapter<BluetoothDeviceEntry>(this, R.layout.device_name);
         ListView newDevicesListView = (ListView) findViewById(R.id.new_devices);
         newDevicesListView.setAdapter(mNewDevicesArrayAdapter);
         newDevicesListView.setOnItemClickListener(new BluetoothDeviceClickListener(mNewDevicesArrayAdapter));
@@ -134,11 +164,11 @@ public class DeviceListActivity extends Activity {
         if (pairedDevices != null && !pairedDevices.isEmpty()) {
             findViewById(R.id.title_paired_devices).setVisibility(View.VISIBLE);
             for (BluetoothDevice device : pairedDevices) {
-                pairedDevicesAdapter.add(new BluetoothInfo(device.getName(), device.getAddress()));
+                pairedDevicesAdapter.add(new BluetoothDeviceEntry(device.getName(), device.getAddress()));
             }
         } else {
             String noDevices = getResources().getText(R.string.none_paired).toString();
-            pairedDevicesAdapter.add(new BluetoothInfo(noDevices, "TODO: replace with label"));
+            pairedDevicesAdapter.add(new BluetoothDeviceEntry(noDevices, "TODO: replace with label"));
         }
     }
 
@@ -173,9 +203,9 @@ public class DeviceListActivity extends Activity {
     }
 
     private class BluetoothDeviceClickListener implements OnItemClickListener {
-        private final ArrayAdapter<BluetoothInfo> adapter;
+        private final ArrayAdapter<BluetoothDeviceEntry> adapter;
 
-        private BluetoothDeviceClickListener(ArrayAdapter<BluetoothInfo> adapter) {
+        private BluetoothDeviceClickListener(ArrayAdapter<BluetoothDeviceEntry> adapter) {
             this.adapter = adapter;
         }
 
@@ -202,7 +232,7 @@ public class DeviceListActivity extends Activity {
             intent.putExtra(Message.DeviceConnectorType.toString(), ConnectorType.Mock);
             Log.d(TAG, "arg2 = " + arg2);
             Log.d(TAG, "arg3 = " + arg3);
-            intent.putExtra(Message.MockFilename.toString(), mMockDevicesAdapter.getItem(arg2));
+            intent.putExtra(Message.MockFilename.toString(), mMockDevicesAdapter.getItem(arg2).filename);
 
             setResult(Activity.RESULT_OK, intent);
             finish();
@@ -220,7 +250,7 @@ public class DeviceListActivity extends Activity {
                     String address = device.getAddress();
                     if (!mNewDevicesSet.contains(address)) {
                         mNewDevicesSet.add(address);
-                        mNewDevicesArrayAdapter.add(new BluetoothInfo(device.getName(), device.getAddress()));
+                        mNewDevicesArrayAdapter.add(new BluetoothDeviceEntry(device.getName(), device.getAddress()));
                     }
                 } else {
                     Log.e(TAG, "Could not get parcelable extra from device: " + BluetoothDevice.EXTRA_DEVICE);
@@ -230,7 +260,7 @@ public class DeviceListActivity extends Activity {
                 setTitle(R.string.select_device);
                 if (mNewDevicesSet.isEmpty()) {
                     String noDevices = getResources().getText(R.string.none_found).toString();
-                    mNewDevicesArrayAdapter.add(new BluetoothInfo(noDevices, "TODO: replace with label"));
+                    mNewDevicesArrayAdapter.add(new BluetoothDeviceEntry(noDevices, "TODO: replace with label"));
                 }
                 scanButton.setVisibility(View.VISIBLE);
             }
