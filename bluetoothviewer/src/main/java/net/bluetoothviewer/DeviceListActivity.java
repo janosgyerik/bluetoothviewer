@@ -132,6 +132,8 @@ public class DeviceListActivity extends Activity {
             }
         });
 
+        boolean noAvailableDevices = true;
+
         mMockDevicesAdapter = new ArrayAdapter<MockDeviceEntry>(this, R.layout.device_name);
         ListView mockListView = (ListView) findViewById(R.id.mock_devices);
         mockListView.setAdapter(mMockDevicesAdapter);
@@ -141,6 +143,7 @@ public class DeviceListActivity extends Activity {
         String[] filenames = AssetUtils.listFiles(getResources().getAssets(), MockSenspodConnector.SUBDIR);
         for (String filename : filenames) {
             mMockDevicesAdapter.add(new MockDeviceEntry(filename));
+            noAvailableDevices = false;
         }
 
         ArrayAdapter<BluetoothDeviceEntry> pairedDevicesAdapter = new ArrayAdapter<BluetoothDeviceEntry>(this, R.layout.device_name);
@@ -166,9 +169,11 @@ public class DeviceListActivity extends Activity {
             for (BluetoothDevice device : pairedDevices) {
                 pairedDevicesAdapter.add(new BluetoothDeviceEntry(device.getName(), device.getAddress()));
             }
-        } else {
-            String noDevices = getResources().getText(R.string.none_paired).toString();
-            pairedDevicesAdapter.add(new BluetoothDeviceEntry(noDevices, "TODO: replace with label"));
+            noAvailableDevices = false;
+        }
+
+        if (noAvailableDevices) {
+            findViewById(R.id.label_none_found).setVisibility(View.VISIBLE);
         }
     }
 
@@ -191,9 +196,10 @@ public class DeviceListActivity extends Activity {
         mNewDevicesSet.clear();
 
         setProgressBarIndeterminateVisibility(true);
-        setTitle(R.string.scanning);
 
+        findViewById(R.id.label_none_found).setVisibility(View.GONE);
         findViewById(R.id.title_new_devices).setVisibility(View.VISIBLE);
+        findViewById(R.id.label_scanning).setVisibility(View.VISIBLE);
 
         if (mBtAdapter.isDiscovering()) {
             mBtAdapter.cancelDiscovery();
@@ -245,22 +251,24 @@ public class DeviceListActivity extends Activity {
             String action = intent.getAction();
 
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                String parcelableExtraName = BluetoothDevice.EXTRA_DEVICE;
+                BluetoothDevice device = intent.getParcelableExtra(parcelableExtraName);
                 if (device != null) {
                     String address = device.getAddress();
                     if (!mNewDevicesSet.contains(address)) {
                         mNewDevicesSet.add(address);
-                        mNewDevicesArrayAdapter.add(new BluetoothDeviceEntry(device.getName(), device.getAddress()));
+                        mNewDevicesArrayAdapter.add(new BluetoothDeviceEntry(device.getName(), address));
                     }
                 } else {
-                    Log.e(TAG, "Could not get parcelable extra from device: " + BluetoothDevice.EXTRA_DEVICE);
+                    Log.e(TAG, "Could not get parcelable extra: " + parcelableExtraName);
                 }
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 setProgressBarIndeterminateVisibility(false);
-                setTitle(R.string.select_device);
+                findViewById(R.id.label_scanning).setVisibility(View.GONE);
                 if (mNewDevicesSet.isEmpty()) {
-                    String noDevices = getResources().getText(R.string.none_found).toString();
-                    mNewDevicesArrayAdapter.add(new BluetoothDeviceEntry(noDevices, "TODO: replace with label"));
+                    findViewById(R.id.label_none_found).setVisibility(View.VISIBLE);
+                } else {
+                    findViewById(R.id.label_none_found).setVisibility(View.GONE);
                 }
                 scanButton.setVisibility(View.VISIBLE);
             }
