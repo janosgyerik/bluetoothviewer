@@ -109,7 +109,6 @@ public class DeviceListActivity extends Activity {
     private final BluetoothAdapterWrapper mBtAdapter = BluetoothAdapterFactory.getBluetoothAdapterWrapper();
     private ArrayAdapter<BluetoothDeviceEntry> mNewDevicesArrayAdapter;
     private final Set<String> mNewDevicesSet = new HashSet<String>();
-    private ArrayAdapter<MockDeviceEntry> mMockDevicesAdapter;
 
     private Button scanButton;
 
@@ -123,7 +122,6 @@ public class DeviceListActivity extends Activity {
         // Set default result to CANCELED, in case the user backs out
         setResult(Activity.RESULT_CANCELED);
 
-        // Initialize the button to perform device discovery
         scanButton = (Button) findViewById(R.id.button_scan);
         scanButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -136,13 +134,13 @@ public class DeviceListActivity extends Activity {
 
         String[] filenames = AssetUtils.listFiles(getResources().getAssets(), MockSenspodConnector.SUBDIR);
         if (filenames.length > 0) {
-            mMockDevicesAdapter = new ArrayAdapter<MockDeviceEntry>(this, R.layout.device_name);
+            ArrayAdapter<MockDeviceEntry> mockDevicesAdapter = new ArrayAdapter<MockDeviceEntry>(this, R.layout.device_name);
             ListView mockListView = (ListView) findViewById(R.id.mock_devices);
-            mockListView.setAdapter(mMockDevicesAdapter);
-            mockListView.setOnItemClickListener(mMockDeviceClickListener);
+            mockListView.setAdapter(mockDevicesAdapter);
+            mockListView.setOnItemClickListener(new MockDeviceClickListener(mockDevicesAdapter));
 
             for (String filename : filenames) {
-                mMockDevicesAdapter.add(new MockDeviceEntry(filename));
+                mockDevicesAdapter.add(new MockDeviceEntry(filename));
             }
 
             findViewById(R.id.title_mock_devices).setVisibility(View.VISIBLE);
@@ -220,9 +218,6 @@ public class DeviceListActivity extends Activity {
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            // Cancel discovery because it's costly and we're about to connect
-            mBtAdapter.cancelDiscovery();
-
             Intent intent = new Intent();
             intent.putExtra(Message.DeviceConnectorType.toString(), ConnectorType.Bluetooth);
             intent.putExtra(Message.BluetoothAddress.toString(), adapter.getItem(i).address);
@@ -232,21 +227,22 @@ public class DeviceListActivity extends Activity {
         }
     }
 
-    private OnItemClickListener mMockDeviceClickListener = new OnItemClickListener() {
-        public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
-            // Cancel discovery because it's costly and we're about to connect
-            mBtAdapter.cancelDiscovery();
+    private class MockDeviceClickListener implements OnItemClickListener {
+        private final ArrayAdapter<MockDeviceEntry> adapter;
 
+        public MockDeviceClickListener(ArrayAdapter<MockDeviceEntry> adapter) {
+            this.adapter = adapter;
+        }
+
+        public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
             Intent intent = new Intent();
             intent.putExtra(Message.DeviceConnectorType.toString(), ConnectorType.Mock);
-            Log.d(TAG, "arg2 = " + arg2);
-            Log.d(TAG, "arg3 = " + arg3);
-            intent.putExtra(Message.MockFilename.toString(), mMockDevicesAdapter.getItem(arg2).filename);
+            intent.putExtra(Message.MockFilename.toString(), adapter.getItem(arg2).filename);
 
             setResult(Activity.RESULT_OK, intent);
             finish();
         }
-    };
+    }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
