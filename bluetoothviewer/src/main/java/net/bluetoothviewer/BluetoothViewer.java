@@ -39,10 +39,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import net.bluetoothviewer.util.AssetUtils;
 import net.bluetoothviewer.util.EmailTools;
-
-import java.util.List;
 
 public class BluetoothViewer extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -281,7 +278,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                         case Mock:
                             String filenameMsgId = DeviceListActivity.Message.MockFilename.toString();
                             String filename = data.getStringExtra(filenameMsgId);
-                            mDeviceConnector = new MockSenspodConnector(filename, getAssets(), messageHandler);
+                            mDeviceConnector = new MockLineByLineConnector(filename, getAssets(), messageHandler);
                             break;
                         case Bluetooth:
                             String addressMsgId = DeviceListActivity.Message.BluetoothAddress.toString();

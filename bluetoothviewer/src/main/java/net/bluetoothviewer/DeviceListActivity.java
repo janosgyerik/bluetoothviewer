@@ -124,7 +124,7 @@ public class DeviceListActivity extends Activity {
 
         boolean noAvailableDevices = true;
 
-        String[] filenames = AssetUtils.listFiles(getResources().getAssets(), MockSenspodConnector.SUBDIR);
+        String[] filenames = AssetUtils.listFiles(getResources().getAssets(), MockLineByLineConnector.SUBDIR);
         if (filenames.length > 0) {
             ArrayAdapter<MockDeviceEntry> mockDevicesAdapter = new ArrayAdapter<MockDeviceEntry>(this, R.layout.device_name);
             ListView mockListView = (ListView) findViewById(R.id.mock_devices);

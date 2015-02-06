@@ -6,9 +6,9 @@ import net.bluetoothviewer.util.AssetUtils;
 
 import java.util.List;
 
-public class MockSenspodConnector implements DeviceConnector {
+public class MockLineByLineConnector implements DeviceConnector {
 
-    public static final String SUBDIR = "samples/senspod";
+    public static final String SUBDIR = "samples/line-by-line";
 
     private static final int SLEEP_MILLIS = 1000;
 
@@ -18,7 +18,7 @@ public class MockSenspodConnector implements DeviceConnector {
 
     private volatile boolean running = false;
 
-    public MockSenspodConnector(String filename, AssetManager assets, MessageHandler messageHandler) {
+    public MockLineByLineConnector(String filename, AssetManager assets, MessageHandler messageHandler) {
         this.filename = filename;
         this.assets = assets;
         this.messageHandler = messageHandler;

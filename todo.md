@@ -5,12 +5,8 @@ Very crude stuff. This is mostly for myself, not intended for other humans.
 
 implement simulator mode for easier testing
 -------------------------------------------
-- bug: click on any device triggers the mock connector
-- bug: connect to paired device not working
-- rename mock files dir to just ascii, not senspod
 - mock devices
-    + MockSenspod
-    + AndroidGps - using senspod format
+    + MockAscii
     - MockZephyr
 - debug mode in prefs
     - enable mock devices
