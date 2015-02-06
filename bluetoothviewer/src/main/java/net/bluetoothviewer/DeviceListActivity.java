@@ -134,22 +134,39 @@ public class DeviceListActivity extends Activity {
 
         boolean noAvailableDevices = true;
 
-        mMockDevicesAdapter = new ArrayAdapter<MockDeviceEntry>(this, R.layout.device_name);
-        ListView mockListView = (ListView) findViewById(R.id.mock_devices);
-        mockListView.setAdapter(mMockDevicesAdapter);
-        mockListView.setOnItemClickListener(mMockDeviceClickListener);
-        findViewById(R.id.mock_devices).setVisibility(View.VISIBLE);
-
         String[] filenames = AssetUtils.listFiles(getResources().getAssets(), MockSenspodConnector.SUBDIR);
-        for (String filename : filenames) {
-            mMockDevicesAdapter.add(new MockDeviceEntry(filename));
+        if (filenames.length > 0) {
+            mMockDevicesAdapter = new ArrayAdapter<MockDeviceEntry>(this, R.layout.device_name);
+            ListView mockListView = (ListView) findViewById(R.id.mock_devices);
+            mockListView.setAdapter(mMockDevicesAdapter);
+            mockListView.setOnItemClickListener(mMockDeviceClickListener);
+
+            for (String filename : filenames) {
+                mMockDevicesAdapter.add(new MockDeviceEntry(filename));
+            }
+
+            findViewById(R.id.title_mock_devices).setVisibility(View.VISIBLE);
             noAvailableDevices = false;
         }
 
-        ArrayAdapter<BluetoothDeviceEntry> pairedDevicesAdapter = new ArrayAdapter<BluetoothDeviceEntry>(this, R.layout.device_name);
-        ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
-        pairedListView.setAdapter(pairedDevicesAdapter);
-        pairedListView.setOnItemClickListener(new BluetoothDeviceClickListener(pairedDevicesAdapter));
+        Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
+        if (pairedDevices != null && !pairedDevices.isEmpty()) {
+            ArrayAdapter<BluetoothDeviceEntry> pairedDevicesAdapter = new ArrayAdapter<BluetoothDeviceEntry>(this, R.layout.device_name);
+            ListView pairedListView = (ListView) findViewById(R.id.paired_devices);
+            pairedListView.setAdapter(pairedDevicesAdapter);
+            pairedListView.setOnItemClickListener(new BluetoothDeviceClickListener(pairedDevicesAdapter));
+
+            for (BluetoothDevice device : pairedDevices) {
+                pairedDevicesAdapter.add(new BluetoothDeviceEntry(device.getName(), device.getAddress()));
+            }
+
+            findViewById(R.id.title_paired_devices).setVisibility(View.VISIBLE);
+            noAvailableDevices = false;
+        }
+
+        if (noAvailableDevices) {
+            findViewById(R.id.label_none_found).setVisibility(View.VISIBLE);
+        }
 
         mNewDevicesArrayAdapter = new ArrayAdapter<BluetoothDeviceEntry>(this, R.layout.device_name);
         ListView newDevicesListView = (ListView) findViewById(R.id.new_devices);
@@ -161,20 +178,6 @@ public class DeviceListActivity extends Activity {
 
         filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         registerReceiver(mReceiver, filter);
-
-        Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
-
-        if (pairedDevices != null && !pairedDevices.isEmpty()) {
-            findViewById(R.id.title_paired_devices).setVisibility(View.VISIBLE);
-            for (BluetoothDevice device : pairedDevices) {
-                pairedDevicesAdapter.add(new BluetoothDeviceEntry(device.getName(), device.getAddress()));
-            }
-            noAvailableDevices = false;
-        }
-
-        if (noAvailableDevices) {
-            findViewById(R.id.label_none_found).setVisibility(View.VISIBLE);
-        }
     }
 
     @Override

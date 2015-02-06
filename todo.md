@@ -5,6 +5,8 @@ Very crude stuff. This is mostly for myself, not intended for other humans.
 
 implement simulator mode for easier testing
 -------------------------------------------
+- bug: click on any device triggers the mock connector
+- bug: connect to paired device not working
 - mock devices
     - MockSenspod
     - AndroidGps - using senspod format
@@ -13,6 +15,11 @@ implement simulator mode for easier testing
     - register mock devices
 - when bt is off, add button to enable easily
 - make it work again with bluetooth
+
+migrate to modern style
+-----------------------
+- use modern action toolbar
+- use regular buttons
 
 better handling of recording
 ----------------------------
@@ -50,7 +57,6 @@ next
     - prepend gps data
 - clear button
 - hexa view
-- use modern action toolbar
 - generalize and finish build.sh
 - save data to files on android
 - exclude lines
