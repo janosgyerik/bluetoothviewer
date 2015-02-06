@@ -18,7 +18,7 @@ public class MockSenspodConnector implements DeviceConnector {
 
     private volatile boolean running = false;
 
-    public MockSenspodConnector(String filename, AssetManager assets, MessageHandlerImpl messageHandler) {
+    public MockSenspodConnector(String filename, AssetManager assets, MessageHandler messageHandler) {
         this.filename = filename;
         this.assets = assets;
         this.messageHandler = messageHandler;
