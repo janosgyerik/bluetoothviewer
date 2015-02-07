@@ -1,0 +1,26 @@
+apply plugin: 'android'
+
+dependencies {
+    compile project(':bluetoothviewer')
+}
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+
+    if (rootProject.storeFilePath) {
+        signingConfigs {
+            release {
+                storeFile file(rootProject.storeFilePath)
+                storePassword rootProject.storePassword
+                keyAlias rootProject.keyAlias
+                keyPassword rootProject.keyPassword
+            }
+        }
+        buildTypes {
+            release {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+}

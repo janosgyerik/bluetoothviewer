@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="net.bluetoothviewer.full"
+    android:versionCode="6"
+    android:versionName="1.1">
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/launcher_main"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Holo">
+        <activity
+            android:name="net.bluetoothviewer.BluetoothViewer"
+            android:windowSoftInputMode="stateHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="net.bluetoothviewer.DeviceListActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_select_device"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name="net.bluetoothviewer.SettingsActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:label="@string/title_settings_activity"
+            android:theme="@android:style/Theme.Dialog" />
+    </application>
+
+</manifest>

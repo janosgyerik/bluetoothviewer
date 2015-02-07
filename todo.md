@@ -5,7 +5,6 @@ Very crude stuff. This is mostly for myself, not intended for other humans.
 
 split the full and lite versions
 --------------------------------
-- create and confirm full version
 - make the menu different in full and lite
     - buy the full app only in lite
 - Drop the please buy the full up text in the full app
