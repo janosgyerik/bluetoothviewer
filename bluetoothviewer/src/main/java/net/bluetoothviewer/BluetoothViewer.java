@@ -218,6 +218,10 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         });
 
         onBluetoothStateChanged();
+
+        if (!mockDevicesEnabled) {
+            requestEnableBluetooth();
+        }
     }
 
     private void updateParamsFromSettings() {
