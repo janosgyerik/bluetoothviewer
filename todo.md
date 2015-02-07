@@ -3,13 +3,6 @@ TODO
 
 Very crude stuff. This is mostly for myself, not intended for other humans.
 
-implement simulator mode for easier testing
--------------------------------------------
-- merge branch to master
-- update github page
-- release
-- ping Samson
-
 migrate to modern style
 -----------------------
 - change intro text and make links clickable
