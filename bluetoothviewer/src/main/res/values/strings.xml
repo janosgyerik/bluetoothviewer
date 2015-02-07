@@ -45,7 +45,8 @@
     <string name="url_rate">market://details?id=net.bluetoothviewer</string>
     <string name="url_full_app">market://details?id=net.bluetoothviewer.full</string>
 
-    <string name="welcome_1">Welcome to Bluetooth Viewer!</string>
+    <string name="welcome_1_lite">Welcome to Bluetooth Viewer Lite!</string>
+    <string name="welcome_1_full">Welcome to Bluetooth Viewer!</string>
     <string name="welcome_2">This app is a simple Bluetooth connection debugging tool.</string>
     <string name="welcome_3">Connect to any Bluetooth device and see incoming raw data.</string>
     <string name="welcome_github_pre">You can find the source code and report bugs on GitHub:</string>

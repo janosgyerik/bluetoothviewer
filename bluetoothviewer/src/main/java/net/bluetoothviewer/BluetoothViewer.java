@@ -198,13 +198,20 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         ListView mConversationView = (ListView) findViewById(R.id.in);
         mConversationView.setAdapter(mConversationArrayAdapter);
 
-        mConversationArrayAdapter.add(getString(R.string.welcome_1));
+        boolean isLiteVersion = ApplicationUtils.isLiteVersion(getApplication());
+        if (isLiteVersion) {
+            mConversationArrayAdapter.add(getString(R.string.welcome_1_lite));
+        } else {
+            mConversationArrayAdapter.add(getString(R.string.welcome_1_full));
+        }
         mConversationArrayAdapter.add(getString(R.string.welcome_2));
         mConversationArrayAdapter.add(getString(R.string.welcome_3));
         mConversationArrayAdapter.add(getString(R.string.welcome_github_pre));
         mConversationArrayAdapter.add(getString(R.string.welcome_github));
         mConversationArrayAdapter.add(getString(R.string.welcome_please_rate));
-        mConversationArrayAdapter.add(getString(R.string.welcome_please_buy));
+        if (isLiteVersion) {
+            mConversationArrayAdapter.add(getString(R.string.welcome_please_buy));
+        }
 
         // Initialize the compose field with a listener for the return key
         mOutEditText = (EditText) findViewById(R.id.edit_text_out);

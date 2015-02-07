@@ -3,10 +3,6 @@ TODO
 
 Very crude stuff. This is mostly for myself, not intended for other humans.
 
-split the full and lite versions
---------------------------------
-- Drop the please buy the full up text in the full app
-
 clean up deprecated code
 ------------------------
 - find a way to detect all deprecated code
