@@ -40,6 +40,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.bluetoothviewer.library.R;
+import net.bluetoothviewer.util.ApplicationUtils;
 import net.bluetoothviewer.util.EmailTools;
 
 public class BluetoothViewer extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -320,6 +321,10 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
+
+        if (ApplicationUtils.isLiteVersion(getApplication())) {
+            menu.findItem(R.id.menu_buy).setVisible(true);
+        }
 
         return true;
     }
