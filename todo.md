@@ -5,8 +5,6 @@ Very crude stuff. This is mostly for myself, not intended for other humans.
 
 implement simulator mode for easier testing
 -------------------------------------------
-- debug mode in prefs
-    - enable mock devices, default off
 - when bt is off, add button to enable easily
 - merge branch to master
 - update github page

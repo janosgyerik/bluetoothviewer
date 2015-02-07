@@ -15,4 +15,11 @@
         android:title="@string/title_default_email" />
     />
 
+    <CheckBoxPreference
+        android:checked="false"
+        android:key="@string/pref_enable_mock_devices"
+        android:summary="@string/summary_enable_mock_devices"
+        android:title="@string/title_enable_mock_devices" />
+    />
+
 </PreferenceScreen>

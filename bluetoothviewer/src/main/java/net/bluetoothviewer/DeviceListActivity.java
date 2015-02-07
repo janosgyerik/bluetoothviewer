@@ -49,6 +49,8 @@ public class DeviceListActivity extends Activity {
     private static final String TAG = "DeviceListActivity";
     private static final boolean D = true;
 
+    protected static final String EXTRA_MOCK_DEVICES_ENABLED = "MOCK_DEVICES_ENABLED";
+
     public static enum ConnectorType {
         Bluetooth,
         Mock
@@ -124,19 +126,21 @@ public class DeviceListActivity extends Activity {
 
         boolean noAvailableDevices = true;
 
-        String[] filenames = AssetUtils.listFiles(getResources().getAssets(), MockLineByLineConnector.SUBDIR);
-        if (filenames.length > 0) {
-            ArrayAdapter<MockDeviceEntry> mockDevicesAdapter = new ArrayAdapter<MockDeviceEntry>(this, R.layout.device_name);
-            ListView mockListView = (ListView) findViewById(R.id.mock_devices);
-            mockListView.setAdapter(mockDevicesAdapter);
-            mockListView.setOnItemClickListener(new MockDeviceClickListener(mockDevicesAdapter));
+        if (getIntent().getBooleanExtra(EXTRA_MOCK_DEVICES_ENABLED, false)) {
+            String[] filenames = AssetUtils.listFiles(getResources().getAssets(), MockLineByLineConnector.SUBDIR);
+            if (filenames.length > 0) {
+                ArrayAdapter<MockDeviceEntry> mockDevicesAdapter = new ArrayAdapter<MockDeviceEntry>(this, R.layout.device_name);
+                ListView mockListView = (ListView) findViewById(R.id.mock_devices);
+                mockListView.setAdapter(mockDevicesAdapter);
+                mockListView.setOnItemClickListener(new MockDeviceClickListener(mockDevicesAdapter));
 
-            for (String filename : filenames) {
-                mockDevicesAdapter.add(new MockDeviceEntry(filename));
+                for (String filename : filenames) {
+                    mockDevicesAdapter.add(new MockDeviceEntry(filename));
+                }
+
+                findViewById(R.id.title_mock_devices).setVisibility(View.VISIBLE);
+                noAvailableDevices = false;
             }
-
-            findViewById(R.id.title_mock_devices).setVisibility(View.VISIBLE);
-            noAvailableDevices = false;
         }
 
         Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();

@@ -76,9 +76,13 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     // See: https://code.google.com/p/android/issues/detail?id=24931#c1
     private boolean pendingRequestEnableBt = false;
 
+    // controlled by user settings
     private boolean recordingEnabled;
     private String defaultEmail;
+    private boolean mockDevicesEnabled;
+
     private String deviceName;
+
     private final StringBuilder recording = new StringBuilder();
 
     // The Handler that gets information back from the BluetoothService
@@ -130,6 +134,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
             }
         }
     };
+
     private TextView.OnEditorActionListener mWriteListener =
             new TextView.OnEditorActionListener() {
                 public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
@@ -218,11 +223,13 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     private void updateParamsFromSettings() {
         recordingEnabled = getSharedPreferences().getBoolean(getString(R.string.pref_record), false);
         defaultEmail = getSharedPreferences().getString(getString(R.string.pref_default_email), "");
+        mockDevicesEnabled = getSharedPreferences().getBoolean(getString(R.string.pref_enable_mock_devices), false);
     }
 
     private void startDeviceListActivity() {
-        Intent serverIntent = new Intent(this, DeviceListActivity.class);
-        startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+        Intent intent = new Intent(this, DeviceListActivity.class);
+        intent.putExtra(DeviceListActivity.EXTRA_MOCK_DEVICES_ENABLED, mockDevicesEnabled);
+        startActivityForResult(intent, REQUEST_CONNECT_DEVICE);
     }
 
     private void requestEnableBluetooth() {
@@ -392,7 +399,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String prefName) {
-        Log.d(TAG, "onSharedPreferenceChanged");
+        Log.d(TAG, "++onSharedPreferenceChanged");
         if (prefName.equals(getString(R.string.pref_record))) {
             updateParamsFromSettings();
         }
