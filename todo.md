@@ -3,6 +3,19 @@ TODO
 
 Very crude stuff. This is mostly for myself, not intended for other humans.
 
+split the full and lite versions
+--------------------------------
+- create and confirm full version
+- make the menu different in full and lite
+    - buy the full app only in lite
+- Drop the please buy the full up text in the full app
+
+clean up deprecated code
+------------------------
+- find a way to detect all deprecated code
+- Context.MODE_WORLD_READABLE
+- addPreferencesFromResource
+
 migrate to modern style
 -----------------------
 - change intro text and make links clickable
@@ -16,19 +29,6 @@ better handling of recording
     - DataRecorder: specialized class for recording data to file
         - toggled by preferences
 - the implementations are independent and unaware of each other
-
-split the full and lite versions
---------------------------------
-- move the common code to common library
-- create and confirm lite version
-- create and confirm full version
-
-generalize
-----------
-The viewer and recorder are not really about bluetooth anymore:
-they could receive data from anywhere.
-Rename the classes appropriately.
-The package name can stay the same, for "historical" reasons.
 
 next
 ----

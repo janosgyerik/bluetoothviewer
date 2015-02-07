@@ -3,6 +3,8 @@ package net.bluetoothviewer;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
+import net.bluetoothviewer.library.R;
+
 
 public class SettingsActivity extends PreferenceActivity {
 

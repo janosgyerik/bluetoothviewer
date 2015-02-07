@@ -7,7 +7,7 @@ buildscript {
     }
 }
 
-ext.compileSdkVersion = 14
+ext.compileSdkVersion = 19
 ext.buildToolsVersion = "20"
 ext.storeFilePath = System.getenv('STORE_FILE')
 ext.storePassword = System.getenv('STORE_PASSWORD')

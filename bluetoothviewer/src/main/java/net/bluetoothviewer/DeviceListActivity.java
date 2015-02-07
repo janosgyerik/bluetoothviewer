@@ -34,6 +34,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import net.bluetoothviewer.library.R;
 import net.bluetoothviewer.util.AssetUtils;
 
 import java.util.HashSet;

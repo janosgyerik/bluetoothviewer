@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
-import net.bluetoothviewer.R;
+import net.bluetoothviewer.library.R;
 
 import java.io.File;
 import java.io.FileOutputStream;

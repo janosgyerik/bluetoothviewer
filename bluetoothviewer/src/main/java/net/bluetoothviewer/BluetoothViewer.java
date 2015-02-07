@@ -39,6 +39,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.bluetoothviewer.library.R;
 import net.bluetoothviewer.util.EmailTools;
 
 public class BluetoothViewer extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -325,28 +326,23 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_github:
-                openURL(getString(R.string.url_github));
-                break;
-            case R.id.menu_rate:
-                openURL(getString(R.string.url_rate));
-                break;
-            case R.id.menu_buy:
-                openURL(getString(R.string.url_full_app));
-                break;
-            case R.id.menu_settings:
-                startActivityForResult(SettingsActivity.class, MENU_SETTINGS);
-                break;
-            case R.id.menu_email_recorded_data:
-                if (recording.length() > 0) {
-                    EmailTools.sendDeviceRecording(this, defaultEmail, deviceName, recording.toString());
-                } else if (recordingEnabled) {
-                    Toast.makeText(this, R.string.msg_nothing_recorded, Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(this, R.string.msg_nothing_recorded_recording_disabled, Toast.LENGTH_LONG).show();
-                }
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_github) {
+            openURL(getString(R.string.url_github));
+        } else if (itemId == R.id.menu_rate) {
+            openURL(getString(R.string.url_rate));
+        } else if (itemId == R.id.menu_buy) {
+            openURL(getString(R.string.url_full_app));
+        } else if (itemId == R.id.menu_settings) {
+            startActivityForResult(SettingsActivity.class, MENU_SETTINGS);
+        } else if (itemId == R.id.menu_email_recorded_data) {
+            if (recording.length() > 0) {
+                EmailTools.sendDeviceRecording(this, defaultEmail, deviceName, recording.toString());
+            } else if (recordingEnabled) {
+                Toast.makeText(this, R.string.msg_nothing_recorded, Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, R.string.msg_nothing_recorded_recording_disabled, Toast.LENGTH_LONG).show();
+            }
         }
         return false;
     }
