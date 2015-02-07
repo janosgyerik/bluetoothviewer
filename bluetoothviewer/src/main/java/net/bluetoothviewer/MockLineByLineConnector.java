@@ -12,16 +12,16 @@ public class MockLineByLineConnector implements DeviceConnector {
 
     private static final int SLEEP_MILLIS = 1000;
 
-    private final String filename;
-    private final AssetManager assets;
     private final MessageHandler messageHandler;
+    private final AssetManager assets;
+    private final String filename;
 
     private volatile boolean running = false;
 
-    public MockLineByLineConnector(String filename, AssetManager assets, MessageHandler messageHandler) {
-        this.filename = filename;
-        this.assets = assets;
+    public MockLineByLineConnector(MessageHandler messageHandler, AssetManager assets, String filename) {
         this.messageHandler = messageHandler;
+        this.assets = assets;
+        this.filename = filename;
     }
 
     @Override

@@ -5,15 +5,17 @@ Very crude stuff. This is mostly for myself, not intended for other humans.
 
 implement simulator mode for easier testing
 -------------------------------------------
-- mock devices
-    + MockAscii
-    - MockZephyr
 - debug mode in prefs
-    - enable mock devices
+    - enable mock devices, default off
 - when bt is off, add button to enable easily
+- merge branch to master
+- update github page
+- release
+- ping Samson
 
 migrate to modern style
 -----------------------
+- change intro text and make links clickable
 - use modern action toolbar
 - use regular buttons
 
