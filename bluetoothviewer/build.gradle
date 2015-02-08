@@ -4,3 +4,6 @@ android {
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
 }
+dependencies {
+    compile 'com.android.support:support-v4:19.+'
+}

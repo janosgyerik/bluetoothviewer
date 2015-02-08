@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2009 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (C) 2009 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -12,20 +14,19 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
 <resources>
+
     <string name="app_name">Bluetooth Viewer</string>
     <string name="app_name_lite">Bluetooth Viewer (LITE)</string>
 
-    <!--  BluetoothViewer -->
+    <!-- BluetoothViewer -->
     <string name="send">Send</string>
     <string name="not_connected">You are not connected to a device</string>
-
     <string name="btstatus_connecting_to_fmt">connecting to: %s</string>
     <string name="btstatus_connected_to_fmt">connected to: %s</string>
     <string name="btstatus_not_connected">not connected</string>
 
-    <!--  DeviceListActivity -->
+    <!-- DeviceListActivity -->
     <string name="title_select_device">Select a device to connect to</string>
     <string name="label_scanning">Scanning…</string>
     <string name="label_no_available_devices">No devices found</string>
@@ -40,12 +41,11 @@
     <string name="menu_github">View source on GitHub</string>
     <string name="menu_rate">Rate this app</string>
     <string name="menu_buy">Buy the full app</string>
-
     <string name="url_github">https://github.com/janosgyerik/bluetoothviewer</string>
     <string name="url_rate">market://details?id=net.bluetoothviewer</string>
     <string name="url_full_app">market://details?id=net.bluetoothviewer.full</string>
-
-    <string name="welcome_lite"><![CDATA[
+    <string name="welcome_lite">
+<![CDATA[
         <h3>Welcome to Bluetooth Viewer Lite!</h3>
         <p>This app is a simple Bluetooth connection debugging tool.
         It works with Bluetooth devices that broadcast text data.
@@ -58,8 +58,8 @@
         or make a small donation on <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JQC3BC8XLWMNE">PayPal</a>.</p>
         ]]>
     </string>
-
-    <string name="welcome_full"><![CDATA[
+    <string name="welcome_full">
+<![CDATA[
         <h3>Welcome to Bluetooth Viewer!</h3>
         <p>This app is a simple Bluetooth connection debugging tool.
         It works with Bluetooth devices that broadcast text data.
@@ -69,26 +69,29 @@
         <p>If you like this app, please <a href="market://details?id=net.bluetoothviewer.full">rate it</a>!</p>
         ]]>
     </string>
-
     <string name="email_client_chooser">Choose an email app…</string>
     <string name="no_email_client">Could not find an email client, cannot send message :(</string>
     <string name="fmt_subject_recorded_data">Recorded data: %s</string>
     <string name="fmt_recorded_from">See attached data recorded from bluetooth device: %s</string>
-
     <string name="pref_record">record</string>
     <string name="title_record">Enable recording</string>
     <string name="summary_record">Record bluetooth data</string>
-
     <string name="pref_default_email">default_email</string>
     <string name="title_default_email">Default email address</string>
     <string name="summary_default_email">Set default email address to send recordings</string>
-
     <string name="pref_enable_mock_devices">enable_mock_devices</string>
     <string name="title_enable_mock_devices">Enable mock devices</string>
     <string name="summary_enable_mock_devices">Mock devices are useful for testing without a real Bluetooth device</string>
-
     <string name="title_settings_activity">Settings</string>
     <string name="msg_nothing_recorded">Nothing recorded, nothing to send.</string>
     <string name="msg_nothing_recorded_recording_disabled">Nothing recorded. Enable recording in the Settings menu.</string>
+    <string name="title_activity_sample_drawer">SampleDrawerActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
 
 </resources>
