@@ -16,7 +16,7 @@ public class MockLineByLineConnector implements DeviceConnector {
     private final AssetManager assets;
     private final String filename;
 
-    private volatile boolean running = false;
+    private boolean running = false;
 
     public MockLineByLineConnector(MessageHandler messageHandler, AssetManager assets, String filename) {
         this.messageHandler = messageHandler;
