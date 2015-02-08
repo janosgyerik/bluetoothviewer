@@ -7,7 +7,6 @@ clean up deprecated code
 ------------------------
 - find a way to detect all deprecated code
 - Context.MODE_WORLD_READABLE
-- addPreferencesFromResource
 
 migrate to modern style
 -----------------------
