@@ -7,9 +7,11 @@ buildscript {
     }
 }
 
-ext.compileSdkVersion = 19
-ext.buildToolsVersion = "20"
-ext.storeFilePath = System.getenv('STORE_FILE')
-ext.storePassword = System.getenv('STORE_PASSWORD')
-ext.keyAlias = System.getenv('KEY_ALIAS')
-ext.keyPassword = System.getenv('KEY_PASSWORD')
+ext {
+    compileSdkVersion = 19
+    buildToolsVersion = "20"
+    storeFilePath = System.getenv('STORE_FILE')
+    storePassword = System.getenv('STORE_PASSWORD')
+    keyAlias = System.getenv('KEY_ALIAS')
+    keyPassword = System.getenv('KEY_PASSWORD')
+}
