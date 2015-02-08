@@ -41,7 +41,7 @@ import android.widget.Toast;
 
 import net.bluetoothviewer.library.R;
 import net.bluetoothviewer.util.ApplicationUtils;
-import net.bluetoothviewer.util.EmailTools;
+import net.bluetoothviewer.util.EmailUtils;
 
 public class BluetoothViewer extends Activity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -349,7 +349,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
             startActivityForResult(SettingsActivity.class, MENU_SETTINGS);
         } else if (itemId == R.id.menu_email_recorded_data) {
             if (recording.length() > 0) {
-                EmailTools.sendDeviceRecording(this, defaultEmail, deviceName, recording.toString());
+                EmailUtils.sendDeviceRecording(this, defaultEmail, deviceName, recording.toString());
             } else if (recordingEnabled) {
                 Toast.makeText(this, R.string.msg_nothing_recorded, Toast.LENGTH_LONG).show();
             } else {

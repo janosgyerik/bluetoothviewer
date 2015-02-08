@@ -18,15 +18,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class EmailTools {
+public class EmailUtils {
 
-    private static final String TAG = EmailTools.class.getSimpleName();
+    private static final String TAG = EmailUtils.class.getSimpleName();
 
     private static final String MESSAGE_TYPE = "message/rfc822";
 
     private static final String HORIZONTAL_RULE = "\n\n---\n\n";
 
-    private EmailTools() {
+    private EmailUtils() {
         // prevent creating utility class
     }
 
