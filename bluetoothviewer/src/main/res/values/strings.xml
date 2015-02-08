@@ -48,21 +48,23 @@
     <string name="welcome_lite"><![CDATA[
         <h3>Welcome to Bluetooth Viewer Lite!</h3>
         <p>This app is a simple Bluetooth connection debugging tool.
-        Connect to any Bluetooth device and see incoming raw data.
-        You can <a href="https://github.com/janosgyerik/bluetoothviewer">view the source code</a>
+        It works with Bluetooth devices that broadcast text data.
+        You can connect to any such device and see incoming text data line by line.</p>
+        <p>You can <a href="https://github.com/janosgyerik/bluetoothviewer">view the source code</a>
         or <a href="https://github.com/janosgyerik/bluetoothviewer/issues">report problems</a> on GitHub.</p>
         <p>If you like this app, please <a href="market://details?id=net.bluetoothviewer">rate it</a>!</p>
-        <p>If you *really* like this app then you can support me by buying
-        the <a href="market://details?id=net.bluetoothviewer.full">full version</a>,
-        which is really the same app, but costs 1 Euro.</p>
+        <p>If you *really* like this app, and you\'d like to support my work,
+        you can buy the otherwise identical <a href="market://details?id=net.bluetoothviewer.full">full version</a> for 1 Euro,
+        or make a small donation on <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=JQC3BC8XLWMNE">PayPal</a>.</p>
         ]]>
     </string>
 
     <string name="welcome_full"><![CDATA[
         <h3>Welcome to Bluetooth Viewer!</h3>
         <p>This app is a simple Bluetooth connection debugging tool.
-        Connect to any Bluetooth device and see incoming raw data.
-        You can <a href="https://github.com/janosgyerik/bluetoothviewer">view the source code</a>
+        It works with Bluetooth devices that broadcast text data.
+        You can connect to any such device and see incoming text data line by line.</p>
+        <p>You can <a href="https://github.com/janosgyerik/bluetoothviewer">view the source code</a>
         or <a href="https://github.com/janosgyerik/bluetoothviewer/issues">report problems</a> on GitHub.</p>
         <p>If you like this app, please <a href="market://details?id=net.bluetoothviewer.full">rate it</a>!</p>
         ]]>
