@@ -21,7 +21,7 @@
     android:orientation="vertical">
 
     <TextView android:id="@+id/btstatus"
-        android:gravity="right"
+        android:gravity="end"
         android:ellipsize="end"
         android:singleLine="true"
         android:layout_width="fill_parent"
