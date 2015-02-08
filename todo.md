@@ -11,7 +11,7 @@ clean up deprecated code
 
 migrate to modern style
 -----------------------
-- use modern action toolbar
+- replace menu with navigation drawer http://developer.android.com/training/implementing-navigation/nav-drawer.html
 - use regular buttons
 
 better handling of recording
@@ -44,6 +44,10 @@ next
     - matching regex
 - toolbar: record on/off
 - files app to view recorded data
+
+minor
+-----
+- reduce code duplication in xml using styles
 
 later
 -----

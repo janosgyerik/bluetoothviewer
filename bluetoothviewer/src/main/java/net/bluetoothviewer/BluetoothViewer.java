@@ -141,7 +141,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
             }
         }
     };
-    
+
     private TextView.OnEditorActionListener mWriteListener =
             new TextView.OnEditorActionListener() {
                 public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
@@ -161,7 +161,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
             pendingRequestEnableBt = savedInstanceState.getBoolean(SAVED_PENDING_REQUEST_ENABLE_BT);
         }
 
-        setContentView(R.layout.main);
+        setContentView(R.layout.bluetoothviewer);
 
         updateParamsFromSettings();
 
