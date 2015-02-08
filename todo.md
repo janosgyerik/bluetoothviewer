@@ -11,7 +11,6 @@ clean up deprecated code
 
 migrate to modern style
 -----------------------
-- change intro text and make links clickable
 - use modern action toolbar
 - use regular buttons
 

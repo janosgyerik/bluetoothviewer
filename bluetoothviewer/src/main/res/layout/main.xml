@@ -38,6 +38,15 @@
         android:stackFromBottom="true"
         android:transcriptMode="alwaysScroll" />
 
+    <TextView
+        android:id="@+id/msg_welcome"
+        android:textSize="18sp"
+        android:padding="5dp"
+        android:text="@string/welcome_lite"
+        android:linksClickable="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:id="@+id/send_text_container"
         android:layout_width="fill_parent"

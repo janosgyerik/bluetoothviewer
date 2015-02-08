@@ -23,6 +23,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -66,6 +68,8 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     private ImageButton mToolbarPauseButton;
     private ImageButton mToolbarPlayButton;
 
+    private TextView mWelcomeText;
+
     private ArrayAdapter<String> mConversationArrayAdapter;
     private DeviceConnector mDeviceConnector = new NullDeviceConnector();
 
@@ -93,6 +97,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MessageHandler.MSG_CONNECTED:
+                    mWelcomeText.setVisibility(View.GONE);
                     connected = true;
                     mStatusView.setText(formatStatusMessage(R.string.btstatus_connected_to_fmt, msg.obj));
                     onBluetoothStateChanged();
@@ -136,7 +141,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
             }
         }
     };
-
+    
     private TextView.OnEditorActionListener mWriteListener =
             new TextView.OnEditorActionListener() {
                 public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
@@ -199,19 +204,9 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         mConversationView.setAdapter(mConversationArrayAdapter);
 
         boolean isLiteVersion = ApplicationUtils.isLiteVersion(getApplication());
-        if (isLiteVersion) {
-            mConversationArrayAdapter.add(getString(R.string.welcome_1_lite));
-        } else {
-            mConversationArrayAdapter.add(getString(R.string.welcome_1_full));
-        }
-        mConversationArrayAdapter.add(getString(R.string.welcome_2));
-        mConversationArrayAdapter.add(getString(R.string.welcome_3));
-        mConversationArrayAdapter.add(getString(R.string.welcome_github_pre));
-        mConversationArrayAdapter.add(getString(R.string.welcome_github));
-        mConversationArrayAdapter.add(getString(R.string.welcome_please_rate));
-        if (isLiteVersion) {
-            mConversationArrayAdapter.add(getString(R.string.welcome_please_buy));
-        }
+        mWelcomeText = (TextView) findViewById(R.id.msg_welcome);
+        mWelcomeText.setText(Html.fromHtml(getString(isLiteVersion ? R.string.welcome_lite : R.string.welcome_full)));
+        mWelcomeText.setMovementMethod(LinkMovementMethod.getInstance());
 
         // Initialize the compose field with a listener for the return key
         mOutEditText = (EditText) findViewById(R.id.edit_text_out);
