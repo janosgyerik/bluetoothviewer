@@ -8,7 +8,7 @@ import java.util.List;
 
 public class MockLineByLineConnector implements DeviceConnector {
 
-    public static final String SUBDIR = "samples/line-by-line";
+    public static final String SAMPLES_SUBDIR = "samples/line-by-line";
 
     private static final int SLEEP_MILLIS = 1000;
 
@@ -35,7 +35,7 @@ public class MockLineByLineConnector implements DeviceConnector {
             public void run() {
                 messageHandler.sendConnectingTo(filename);
 
-                String mockFilePath = SUBDIR + "/" + filename;
+                String mockFilePath = SAMPLES_SUBDIR + "/" + filename;
                 List<String> lines = AssetUtils.readLinesFromStream(assets, mockFilePath);
 
                 if (!lines.isEmpty()) {
