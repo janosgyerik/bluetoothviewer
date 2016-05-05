@@ -1,13 +1,11 @@
 package net.bluetoothviewer.util;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import net.bluetoothviewer.library.R;
 
@@ -30,7 +28,7 @@ public class EmailUtils {
         // prevent creating utility class
     }
 
-    public static void sendDeviceRecording(Context context, String defaultEmail, String deviceName, String recordedContent) {
+    public static Intent prepareDeviceRecording(Context context, String defaultEmail, String deviceName, String recordedContent) {
         String subject = String.format(context.getString(R.string.fmt_subject_recorded_data), deviceName);
         String messageHeader = String.format(context.getString(R.string.fmt_recorded_from), deviceName);
 
@@ -47,7 +45,7 @@ public class EmailUtils {
         builder.append(getPackageInfoString(context));
 
         intent.putExtra(Intent.EXTRA_TEXT, builder.toString());
-        launchEmailApp(context, intent);
+        return intent;
     }
 
     private static String getPackageInfoString(Context context) {
@@ -82,14 +80,6 @@ public class EmailUtils {
         } catch (IOException e) {
             Log.e(TAG, "could not create temp file for attachment :(", e);
             return false;
-        }
-    }
-
-    private static void launchEmailApp(Context context, Intent intent) {
-        try {
-            context.startActivity(Intent.createChooser(intent, context.getString(R.string.email_client_chooser)));
-        } catch (ActivityNotFoundException ex) {
-            Toast.makeText(context, context.getString(R.string.no_email_client), Toast.LENGTH_SHORT).show();
         }
     }
 }

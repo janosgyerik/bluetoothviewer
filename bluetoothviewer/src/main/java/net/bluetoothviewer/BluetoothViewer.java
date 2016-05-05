@@ -16,6 +16,7 @@ package net.bluetoothviewer;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -53,6 +54,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     // Intent request codes
     private static final int REQUEST_CONNECT_DEVICE = 1;
     private static final int REQUEST_ENABLE_BT = 2;
+    private static final int REQUEST_LAUNCH_EMAIL_APP = 3;
     private static final int MENU_SETTINGS = 4;
 
     private static final String SAVED_PENDING_REQUEST_ENABLE_BT = "PENDING_REQUEST_ENABLE_BT";
@@ -313,6 +315,14 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                     Log.i(TAG, "BT not enabled");
                 }
                 break;
+            case REQUEST_LAUNCH_EMAIL_APP:
+                if (resultCode == Activity.RESULT_OK) {
+                    Toast.makeText(this, R.string.msg_email_sent, Toast.LENGTH_LONG).show();
+                } else {
+                    // TODO resultCode is NEVER ok, even when email successfully sent :(
+                    //Toast.makeText(this, R.string.msg_email_not_sent, Toast.LENGTH_LONG).show();
+                }
+                break;
             case MENU_SETTINGS:
                 updateParamsFromSettings();
                 break;
@@ -344,7 +354,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
             startActivityForResult(SettingsActivity.class, MENU_SETTINGS);
         } else if (itemId == R.id.menu_email_recorded_data) {
             if (recording.length() > 0) {
-                EmailUtils.sendDeviceRecording(this, defaultEmail, deviceName, recording.toString());
+                launchEmailApp(EmailUtils.prepareDeviceRecording(this, defaultEmail, deviceName, recording.toString()));
             } else if (recordingEnabled) {
                 Toast.makeText(this, R.string.msg_nothing_recorded, Toast.LENGTH_LONG).show();
             } else {
@@ -352,6 +362,14 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
             }
         }
         return false;
+    }
+
+    private void launchEmailApp(Intent intent) {
+        try {
+            startActivityForResult(Intent.createChooser(intent, getString(R.string.email_client_chooser)), REQUEST_LAUNCH_EMAIL_APP);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(this, getString(R.string.no_email_client), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void startActivityForResult(Class<?> cls, int requestCode) {
