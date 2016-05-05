@@ -71,11 +71,12 @@ public class EmailUtils {
     private static boolean addAttachmentToIntent(Context context, String deviceName, String recordedContent, Intent intent) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("_yyyyMMdd_HHmm", Locale.UK);
         String filename = deviceName + dateFormat.format(new Date()) + ".dat";
+        File basedir = context.getExternalCacheDir();
+        File attachment = new File(basedir, filename);
         try {
-            FileOutputStream ostream = context.openFileOutput(filename, Context.MODE_WORLD_READABLE);
+            FileOutputStream ostream = new FileOutputStream(attachment);
             ostream.write(recordedContent.getBytes());
             ostream.close();
-            File attachment = context.getFileStreamPath(filename);
             intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(attachment));
             return true;
         } catch (IOException e) {
