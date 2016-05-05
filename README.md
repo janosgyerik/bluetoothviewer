@@ -34,11 +34,9 @@ and to set a specific UUID.
 
 Another limitation is that the current version shows incoming
 data in ASCII format. If your device sends binary data, that
-won't be very readable. I plan two features to help with that:
-
-- Add a hexadecimal view that can be easily switched on/off
-
-- Make it possible to send the received data as an attachment
+won't be very readable. To help with that, I plan to add
+a hexadecimal view that can be easily switched on/off.
+Another option is to send the received data as an attachment.
 
 Finally, keep in mind that some devices need some sort of
 "activation signal" first before they would start sending data.
