@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 
 public class EmailUtils {
@@ -68,7 +69,7 @@ public class EmailUtils {
     }
 
     private static boolean addAttachmentToIntent(Context context, String deviceName, String recordedContent, Intent intent) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("_yyyyMMdd_HHmm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("_yyyyMMdd_HHmm", Locale.UK);
         String filename = deviceName + dateFormat.format(new Date()) + ".dat";
         try {
             FileOutputStream ostream = context.openFileOutput(filename, Context.MODE_WORLD_READABLE);
