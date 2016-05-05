@@ -235,7 +235,7 @@ public class BluetoothDeviceConnector implements DeviceConnector {
             try {
                 // call hidden method, see BluetoothDevice source code for more details:
                 // https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/bluetooth/BluetoothDevice.java
-                Method m = device.getClass().getMethod("createRfcommSocket", new Class[]{ int.class });
+                Method m = device.getClass().getMethod("createRfcommSocket", int.class);
                 tmp = (BluetoothSocket) m.invoke(device, CHANNEL);
                 Log.i(TAG, "setting socket to result of createRfcommSocket");
             } catch (Exception e) {
