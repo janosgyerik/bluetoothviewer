@@ -8,7 +8,7 @@ This app is a simple Bluetooth connection debugging tool:
 3. Send raw data to the Bluetooth device
 
 You can confirm successful pairing, monitor incoming raw data and see
-exactly what is being transmitted from the Bluetooth device.
+exactly what is transmitted from the Bluetooth device.
 
 * Android app on Google Play, with screenshots:
   https://play.google.com/store/apps/details?id=net.bluetoothviewer
@@ -17,7 +17,7 @@ exactly what is being transmitted from the Bluetooth device.
 Limitations
 -----------
 
-The app only works with certain types of Bluetooth devices:
+The app works only with certain types of Bluetooth devices:
 
 - Devices that work in *server mode*. That is, devices that
   listen to and accept incoming Bluetooth connections.
@@ -50,6 +50,10 @@ Feature ideas
 -------------
 
 I plan to add the following features in the future:
+
+* Option to specify channel to use when connecting
+
+* Option to specify UUID to use when connecting
 
 * Option to add timestamp to incoming messages
 
