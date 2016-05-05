@@ -40,6 +40,8 @@ public class BluetoothDeviceConnector implements DeviceConnector {
     private static final String TAG = BluetoothDeviceConnector.class.getSimpleName();
     private static final boolean D = true;
 
+    public static final int CHANNEL = 1;
+
     private static final int STATE_NONE = 0;       // we're doing nothing
     private static final int STATE_CONNECTING = 2; // now initiating an outgoing connection
     private static final int STATE_CONNECTED = 3;  // now connected to a remote device
@@ -229,12 +231,12 @@ public class BluetoothDeviceConnector implements DeviceConnector {
             mmDevice = device;
             BluetoothSocket tmp = null;
 
-            Log.i(TAG, "calling device.createRfcommSocket with channel 1 ...");
+            Log.i(TAG, "calling device.createRfcommSocket with channel " + CHANNEL + " ...");
             try {
                 // call hidden method, see BluetoothDevice source code for more details:
                 // https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/bluetooth/BluetoothDevice.java
                 Method m = device.getClass().getMethod("createRfcommSocket", new Class[]{ int.class });
-                tmp = (BluetoothSocket) m.invoke(device, 1);  // channel = 1
+                tmp = (BluetoothSocket) m.invoke(device, CHANNEL);
                 Log.i(TAG, "setting socket to result of createRfcommSocket");
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage(), e);
