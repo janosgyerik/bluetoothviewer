@@ -7,6 +7,14 @@ buildscript {
     }
 }
 
+// create gradle.properties with content
+//systemProp.sonar.host.url=https://sonarcloud.io
+//systemProp.sonar.login=get-token-from-sonarcloud
+// run ./gradlew sonarqube
+plugins {
+    id "org.sonarqube" version "2.5"
+}
+
 ext {
     compileSdkVersion = 19
     buildToolsVersion = "20"

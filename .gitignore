@@ -15,3 +15,6 @@ tmp
 /graphics/launchpad/
 /graphics/market/
 .DS_Store
+
+# SonarCloud
+gradle.properties
