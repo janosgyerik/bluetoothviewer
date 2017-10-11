@@ -11,11 +11,13 @@
 # limitations under the License.
 #
 src_dir:=src
-hdpi_dir:=../res/drawable-hdpi
-ldpi_dir:=../res/drawable-ldpi
-mdpi_dir:=../res/drawable-mdpi
+xhdpi_dir:=../bluetoothviewer/src/main/res/drawable-xhdpi
+hdpi_dir:=../bluetoothviewer/src/main/res/drawable-hdpi
+ldpi_dir:=../bluetoothviewer/src/main/res/drawable-ldpi
+mdpi_dir:=../bluetoothviewer/src/main/res/drawable-mdpi
 
 names:=$(patsubst $(src_dir)/%,%,$(wildcard $(src_dir)/*.png))
+xhdpi_target:=$(patsubst %,$(xhdpi_dir)/%,$(names))
 hdpi_target:=$(patsubst %,$(hdpi_dir)/%,$(names))
 ldpi_target:=$(patsubst %,$(ldpi_dir)/%,$(names))
 mdpi_target:=$(patsubst %,$(mdpi_dir)/%,$(names))
@@ -27,6 +29,8 @@ default: help
 help:
 	@cat Makefile.readme
 
+xhdpi: $(xhdpi_target)
+
 hdpi: $(hdpi_target)
 
 ldpi: $(ldpi_target)
@@ -37,10 +41,14 @@ lp launchpad: $(launchpad_target)
 
 market: $(market_target)
 
-all: hdpi ldpi mdpi launchpad market
+all: xhdpi hdpi ldpi mdpi launchpad market
 
 clean: 
-	rm $(hdpi_target) $(ldpi_target) $(mdpi_target) $(launchpad_target) $(market_target)
+	rm $(xhdpi_target) $(hdpi_target) $(ldpi_target) $(mdpi_target) $(launchpad_target) $(market_target)
+
+$(xhdpi_dir)/toolbar_%.png: $(src_dir)/toolbar_%.png
+	convert -geometry 96x $< $@
+	identify $@
 
 $(hdpi_dir)/toolbar_%.png: $(src_dir)/toolbar_%.png
 	convert -geometry 72x $< $@
@@ -52,6 +60,10 @@ $(ldpi_dir)/toolbar_%.png: $(src_dir)/toolbar_%.png
 
 $(mdpi_dir)/toolbar_%.png: $(src_dir)/toolbar_%.png
 	convert -geometry 48x $< $@
+	identify $@
+
+$(xhdpi_dir)/launcher_%.png: $(src_dir)/launcher_%.png
+	convert -geometry 96x $< $@
 	identify $@
 
 $(hdpi_dir)/launcher_%.png: $(src_dir)/launcher_%.png
@@ -85,5 +97,3 @@ market/android.png: $(src_dir)/launcher_main.png
 	@mkdir -p $(@D)
 	convert -geometry 512x $< $@
 	identify $@
-
-# eof
