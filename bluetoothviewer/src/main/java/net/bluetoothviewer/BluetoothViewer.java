@@ -334,23 +334,13 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
 
-        if (ApplicationUtils.isLiteVersion(getApplication())) {
-            menu.findItem(R.id.menu_buy).setVisible(true);
-        }
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.menu_github) {
-            openURL(getString(R.string.url_github));
-        } else if (itemId == R.id.menu_rate) {
-            openURL(getString(R.string.url_rate));
-        } else if (itemId == R.id.menu_buy) {
-            openURL(getString(R.string.url_full_app));
-        } else if (itemId == R.id.menu_settings) {
+        if (itemId == R.id.menu_settings) {
             startActivityForResult(SettingsActivity.class, MENU_SETTINGS);
         } else if (itemId == R.id.menu_email_recorded_data) {
             if (recording.length() > 0) {
