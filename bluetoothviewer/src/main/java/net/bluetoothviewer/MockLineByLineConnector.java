@@ -59,6 +59,7 @@ public class MockLineByLineConnector implements DeviceConnector {
                             Thread.sleep(SLEEP_MILLIS);
                         } catch (InterruptedException e) {
                             // ok to be interrupted
+                            Thread.currentThread().interrupt();
                         }
                     }
                 }
