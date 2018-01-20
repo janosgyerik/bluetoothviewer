@@ -112,15 +112,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                     onBluetoothStateChanged();
                     break;
                 case MessageHandler.MSG_NOT_CONNECTED:
-                    connected = false;
-                    mStatusView.setText(R.string.btstatus_not_connected);
-                    onBluetoothStateChanged();
-                    break;
                 case MessageHandler.MSG_CONNECTION_FAILED:
-                    connected = false;
-                    mStatusView.setText(R.string.btstatus_not_connected);
-                    onBluetoothStateChanged();
-                    break;
                 case MessageHandler.MSG_CONNECTION_LOST:
                     connected = false;
                     mStatusView.setText(R.string.btstatus_not_connected);
