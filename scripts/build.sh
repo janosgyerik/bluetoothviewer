@@ -55,6 +55,7 @@ install=off
 uninstall=off
 start=off
 list=off
+action=off
 while [ $# != 0 ]; do
     case $1 in
     -h|--help) usage ;;
@@ -63,11 +64,11 @@ while [ $# != 0 ]; do
     --lite) lite=on; full=off ;;
     --full) full=on; lite=off ;;
     --clean) clean=on ;;
-    -b|--build) build=on ;;
-    -i|--install) install=on; uninstall=off ;;
-    -u|--uninstall) uninstall=on; install=off; start=off ;;
-    -s|--start) start=on ;;
-    -l|--list) list=on ;;
+    -b|--build) build=on; action=on ;;
+    -i|--install) install=on; uninstall=off; action=on ;;
+    -u|--uninstall) uninstall=on; install=off; start=off; action=on ;;
+    -s|--start) start=on; action=on ;;
+    -l|--list) list=on; action=on ;;
     --) shift; while [ $# != 0 ]; do args="$args \"$1\""; shift; done; break ;;
     -) usage "Unknown option: $1" ;;
     -?*) usage "Unknown option: $1" ;;
@@ -80,8 +81,7 @@ done
 
 eval "set -- $args"  # save arguments in $@. Use "$@" in for loops, not $@
 
-#test $# = 0 && usage
-
+test $action = on || usage
 
 msg() {
     echo '*' $*
@@ -184,5 +184,3 @@ if test $start = on; then
 fi
 
 test $list = on && list
-
-# eof
