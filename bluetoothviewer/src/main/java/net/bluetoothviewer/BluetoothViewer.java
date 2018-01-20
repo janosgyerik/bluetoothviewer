@@ -132,6 +132,8 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                         recording.append(line).append("\n");
                     }
                     break;
+                default:
+                    Log.d(TAG, "Unkown message: " + msg.what + ", arg1= " + msg.arg1 + ", arg2= " + msg.arg2);
             }
         }
     };
@@ -318,6 +320,8 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
             case MENU_SETTINGS:
                 updateParamsFromSettings();
                 break;
+            default:
+                Log.d(TAG, "Unknown request code: " + requestCode);
         }
     }
 
