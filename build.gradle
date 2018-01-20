@@ -1,9 +1,9 @@
 buildscript {
     repositories {
-        mavenCentral()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:3.0.1'
     }
 }
 
@@ -17,7 +17,6 @@ plugins {
 
 ext {
     compileSdkVersion = 19
-    buildToolsVersion = "20"
     storeFilePath = System.getenv('STORE_FILE')
     storePassword = System.getenv('STORE_PASSWORD')
     keyAlias = System.getenv('KEY_ALIAS')

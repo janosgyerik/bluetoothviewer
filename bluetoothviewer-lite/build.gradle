@@ -1,12 +1,11 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-    compile project(':bluetoothviewer')
+    implementation project(':bluetoothviewer')
 }
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
-    buildToolsVersion rootProject.buildToolsVersion
 
     if (rootProject.storeFilePath) {
         signingConfigs {
