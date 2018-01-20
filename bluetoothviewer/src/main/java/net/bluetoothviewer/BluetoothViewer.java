@@ -270,6 +270,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         }
     }
 
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(TAG, "onActivityResult " + resultCode);
         switch (requestCode) {
