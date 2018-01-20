@@ -200,23 +200,6 @@ public class BluetoothDeviceConnector implements DeviceConnector {
     }
 
     /**
-     * Indicate that the connection attempt failed and notify the UI Activity.
-     */
-    private void connectionFailed() {
-        setState(STATE_NONE);
-        mHandler.sendConnectionFailed();
-    }
-
-    /**
-     * Indicate that the connection was lost and notify the UI Activity.
-     */
-    private void connectionLost() {
-        setState(STATE_NONE);
-        mHandler.sendConnectionLost();
-    }
-
-
-    /**
      * This thread runs while attempting to make an outgoing connection
      * with a device. It runs straight through; the connection either
      * succeeds or fails.
@@ -225,7 +208,7 @@ public class BluetoothDeviceConnector implements DeviceConnector {
         private final BluetoothSocket mmSocket;
         private final BluetoothDevice mmDevice;
 
-        public ConnectThread(BluetoothDevice device) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+        public ConnectThread(BluetoothDevice device) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
             mmDevice = device;
             BluetoothSocket tmp = null;
 
@@ -242,6 +225,7 @@ public class BluetoothDeviceConnector implements DeviceConnector {
             mmSocket = tmp;
         }
 
+        @Override
         public void run() {
             Log.i(TAG, "BEGIN mConnectThread");
             setName("ConnectThread");
@@ -256,7 +240,9 @@ public class BluetoothDeviceConnector implements DeviceConnector {
                 mmSocket.connect();
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage(), e);
-                connectionFailed();
+                setState(STATE_NONE);
+                mHandler.sendConnectionFailed();
+
                 try {
                     mmSocket.close();
                 } catch (IOException e2) {
@@ -325,6 +311,7 @@ public class BluetoothDeviceConnector implements DeviceConnector {
             }
         }
 
+        @Override
         public void run() {
             Log.i(TAG, "BEGIN mConnectedThread");
 
@@ -338,7 +325,8 @@ public class BluetoothDeviceConnector implements DeviceConnector {
                     }
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
-                    connectionLost();
+                    setState(STATE_NONE);
+                    mHandler.sendConnectionLost();
                     break;
                 }
             }
