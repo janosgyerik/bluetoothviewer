@@ -2,7 +2,6 @@ package net.bluetoothviewer.util;
 
 import android.app.Application;
 
-import net.bluetoothviewer.BluetoothViewer;
 import net.bluetoothviewer.application.BluetoothViewerApplication;
 
 public class ApplicationUtils {
