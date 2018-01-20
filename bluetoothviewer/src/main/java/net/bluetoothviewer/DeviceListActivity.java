@@ -69,18 +69,16 @@ public class DeviceListActivity extends Activity {
             return String.format("%s%n%s", getFirstLine(), getSecondLine());
         }
 
-        protected abstract String getFirstLine();
+        abstract String getFirstLine();
 
-        protected String getSecondLine() {
-            return "";
-        }
+        abstract String getSecondLine();
     }
 
     private static class BluetoothDeviceEntry extends DeviceListEntry {
         private final String name;
         private final String address;
 
-        public BluetoothDeviceEntry(String name, String address) {
+        BluetoothDeviceEntry(String name, String address) {
             this.name = name;
             this.address = address;
         }
@@ -99,13 +97,18 @@ public class DeviceListActivity extends Activity {
     private static class MockDeviceEntry extends DeviceListEntry {
         private final String filename;
 
-        public MockDeviceEntry(String filename) {
+        MockDeviceEntry(String filename) {
             this.filename = filename;
         }
 
         @Override
-        protected String getFirstLine() {
+        String getFirstLine() {
             return filename;
+        }
+
+        @Override
+        String getSecondLine() {
+            return "";
         }
     }
 
