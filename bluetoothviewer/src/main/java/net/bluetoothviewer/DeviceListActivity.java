@@ -52,12 +52,12 @@ public class DeviceListActivity extends Activity {
 
     protected static final String EXTRA_MOCK_DEVICES_ENABLED = "MOCK_DEVICES_ENABLED";
 
-    public static enum ConnectorType {
+    public enum ConnectorType {
         Bluetooth,
         Mock
     }
 
-    public static enum Message {
+    public enum Message {
         DeviceConnectorType,
         BluetoothAddress,
         MockFilename,
