@@ -136,6 +136,11 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                     Log.d(TAG, "Unkown message: " + msg.what + ", arg1= " + msg.arg1 + ", arg2= " + msg.arg2);
             }
         }
+
+        private String formatStatusMessage(int formatResId, Object obj) {
+            String deviceName = (String) obj;
+            return getString(formatResId, deviceName);
+        }
     };
 
     private TextView.OnEditorActionListener mWriteListener =
@@ -263,11 +268,6 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
             mDeviceConnector.sendAsciiMessage(chars);
             mOutEditText.setText("");
         }
-    }
-
-    private String formatStatusMessage(int formatResId, Object obj) {
-        String deviceName = (String) obj;
-        return getString(formatResId, deviceName);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
