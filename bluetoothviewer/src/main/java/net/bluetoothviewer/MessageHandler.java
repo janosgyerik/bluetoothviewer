@@ -2,13 +2,15 @@ package net.bluetoothviewer;
 
 public interface MessageHandler {
 
-    int MSG_NOT_CONNECTED = 10;
-    int MSG_CONNECTING = 11;
-    int MSG_CONNECTED = 12;
-    int MSG_CONNECTION_FAILED = 13;
-    int MSG_CONNECTION_LOST = 14;
-    int MSG_LINE_READ = 21;
-    int MSG_BYTES_WRITTEN = 22;
+    class Constants {
+        static final int MSG_NOT_CONNECTED = 10;
+        static final int MSG_CONNECTING = 11;
+        static final int MSG_CONNECTED = 12;
+        static final int MSG_CONNECTION_FAILED = 13;
+        static final int MSG_CONNECTION_LOST = 14;
+        static final int MSG_LINE_READ = 21;
+        static final int MSG_BYTES_WRITTEN = 22;
+    }
 
     void sendLineRead(String line);
 

@@ -2,6 +2,14 @@ package net.bluetoothviewer;
 
 import android.os.Handler;
 
+import static net.bluetoothviewer.MessageHandler.Constants.MSG_BYTES_WRITTEN;
+import static net.bluetoothviewer.MessageHandler.Constants.MSG_CONNECTED;
+import static net.bluetoothviewer.MessageHandler.Constants.MSG_CONNECTING;
+import static net.bluetoothviewer.MessageHandler.Constants.MSG_CONNECTION_FAILED;
+import static net.bluetoothviewer.MessageHandler.Constants.MSG_CONNECTION_LOST;
+import static net.bluetoothviewer.MessageHandler.Constants.MSG_LINE_READ;
+import static net.bluetoothviewer.MessageHandler.Constants.MSG_NOT_CONNECTED;
+
 public class MessageHandlerImpl implements MessageHandler {
     private final Handler handler;
 

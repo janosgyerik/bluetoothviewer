@@ -98,7 +98,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case MessageHandler.MSG_CONNECTED:
+                case MessageHandler.Constants.MSG_CONNECTED:
                     mWelcomeText.setVisibility(View.GONE);
                     connected = true;
                     mStatusView.setText(formatStatusMessage(R.string.btstatus_connected_to_fmt, msg.obj));
@@ -106,24 +106,24 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                     recording.setLength(0);
                     deviceName = msg.obj.toString();
                     break;
-                case MessageHandler.MSG_CONNECTING:
+                case MessageHandler.Constants.MSG_CONNECTING:
                     connected = false;
                     mStatusView.setText(formatStatusMessage(R.string.btstatus_connecting_to_fmt, msg.obj));
                     onBluetoothStateChanged();
                     break;
-                case MessageHandler.MSG_NOT_CONNECTED:
-                case MessageHandler.MSG_CONNECTION_FAILED:
-                case MessageHandler.MSG_CONNECTION_LOST:
+                case MessageHandler.Constants.MSG_NOT_CONNECTED:
+                case MessageHandler.Constants.MSG_CONNECTION_FAILED:
+                case MessageHandler.Constants.MSG_CONNECTION_LOST:
                     connected = false;
                     mStatusView.setText(R.string.btstatus_not_connected);
                     onBluetoothStateChanged();
                     break;
-                case MessageHandler.MSG_BYTES_WRITTEN:
+                case MessageHandler.Constants.MSG_BYTES_WRITTEN:
                     String written = new String((byte[]) msg.obj);
                     mConversationArrayAdapter.add(">>> " + written);
                     Log.i(TAG, "written = '" + written + "'");
                     break;
-                case MessageHandler.MSG_LINE_READ:
+                case MessageHandler.Constants.MSG_LINE_READ:
                     if (paused) break;
                     String line = (String) msg.obj;
                     if (D) Log.d(TAG, line);
