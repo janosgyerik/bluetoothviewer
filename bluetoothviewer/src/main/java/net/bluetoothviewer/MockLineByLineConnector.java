@@ -4,6 +4,7 @@ import android.content.res.AssetManager;
 
 import net.bluetoothviewer.util.AssetUtils;
 
+import java.io.File;
 import java.util.List;
 
 public class MockLineByLineConnector implements DeviceConnector {
@@ -35,7 +36,7 @@ public class MockLineByLineConnector implements DeviceConnector {
             public void run() {
                 messageHandler.sendConnectingTo(filename);
 
-                String mockFilePath = SAMPLES_SUBDIR + "/" + filename;
+                String mockFilePath = new File(SAMPLES_SUBDIR, filename).toString();
                 List<String> lines = AssetUtils.readLinesFromStream(assets, mockFilePath);
 
                 if (!lines.isEmpty()) {
