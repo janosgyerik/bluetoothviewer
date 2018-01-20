@@ -53,14 +53,14 @@ public class DeviceListActivity extends Activity {
     protected static final String EXTRA_MOCK_DEVICES_ENABLED = "MOCK_DEVICES_ENABLED";
 
     public enum ConnectorType {
-        Bluetooth,
-        Mock
+        BLUETOOTH,
+        MOCK
     }
 
     public enum Message {
-        DeviceConnectorType,
-        BluetoothAddress,
-        MockFilename,
+        DEVICE_CONNECTOR_TYPE,
+        BLUETOOTH_ADDRESS,
+        MOCK_FILENAME,
     }
 
     private abstract static class DeviceListEntry {
@@ -227,8 +227,8 @@ public class DeviceListActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             Intent intent = new Intent();
-            intent.putExtra(Message.DeviceConnectorType.toString(), ConnectorType.Bluetooth);
-            intent.putExtra(Message.BluetoothAddress.toString(), adapter.getItem(i).address);
+            intent.putExtra(Message.DEVICE_CONNECTOR_TYPE.toString(), ConnectorType.BLUETOOTH);
+            intent.putExtra(Message.BLUETOOTH_ADDRESS.toString(), adapter.getItem(i).address);
 
             setResult(Activity.RESULT_OK, intent);
             finish();
@@ -244,8 +244,8 @@ public class DeviceListActivity extends Activity {
 
         public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
             Intent intent = new Intent();
-            intent.putExtra(Message.DeviceConnectorType.toString(), ConnectorType.Mock);
-            intent.putExtra(Message.MockFilename.toString(), adapter.getItem(arg2).filename);
+            intent.putExtra(Message.DEVICE_CONNECTOR_TYPE.toString(), ConnectorType.MOCK);
+            intent.putExtra(Message.MOCK_FILENAME.toString(), adapter.getItem(arg2).filename);
 
             setResult(Activity.RESULT_OK, intent);
             finish();
