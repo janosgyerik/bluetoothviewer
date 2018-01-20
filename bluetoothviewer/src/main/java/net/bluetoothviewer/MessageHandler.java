@@ -3,6 +3,10 @@ package net.bluetoothviewer;
 public interface MessageHandler {
 
     class Constants {
+        private Constants() {
+            // forbidden constructor
+        }
+
         static final int MSG_NOT_CONNECTED = 10;
         static final int MSG_CONNECTING = 11;
         static final int MSG_CONNECTED = 12;
