@@ -96,7 +96,7 @@ randstring() {
 }
 
 list() {
-    ls -ltr */build/apk/*-{release,debug*}.apk 2>/dev/null
+    ls -ltr */build/outputs/apk/{release,debug}/*-{release,debug*}.apk 2>/dev/null
 }
 
 run() {
