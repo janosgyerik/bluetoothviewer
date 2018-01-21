@@ -45,25 +45,25 @@
 
     <string name="welcome_lite"><![CDATA[
         <h3>Welcome to Bluetooth Viewer Lite!</h3>
-        <p>This app is a simple Bluetooth connection debugging tool.
-        It works with Bluetooth devices that broadcast text data.
-        You can connect to any such device and see incoming text data line by line.</p>
-        <p>You can <a href="https://github.com/janosgyerik/bluetoothviewer">view the source code</a>
-        or <a href="https://github.com/janosgyerik/bluetoothviewer/issues">report problems</a> on GitHub.</p>
+        <p>This app is a Bluetooth connection debugging tool.
+        It can only work with devices that broadcast text data.
+        When connected to such device, it will display incoming text data line by line.
+        <strong><em>It may not work with all devices.</em></strong><p>
+        <p>You can <a href="https://github.com/janosgyerik/bluetoothviewer/issues">report problems</a> on GitHub.</p>
         <p>If you like this app, please <a href="market://details?id=net.bluetoothviewer">rate it</a>!</p>
-        <p>If you *really* like this app, and you\'d like to support my work,
-        you can buy the otherwise identical <a href="market://details?id=net.bluetoothviewer.full">full version</a> for 1 Euro.
+        <p>If you <em>really</em> like this app, you can support my work by buying the otherwise identical
+         <a href="market://details?id=net.bluetoothviewer.full">paid version</a> for 1 Euro.
         </p>
         ]]>
     </string>
 
     <string name="welcome_full"><![CDATA[
         <h3>Welcome to Bluetooth Viewer!</h3>
-        <p>This app is a simple Bluetooth connection debugging tool.
-        It works with Bluetooth devices that broadcast text data.
-        You can connect to any such device and see incoming text data line by line.</p>
-        <p>You can <a href="https://github.com/janosgyerik/bluetoothviewer">view the source code</a>
-        or <a href="https://github.com/janosgyerik/bluetoothviewer/issues">report problems</a> on GitHub.</p>
+        <p>This app is a Bluetooth connection debugging tool.
+        It can only work with devices that broadcast text data.
+        When connected to such device, it will display incoming text data line by line.
+        <strong><em>It may not work with all devices.</em></strong><p>
+        <p>You can <a href="https://github.com/janosgyerik/bluetoothviewer/issues">report problems</a> on GitHub.</p>
         <p>If you like this app, please <a href="market://details?id=net.bluetoothviewer.full">rate it</a>!</p>
         ]]>
     </string>
