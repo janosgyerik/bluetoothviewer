@@ -24,6 +24,7 @@ public class AssetUtils {
             Log.e(TAG, "Could not open asset file: " + filename);
             return Collections.emptyList();
         }
+
         List<String> lines;
         try {
             lines = IOUtils.readLinesFromStream(inputStream);
@@ -31,6 +32,7 @@ public class AssetUtils {
             Log.e(TAG, "Could not read lines from asset file: " + filename);
             return Collections.emptyList();
         }
+
         try {
             inputStream.close();
         } catch (IOException e) {

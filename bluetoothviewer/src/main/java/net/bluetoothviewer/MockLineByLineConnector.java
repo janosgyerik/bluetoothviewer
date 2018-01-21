@@ -31,40 +31,7 @@ public class MockLineByLineConnector implements DeviceConnector {
             return;
         }
         running = true;
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                messageHandler.sendConnectingTo(filename);
-
-                String mockFilePath = new File(SAMPLES_SUBDIR, filename).toString();
-                List<String> lines = AssetUtils.readLinesFromStream(assets, mockFilePath);
-
-                if (!lines.isEmpty()) {
-                    loopLinesUntilStopped(lines);
-                }
-
-                messageHandler.sendConnectionLost();
-            }
-
-            private void loopLinesUntilStopped(List<String> lines) {
-                messageHandler.sendConnectedTo(filename);
-
-                while (running) {
-                    for (String line : lines) {
-                        if (!running) {
-                            break;
-                        }
-                        messageHandler.sendLineRead(line);
-                        try {
-                            Thread.sleep(SLEEP_MILLIS);
-                        } catch (InterruptedException e) {
-                            // ok to be interrupted
-                            Thread.currentThread().interrupt();
-                        }
-                    }
-                }
-            }
-        }).start();
+        new Thread(new MockDeviceRunnable()).start();
     }
 
     @Override
@@ -75,5 +42,40 @@ public class MockLineByLineConnector implements DeviceConnector {
     @Override
     public void sendAsciiMessage(CharSequence chars) {
         // do nothing
+    }
+
+    class MockDeviceRunnable implements Runnable {
+        @Override
+        public void run() {
+            messageHandler.sendConnectingTo(filename);
+
+            String mockFilePath = new File(SAMPLES_SUBDIR, filename).toString();
+            List<String> lines = AssetUtils.readLinesFromStream(assets, mockFilePath);
+
+            if (!lines.isEmpty()) {
+                loopLinesUntilStopped(lines);
+            }
+
+            messageHandler.sendConnectionLost();
+        }
+
+        private void loopLinesUntilStopped(List<String> lines) {
+            messageHandler.sendConnectedTo(filename);
+
+            while (running) {
+                for (String line : lines) {
+                    if (!running) {
+                        break;
+                    }
+                    messageHandler.sendLineRead(line);
+                    try {
+                        Thread.sleep(SLEEP_MILLIS);
+                    } catch (InterruptedException e) {
+                        // ok to be interrupted
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            }
+        }
     }
 }
