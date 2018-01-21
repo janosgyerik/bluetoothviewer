@@ -341,9 +341,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.menu_github) {
-            openURL(getString(R.string.url_github));
-        } else if (itemId == R.id.menu_rate) {
+        if (itemId == R.id.menu_rate) {
             openURL(getString(R.string.url_rate));
         } else if (itemId == R.id.menu_buy) {
             openURL(getString(R.string.url_full_app));

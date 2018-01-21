@@ -20,9 +20,6 @@
         android:id="@+id/menu_email_recorded_data"
         android:title="@string/menu_email_recorded_data" />
     <item
-        android:id="@+id/menu_github"
-        android:title="@string/menu_github" />
-    <item
         android:id="@+id/menu_rate"
         android:title="@string/menu_rate" />
     <item

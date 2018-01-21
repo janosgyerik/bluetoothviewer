@@ -37,11 +37,9 @@
     <!-- Options Menu -->
     <string name="menu_settings">Settings</string>
     <string name="menu_email_recorded_data">Email recorded data</string>
-    <string name="menu_github">View source on GitHub</string>
     <string name="menu_rate">Rate this app</string>
     <string name="menu_buy">Buy the full app</string>
 
-    <string name="url_github">https://github.com/janosgyerik/bluetoothviewer</string>
     <string name="url_rate">market://details?id=net.bluetoothviewer</string>
     <string name="url_full_app">market://details?id=net.bluetoothviewer.full</string>
 
