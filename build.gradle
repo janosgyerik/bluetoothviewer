@@ -15,6 +15,12 @@ plugins {
     id "org.sonarqube" version "2.6"
 }
 
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+}
+
 ext {
     compileSdkVersion = 19
     storeFilePath = System.getenv('STORE_FILE')
