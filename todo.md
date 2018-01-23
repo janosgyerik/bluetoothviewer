@@ -3,21 +3,45 @@ TODO
 
 Very crude stuff. This is mostly for myself, not intended for other humans.
 
+simple release
+--------------
+
+- further clarify that this app is for programmers, unlikely to be useful for others
+- update screenshots
+- release, to re-verify requirements and to be ready to release
+
+add support for binary devices
+------------------------------
+
+- support for binary devices
+    - decide at the time of connection the mode to use
+        - text
+        - binary, with 16 bytes buffer
+            - can be configurable later if there is demand and justification
+    - simplest possible UI to choose the mode (pop-up)
+    - record binary data, but display in hexdump format
+        - verify content of attachment
+- lite version
+    - always binary mode, not possible to select text
+- update description
+- update screenshots
+- increase price of full app to 3 EUR
+- important improvements soon
+    - also decide recording at connection time, to avoid data cut off at the beginning
+    - improved UI to choose the mode
+        - settings: default mode
+        - long-press on device to override default mode
+
 improve connectivity
 --------------------
 
-- need to be able to see binary data
-    - add support for devices that send binary data
-    - add binary mock device
-    - toggle binary mode:
-        - read data in chucks instead of by lines
-        - display in ascii mode
 - experiment:
     - try to connect by uuid, see https://github.com/janosgyerik/bluetoothviewer/issues/3
         - try to connect to mac, PC, etc
-        - print as much debug info as possible about remote device
-        - try with different channels
-- TBD
+    - print as much debug info as possible about remote device
+    - try with different channels
+- (if connectivity is improved) increase price of full app to 5 EUR
+- update description
 
 migrate to modern style
 -----------------------
