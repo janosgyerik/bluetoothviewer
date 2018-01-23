@@ -23,6 +23,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -57,9 +58,15 @@ public class DeviceListActivity extends Activity {
         MOCK
     }
 
+    public enum MockType {
+        TEXT,
+        BINARY
+    }
+
     public enum Message {
         DEVICE_CONNECTOR_TYPE,
         BLUETOOTH_ADDRESS,
+        MOCK_TYPE,
         MOCK_FILENAME,
     }
 
@@ -95,14 +102,19 @@ public class DeviceListActivity extends Activity {
     }
 
     private static class MockDeviceEntry extends DeviceListEntry {
+        private final MockType mockType;
         private final String filename;
 
-        MockDeviceEntry(String filename) {
+        MockDeviceEntry(MockType mockType, String filename) {
+            this.mockType = mockType;
             this.filename = filename;
         }
 
         @Override
         String getFirstLine() {
+            if (mockType == MockType.BINARY) {
+                return filename + " (bin)";
+            }
             return filename;
         }
 
@@ -128,25 +140,29 @@ public class DeviceListActivity extends Activity {
         // Set default result to CANCELED, in case the user backs out
         setResult(Activity.RESULT_CANCELED);
 
-        boolean noAvailableDevices = true;
-
+        boolean foundMockDevices = false;
         if (getIntent().getBooleanExtra(EXTRA_MOCK_DEVICES_ENABLED, false)) {
-            String[] filenames = AssetUtils.listFiles(getResources().getAssets(), MockLineByLineConnector.SAMPLES_SUBDIR);
-            if (filenames.length > 0) {
-                ArrayAdapter<MockDeviceEntry> mockDevicesAdapter = new ArrayAdapter<MockDeviceEntry>(this, R.layout.device_name);
-                ListView mockListView = (ListView) findViewById(R.id.mock_devices);
-                mockListView.setAdapter(mockDevicesAdapter);
-                mockListView.setOnItemClickListener(new MockDeviceClickListener(mockDevicesAdapter));
+            ArrayAdapter<MockDeviceEntry> mockDevicesAdapter = new ArrayAdapter<MockDeviceEntry>(this, R.layout.device_name);
+            ListView mockListView = (ListView) findViewById(R.id.mock_devices);
+            mockListView.setAdapter(mockDevicesAdapter);
+            mockListView.setOnItemClickListener(new MockDeviceClickListener(mockDevicesAdapter));
 
-                for (String filename : filenames) {
-                    mockDevicesAdapter.add(new MockDeviceEntry(filename));
-                }
+            for (String filename : AssetUtils.listFiles(getResources().getAssets(), MockLineByLineConnector.SAMPLES_SUBDIR)) {
+                mockDevicesAdapter.add(new MockDeviceEntry(MockType.TEXT, filename));
+                foundMockDevices = true;
+            }
 
+            for (String filename : AssetUtils.listFiles(getResources().getAssets(), MockBinaryConnector.SAMPLES_SUBDIR)) {
+                mockDevicesAdapter.add(new MockDeviceEntry(MockType.BINARY, filename));
+                foundMockDevices = true;
+            }
+
+            if (foundMockDevices) {
                 findViewById(R.id.title_mock_devices).setVisibility(View.VISIBLE);
-                noAvailableDevices = false;
             }
         }
 
+        boolean foundBluetoothDevices = false;
         Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
         if (pairedDevices != null && !pairedDevices.isEmpty()) {
             ArrayAdapter<BluetoothDeviceEntry> pairedDevicesAdapter = new ArrayAdapter<BluetoothDeviceEntry>(this, R.layout.device_name);
@@ -159,10 +175,10 @@ public class DeviceListActivity extends Activity {
             }
 
             findViewById(R.id.title_paired_devices).setVisibility(View.VISIBLE);
-            noAvailableDevices = false;
+            foundBluetoothDevices = true;
         }
 
-        if (noAvailableDevices) {
+        if (!foundBluetoothDevices && !foundMockDevices) {
             findViewById(R.id.label_none_found).setVisibility(View.VISIBLE);
         }
 
@@ -217,38 +233,49 @@ public class DeviceListActivity extends Activity {
         mBtAdapter.startDiscovery();
     }
 
-    private class BluetoothDeviceClickListener implements OnItemClickListener {
-        private final ArrayAdapter<BluetoothDeviceEntry> adapter;
+    private abstract class AbstractItemClickListener<T> implements OnItemClickListener {
+        final ArrayAdapter<T> adapter;
 
-        private BluetoothDeviceClickListener(ArrayAdapter<BluetoothDeviceEntry> adapter) {
+        private AbstractItemClickListener(ArrayAdapter<T> adapter) {
             this.adapter = adapter;
         }
 
         @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            Intent intent = new Intent();
-            intent.putExtra(Message.DEVICE_CONNECTOR_TYPE.toString(), ConnectorType.BLUETOOTH);
-            intent.putExtra(Message.BLUETOOTH_ADDRESS.toString(), adapter.getItem(i).address);
-
-            setResult(Activity.RESULT_OK, intent);
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            T item = adapter.getItem(position);
+            if (item != null) {
+                Intent intent = new Intent();
+                putExtras(intent, item);
+                setResult(Activity.RESULT_OK, intent);
+            }
             finish();
+        }
+
+        abstract void putExtras(Intent intent, T item);
+    }
+
+    private class BluetoothDeviceClickListener extends AbstractItemClickListener<BluetoothDeviceEntry> {
+        private BluetoothDeviceClickListener(ArrayAdapter<BluetoothDeviceEntry> adapter) {
+            super(adapter);
+        }
+
+        @Override
+        void putExtras(Intent intent, BluetoothDeviceEntry item) {
+            intent.putExtra(Message.DEVICE_CONNECTOR_TYPE.toString(), ConnectorType.BLUETOOTH);
+            intent.putExtra(Message.BLUETOOTH_ADDRESS.toString(), item.address);
         }
     }
 
-    private class MockDeviceClickListener implements OnItemClickListener {
-        private final ArrayAdapter<MockDeviceEntry> adapter;
-
-        public MockDeviceClickListener(ArrayAdapter<MockDeviceEntry> adapter) {
-            this.adapter = adapter;
+    private class MockDeviceClickListener extends AbstractItemClickListener<MockDeviceEntry> {
+        private MockDeviceClickListener(ArrayAdapter<MockDeviceEntry> adapter) {
+            super(adapter);
         }
 
-        public void onItemClick(AdapterView<?> av, View v, int arg2, long arg3) {
-            Intent intent = new Intent();
+        @Override
+        void putExtras(Intent intent, MockDeviceEntry item) {
             intent.putExtra(Message.DEVICE_CONNECTOR_TYPE.toString(), ConnectorType.MOCK);
-            intent.putExtra(Message.MOCK_FILENAME.toString(), adapter.getItem(arg2).filename);
-
-            setResult(Activity.RESULT_OK, intent);
-            finish();
+            intent.putExtra(Message.MOCK_TYPE.toString(), item.mockType);
+            intent.putExtra(Message.MOCK_FILENAME.toString(), item.filename);
         }
     }
 
@@ -281,4 +308,27 @@ public class DeviceListActivity extends Activity {
             }
         }
     };
+
+    public static DeviceConnector createDeviceConnector(Intent data, MessageHandler messageHandler, AssetManager assetManager) {
+        ConnectorType connectorType =
+                (ConnectorType) data.getSerializableExtra(Message.DEVICE_CONNECTOR_TYPE.toString());
+
+        switch (connectorType) {
+            case MOCK:
+                String filename = data.getStringExtra(Message.MOCK_FILENAME.toString());
+                MockType mockType = (MockType) data.getSerializableExtra(Message.MOCK_TYPE.toString());
+                if (mockType == MockType.TEXT) {
+                    return new MockLineByLineConnector(messageHandler, assetManager, filename);
+                } else if (mockType == MockType.BINARY) {
+                    return new MockBinaryConnector(messageHandler, assetManager, filename);
+                }
+                return null;
+            case BLUETOOTH:
+                String addressMsgId = Message.BLUETOOTH_ADDRESS.toString();
+                String address = data.getStringExtra(addressMsgId);
+                return new BluetoothDeviceConnector(messageHandler, address);
+            default:
+                return null;
+        }
+    }
 }

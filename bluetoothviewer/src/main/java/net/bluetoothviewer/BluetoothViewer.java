@@ -275,32 +275,14 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         Log.i(TAG, "onActivityResult " + resultCode);
         switch (requestCode) {
             case REQUEST_CONNECT_DEVICE:
-                // When DeviceListActivity returns with connection info to connect devices
-                // TODO it would be better to return a Parcelable instance of a DeviceConnector,
-                //      as in the current approach both the sender and the receiver must know
-                //      how to create a DeviceConnector from its pieces (constructor args).
-                //      It would be better if that logic was in one place,
-                //      and definitely not in this activity
                 if (resultCode == Activity.RESULT_OK) {
-                    String connectorTypeMsgId = DeviceListActivity.Message.DEVICE_CONNECTOR_TYPE.toString();
-                    DeviceListActivity.ConnectorType connectorType =
-                            (DeviceListActivity.ConnectorType) data.getSerializableExtra(connectorTypeMsgId);
                     MessageHandler messageHandler = new MessageHandlerImpl(mHandler);
-                    switch (connectorType) {
-                        case MOCK:
-                            String filenameMsgId = DeviceListActivity.Message.MOCK_FILENAME.toString();
-                            String filename = data.getStringExtra(filenameMsgId);
-                            mDeviceConnector = new MockLineByLineConnector(messageHandler, getAssets(), filename);
-                            break;
-                        case BLUETOOTH:
-                            String addressMsgId = DeviceListActivity.Message.BLUETOOTH_ADDRESS.toString();
-                            String address = data.getStringExtra(addressMsgId);
-                            mDeviceConnector = new BluetoothDeviceConnector(messageHandler, address);
-                            break;
-                        default:
-                            return;
+                    mDeviceConnector = DeviceListActivity.createDeviceConnector(data, messageHandler, getAssets());
+                    if (mDeviceConnector != null) {
+                        mDeviceConnector.connect();
+                    } else {
+                        Toast.makeText(this, R.string.error_could_not_create_device, Toast.LENGTH_LONG).show();
                     }
-                    mDeviceConnector.connect();
                 }
                 break;
             case REQUEST_ENABLE_BT:

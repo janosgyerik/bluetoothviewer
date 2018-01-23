@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class IOUtils {
@@ -21,5 +22,16 @@ public class IOUtils {
             lines.add(line);
         }
         return lines;
+    }
+
+    public static List<byte[]> readChunksFromStream(InputStream inputStream, int chunkSize) throws IOException {
+        int bytesRead;
+        byte[] data = new byte[chunkSize];
+
+        List<byte[]> chunks = new ArrayList<byte[]>();
+        while ((bytesRead = inputStream.read(data, 0, data.length)) != -1) {
+            chunks.add(Arrays.copyOf(data, bytesRead));
+        }
+        return chunks;
     }
 }

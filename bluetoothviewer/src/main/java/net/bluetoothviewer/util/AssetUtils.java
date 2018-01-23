@@ -41,6 +41,31 @@ public class AssetUtils {
         return lines;
     }
 
+    public static List<byte[]> readChunksFromStream(AssetManager assets, String path, int chunkSize) {
+        InputStream inputStream;
+        try {
+            inputStream = assets.open(path);
+        } catch (IOException e) {
+            Log.e(TAG, "Could not open asset file: " + path);
+            return Collections.emptyList();
+        }
+
+        List<byte[]> chunks;
+        try {
+            chunks = IOUtils.readChunksFromStream(inputStream, chunkSize);
+        } catch (IOException e) {
+            Log.e(TAG, "Could not read chunks from asset file: " + path);
+            return Collections.emptyList();
+        }
+
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            Log.w(TAG, "Could not close asset file: " + path);
+        }
+        return chunks;
+    }
+
     public static String[] listFiles(AssetManager assets, String subdir) {
         try {
             return assets.list(subdir);

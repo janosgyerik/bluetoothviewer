@@ -91,4 +91,6 @@
     <string name="msg_email_sent">Email sent.</string>
     <string name="msg_email_not_sent">Email NOT sent.</string>
 
+    <string name="error_could_not_create_device">Could not create device.</string>
+
 </resources>
