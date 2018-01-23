@@ -137,9 +137,8 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
             }
         }
 
-        private String formatStatusMessage(int formatResId, Object obj) {
-            String deviceName = (String) obj;
-            return getString(formatResId, deviceName);
+        private String formatStatusMessage(int formatResId, Object deviceName) {
+            return getString(formatResId, (String) deviceName);
         }
     };
 
