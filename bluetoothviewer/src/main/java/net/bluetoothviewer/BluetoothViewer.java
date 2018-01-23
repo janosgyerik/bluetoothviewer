@@ -296,8 +296,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                 if (resultCode == Activity.RESULT_OK) {
                     Toast.makeText(this, R.string.msg_email_sent, Toast.LENGTH_LONG).show();
                 } else {
-                    // TODO resultCode is NEVER ok, even when email successfully sent :(
-                    //Toast.makeText(this, R.string.msg_email_not_sent, Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.msg_email_not_sent, Toast.LENGTH_LONG).show();
                 }
                 break;
             case MENU_SETTINGS:
