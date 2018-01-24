@@ -45,11 +45,13 @@
 
     <string name="welcome_lite"><![CDATA[
         <h3>Welcome to Bluetooth Viewer Lite!</h3>
-        <p>This app is a Bluetooth connection debugging tool.
-        It can only work with devices that broadcast text data.
-        When connected to such device, it will display incoming text data line by line.
+        <p>This app is a Bluetooth connection debugging tool <em>for programmers</em>.
+        <em>If you\'re not a programmer, this tool is probably completely useless for you.</em><p>
+        <p>Once connected to a Bluetooth device,
+        this app reads and displays data line by line.
+        As such, it only works with devices that broadcast data in text format line by line.
         <strong><em>It may not work with all devices.</em></strong><p>
-        <p>You can <a href="https://github.com/janosgyerik/bluetoothviewer/issues">report problems</a> on GitHub.</p>
+        <p>Please <a href="https://github.com/janosgyerik/bluetoothviewer/issues">report problems</a> on GitHub.</p>
         <p>If you like this app, please <a href="market://details?id=net.bluetoothviewer">rate it</a>!</p>
         <p>If you <em>really</em> like this app, you can support my work by buying the otherwise identical
          <a href="market://details?id=net.bluetoothviewer.full">paid version</a> for 1&euro;.
@@ -59,11 +61,13 @@
 
     <string name="welcome_full"><![CDATA[
         <h3>Welcome to Bluetooth Viewer!</h3>
-        <p>This app is a Bluetooth connection debugging tool.
-        It can only work with devices that broadcast text data.
-        When connected to such device, it will display incoming text data line by line.
+        <p>This app is a Bluetooth connection debugging tool <em>for programmers</em>.
+        <em>If you\'re not a programmer, this tool is probably completely useless for you.</em><p>
+        <p>Once connected to a Bluetooth device,
+        this app reads and displays data line by line.
+        As such, it only works with devices that broadcast data in text format line by line.
         <strong><em>It may not work with all devices.</em></strong><p>
-        <p>You can <a href="https://github.com/janosgyerik/bluetoothviewer/issues">report problems</a> on GitHub.</p>
+        <p>Please <a href="https://github.com/janosgyerik/bluetoothviewer/issues">report problems</a> on GitHub.</p>
         <p>If you like this app, please <a href="market://details?id=net.bluetoothviewer.full">rate it</a>!</p>
         ]]>
     </string>
