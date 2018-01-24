@@ -36,6 +36,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:stackFromBottom="true"
+        android:visibility="gone"
         android:transcriptMode="alwaysScroll" />
 
     <TextView
@@ -45,7 +46,8 @@
         android:text="@string/welcome_lite"
         android:linksClickable="true"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_weight="1"
+        android:layout_height="0dp" />
 
     <LinearLayout
         android:id="@+id/send_text_container"

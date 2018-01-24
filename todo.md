@@ -1,15 +1,6 @@
 TODO
 ====
 
-Very crude stuff. This is mostly for myself, not intended for other humans.
-
-simple release
---------------
-
-- further clarify that this app is for programmers, unlikely to be useful for others
-- update screenshots
-- release, to re-verify requirements and to be ready to release
-
 add support for binary devices
 ------------------------------
 
@@ -23,8 +14,10 @@ add support for binary devices
         - verify content of attachment
 - lite version
     - always binary mode, not possible to select text
-- update description
-- update screenshots
+- release
+    - release apk
+    - update description
+    - update screenshots
 - increase price of full app to 3 EUR
 - important improvements soon
     - also decide recording at connection time, to avoid data cut off at the beginning

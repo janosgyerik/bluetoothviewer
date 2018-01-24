@@ -61,6 +61,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
 
     // Layout Views
     private TextView mStatusView;
+    private ListView mConversationView;
     private EditText mOutEditText;
     private View mSendTextContainer;
 
@@ -200,7 +201,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         });
 
         mConversationArrayAdapter = new ArrayAdapter<String>(this, R.layout.message);
-        ListView mConversationView = (ListView) findViewById(R.id.in);
+        mConversationView = (ListView) findViewById(R.id.in);
         mConversationView.setAdapter(mConversationArrayAdapter);
 
         boolean isLiteVersion = ApplicationUtils.isLiteVersion(getApplication());
@@ -366,6 +367,8 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
             mToolbarConnectButton.setVisibility(View.GONE);
             mToolbarDisconnectButton.setVisibility(View.VISIBLE);
             mSendTextContainer.setVisibility(View.VISIBLE);
+            mWelcomeText.setVisibility(View.GONE);
+            mConversationView.setVisibility(View.VISIBLE);
         } else {
             mToolbarConnectButton.setVisibility(View.VISIBLE);
             mToolbarDisconnectButton.setVisibility(View.GONE);
