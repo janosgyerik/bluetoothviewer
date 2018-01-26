@@ -324,19 +324,20 @@ public class BluetoothDeviceConnector implements DeviceConnector {
 
             mReader.init(mmInStream);
 
-            while (!stop) {
-                try {
+            try {
+                while (!stop) {
                     byte[] chunk = mReader.readValue();
-                    if (chunk != null) {
-                        mHandler.sendChunkRead(chunk);
+                    if (chunk.length == 0) {
+                        break;
                     }
-                } catch (Exception e) {
-                    Log.e(TAG, "disconnected", e);
-                    setState(STATE_NONE);
-                    mHandler.sendConnectionLost();
-                    break;
+                    mHandler.sendChunkRead(chunk);
                 }
+            } catch (Exception e) {
+                Log.e(TAG, "disconnected", e);
+                setState(STATE_NONE);
             }
+
+            mHandler.sendConnectionLost();
         }
 
         /**

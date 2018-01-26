@@ -7,15 +7,16 @@ add support for binary devices
 - implementation
     - add checkbox in DeviceListActivity to enable binary, off by default
     - add checkbox in DeviceListActivity to enable recording, off by default
-        - remove menu option
+        - remove setting option
+        - add button to email, remove email option from menu
     - connect to device synchronously
         - indeterminate progress
         - show error message details
         - make it possible to cancel
         - clean up the unnecessary multithreading
-    - fix quality
+    - fix quality issues
     - verify content of recorded data of the short text and short bin
-    - very it still works with a real senspod
+    - verify it still works with a real senspod
 - lite version
 - release
     - release apk

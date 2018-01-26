@@ -18,7 +18,7 @@ public class LineByLineReader implements DeviceReader {
     public byte[] readValue() throws IOException {
         String line = reader.readLine();
         if (line == null) {
-            return null;
+            return new byte[0];
         }
         return line.getBytes();
     }

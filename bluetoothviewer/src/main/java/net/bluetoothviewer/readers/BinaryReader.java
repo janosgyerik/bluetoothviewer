@@ -22,7 +22,7 @@ public class BinaryReader implements DeviceReader {
         byte[] buffer = new byte[CHUNK_SIZE];
         int bytesRead = inputStream.read(buffer, 0, buffer.length);
         if (bytesRead == -1) {
-            return null;
+            return new byte[0];
         }
         return Arrays.copyOf(buffer, bytesRead);
     }

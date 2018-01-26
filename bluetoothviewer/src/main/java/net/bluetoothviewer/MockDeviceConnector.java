@@ -77,10 +77,9 @@ public class MockDeviceConnector implements DeviceConnector {
             try {
                 while (running) {
                     byte[] chunk = reader.readValue();
-                    if (chunk == null) {
+                    if (chunk.length == 0) {
                         break;
                     }
-
                     messageHandler.sendChunkRead(chunk);
                     sleep();
                 }
