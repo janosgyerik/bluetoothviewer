@@ -36,6 +36,9 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import net.bluetoothviewer.library.R;
+import net.bluetoothviewer.readers.BinaryReader;
+import net.bluetoothviewer.readers.DeviceReader;
+import net.bluetoothviewer.readers.LineByLineReader;
 import net.bluetoothviewer.util.AssetUtils;
 
 import java.util.HashSet;
@@ -58,15 +61,15 @@ public class DeviceListActivity extends Activity {
         MOCK
     }
 
-    public enum MockType {
+    public enum InputType {
         TEXT,
         BINARY
     }
 
     public enum Message {
         DEVICE_CONNECTOR_TYPE,
+        INPUT_TYPE,
         BLUETOOTH_ADDRESS,
-        MOCK_TYPE,
         MOCK_FILENAME,
     }
 
@@ -102,19 +105,14 @@ public class DeviceListActivity extends Activity {
     }
 
     private static class MockDeviceEntry extends DeviceListEntry {
-        private final MockType mockType;
         private final String filename;
 
-        MockDeviceEntry(MockType mockType, String filename) {
-            this.mockType = mockType;
+        MockDeviceEntry(String filename) {
             this.filename = filename;
         }
 
         @Override
         String getFirstLine() {
-            if (mockType == MockType.BINARY) {
-                return filename + " (bin)";
-            }
             return filename;
         }
 
@@ -146,14 +144,10 @@ public class DeviceListActivity extends Activity {
             ListView mockListView = (ListView) findViewById(R.id.mock_devices);
             mockListView.setAdapter(mockDevicesAdapter);
             mockListView.setOnItemClickListener(new MockDeviceClickListener(mockDevicesAdapter));
+            mockListView.setOnItemLongClickListener(new MockDeviceClickListener(mockDevicesAdapter));
 
-            for (String filename : AssetUtils.listFiles(getResources().getAssets(), MockLineByLineConnector.SAMPLES_SUBDIR)) {
-                mockDevicesAdapter.add(new MockDeviceEntry(MockType.TEXT, filename));
-                foundMockDevices = true;
-            }
-
-            for (String filename : AssetUtils.listFiles(getResources().getAssets(), MockBinaryConnector.SAMPLES_SUBDIR)) {
-                mockDevicesAdapter.add(new MockDeviceEntry(MockType.BINARY, filename));
+            for (String filename : AssetUtils.listFiles(getResources().getAssets(), MockDeviceConnector.SAMPLES_SUBDIR)) {
+                mockDevicesAdapter.add(new MockDeviceEntry(filename));
                 foundMockDevices = true;
             }
 
@@ -233,7 +227,7 @@ public class DeviceListActivity extends Activity {
         mBtAdapter.startDiscovery();
     }
 
-    private abstract class AbstractItemClickListener<T> implements OnItemClickListener {
+    private abstract class AbstractItemClickListener<T> implements OnItemClickListener, AdapterView.OnItemLongClickListener {
         final ArrayAdapter<T> adapter;
 
         private AbstractItemClickListener(ArrayAdapter<T> adapter) {
@@ -245,10 +239,25 @@ public class DeviceListActivity extends Activity {
             T item = adapter.getItem(position);
             if (item != null) {
                 Intent intent = new Intent();
+                intent.putExtra(Message.INPUT_TYPE.toString(), InputType.TEXT);
                 putExtras(intent, item);
                 setResult(Activity.RESULT_OK, intent);
             }
             finish();
+        }
+
+
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            T item = adapter.getItem(position);
+            if (item != null) {
+                Intent intent = new Intent();
+                intent.putExtra(Message.INPUT_TYPE.toString(), InputType.BINARY);
+                putExtras(intent, item);
+                setResult(Activity.RESULT_OK, intent);
+            }
+            finish();
+            return false;
         }
 
         abstract void putExtras(Intent intent, T item);
@@ -274,7 +283,6 @@ public class DeviceListActivity extends Activity {
         @Override
         void putExtras(Intent intent, MockDeviceEntry item) {
             intent.putExtra(Message.DEVICE_CONNECTOR_TYPE.toString(), ConnectorType.MOCK);
-            intent.putExtra(Message.MOCK_TYPE.toString(), item.mockType);
             intent.putExtra(Message.MOCK_FILENAME.toString(), item.filename);
         }
     }
@@ -310,23 +318,29 @@ public class DeviceListActivity extends Activity {
     };
 
     public static DeviceConnector createDeviceConnector(Intent data, MessageHandler messageHandler, AssetManager assetManager) {
+        DeviceReader reader;
+        InputType inputType = (InputType) data.getSerializableExtra(Message.INPUT_TYPE.toString());
+        switch (inputType) {
+            case TEXT:
+                reader = new LineByLineReader();
+                break;
+            case BINARY:
+                reader = new BinaryReader();
+                break;
+            default:
+                return null;
+        }
+
         ConnectorType connectorType =
                 (ConnectorType) data.getSerializableExtra(Message.DEVICE_CONNECTOR_TYPE.toString());
 
         switch (connectorType) {
             case MOCK:
                 String filename = data.getStringExtra(Message.MOCK_FILENAME.toString());
-                MockType mockType = (MockType) data.getSerializableExtra(Message.MOCK_TYPE.toString());
-                if (mockType == MockType.TEXT) {
-                    return new MockLineByLineConnector(messageHandler, assetManager, filename);
-                } else if (mockType == MockType.BINARY) {
-                    return new MockBinaryConnector(messageHandler, assetManager, filename);
-                }
-                return null;
+                return new MockDeviceConnector(messageHandler, assetManager, filename, reader);
             case BLUETOOTH:
-                String addressMsgId = Message.BLUETOOTH_ADDRESS.toString();
-                String address = data.getStringExtra(addressMsgId);
-                return new BluetoothDeviceConnector(messageHandler, address);
+                String address = data.getStringExtra(Message.BLUETOOTH_ADDRESS.toString());
+                return new BluetoothDeviceConnector(messageHandler, address, reader);
             default:
                 return null;
         }

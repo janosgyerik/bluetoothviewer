@@ -5,13 +5,13 @@ public class TextUtils {
         // utility class, forbidden constructor
     }
 
-    public static String bytesToHexDump(byte[] chunk) {
-        if (chunk.length == 0) {
+    public static String bytesToHexDump(byte[] bytes) {
+        if (bytes.length == 0) {
             return "";
         }
 
-        StringBuilder sb = new StringBuilder(chunk.length * 3);
-        for (byte b : chunk) {
+        StringBuilder sb = new StringBuilder(bytes.length * 3);
+        for (byte b : bytes) {
             String hexString = Integer.toHexString(b & 255);
             if (hexString.length() == 1) {
                 sb.append('0');

@@ -124,9 +124,9 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                     mConversationArrayAdapter.add(">>> " + written);
                     Log.i(TAG, "written = '" + written + "'");
                     break;
-                case MessageHandler.Constants.MSG_LINE_READ:
+                case MessageHandler.Constants.MSG_CHUNK_READ:
                     if (paused) break;
-                    String line = (String) msg.obj;
+                    String line = mDeviceConnector.valueAsString((byte[]) msg.obj);
                     if (D) Log.d(TAG, line);
                     mConversationArrayAdapter.add(line);
                     if (recordingEnabled) {

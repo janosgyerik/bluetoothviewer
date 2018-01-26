@@ -4,16 +4,19 @@ TODO
 add support for binary devices
 ------------------------------
 
-- support for binary devices
-    - decide at the time of connection the mode to use
-        - text
-        - binary, with 16 bytes buffer
-            - can be configurable later if there is demand and justification
-    - simplest possible UI to choose the mode (pop-up)
-    - record binary data, but display in hexdump format
-        - verify content of attachment
+- implementation
+    - add checkbox in DeviceListActivity to enable binary, off by default
+    - add checkbox in DeviceListActivity to enable recording, off by default
+        - remove menu option
+    - connect to device synchronously
+        - indeterminate progress
+        - show error message details
+        - make it possible to cancel
+        - clean up the unnecessary multithreading
+    - fix quality
+    - verify content of recorded data of the short text and short bin
+    - very it still works with a real senspod
 - lite version
-    - always binary mode, not possible to select text
 - release
     - release apk
     - update description

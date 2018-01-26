@@ -15,4 +15,9 @@ public class NullDeviceConnector implements DeviceConnector {
     public void sendAsciiMessage(CharSequence chars) {
         // do nothing
     }
+
+    @Override
+    public String valueAsString(byte[] bytes) {
+        return null;
+    }
 }

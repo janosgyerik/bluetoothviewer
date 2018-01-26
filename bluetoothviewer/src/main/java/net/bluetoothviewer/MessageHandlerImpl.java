@@ -7,7 +7,7 @@ import static net.bluetoothviewer.MessageHandler.Constants.MSG_CONNECTED;
 import static net.bluetoothviewer.MessageHandler.Constants.MSG_CONNECTING;
 import static net.bluetoothviewer.MessageHandler.Constants.MSG_CONNECTION_FAILED;
 import static net.bluetoothviewer.MessageHandler.Constants.MSG_CONNECTION_LOST;
-import static net.bluetoothviewer.MessageHandler.Constants.MSG_LINE_READ;
+import static net.bluetoothviewer.MessageHandler.Constants.MSG_CHUNK_READ;
 import static net.bluetoothviewer.MessageHandler.Constants.MSG_NOT_CONNECTED;
 
 public class MessageHandlerImpl implements MessageHandler {
@@ -18,8 +18,8 @@ public class MessageHandlerImpl implements MessageHandler {
     }
 
     @Override
-    public void sendLineRead(String line) {
-        handler.obtainMessage(MSG_LINE_READ, -1, -1, line).sendToTarget();
+    public void sendChunkRead(byte[] chunk) {
+        handler.obtainMessage(MSG_CHUNK_READ, -1, -1, chunk).sendToTarget();
     }
 
     @Override

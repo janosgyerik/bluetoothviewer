@@ -21,10 +21,10 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-import java.io.BufferedReader;
+import net.bluetoothviewer.readers.DeviceReader;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -49,21 +49,23 @@ public class BluetoothDeviceConnector implements DeviceConnector {
     private final BluetoothAdapter mAdapter;
     private final MessageHandler mHandler;
     private final String mAddress;
+    private final DeviceReader mReader;
+
     private ConnectThread mConnectThread;
     private ConnectedThread mConnectedThread;
     private int mState;
-
 
     /**
      * Prepare a new Bluetooth session.
      *
      * @param handler A Handler to send messages back to the UI Activity
      */
-    public BluetoothDeviceConnector(MessageHandler handler, String address) {
+    public BluetoothDeviceConnector(MessageHandler handler, String address, DeviceReader reader) {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
-        mState = STATE_NONE;
         mHandler = handler;
         mAddress = address;
+        mState = STATE_NONE;
+        mReader = reader;
     }
 
     /**
@@ -179,6 +181,11 @@ public class BluetoothDeviceConnector implements DeviceConnector {
     @Override
     public void sendAsciiMessage(CharSequence chars) {
         write((chars.toString() + "\n").getBytes());
+    }
+
+    @Override
+    public String valueAsString(byte[] bytes) {
+        return mReader.valueAsString(bytes);
     }
 
     /**
@@ -315,15 +322,15 @@ public class BluetoothDeviceConnector implements DeviceConnector {
         public void run() {
             Log.i(TAG, "BEGIN mConnectedThread");
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(mmInStream));
+            mReader.init(mmInStream);
 
             while (!stop) {
                 try {
-                    String line = reader.readLine();
-                    if (line != null) {
-                        mHandler.sendLineRead(line);
+                    byte[] chunk = mReader.readValue();
+                    if (chunk != null) {
+                        mHandler.sendChunkRead(chunk);
                     }
-                } catch (IOException e) {
+                } catch (Exception e) {
                     Log.e(TAG, "disconnected", e);
                     setState(STATE_NONE);
                     mHandler.sendConnectionLost();

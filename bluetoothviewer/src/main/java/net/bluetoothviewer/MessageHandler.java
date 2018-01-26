@@ -12,11 +12,11 @@ public interface MessageHandler {
         static final int MSG_CONNECTED = 12;
         static final int MSG_CONNECTION_FAILED = 13;
         static final int MSG_CONNECTION_LOST = 14;
-        static final int MSG_LINE_READ = 21;
+        static final int MSG_CHUNK_READ = 21;
         static final int MSG_BYTES_WRITTEN = 22;
     }
 
-    void sendLineRead(String line);
+    void sendChunkRead(byte[] chunk);
 
     void sendBytesWritten(byte[] bytes);
 

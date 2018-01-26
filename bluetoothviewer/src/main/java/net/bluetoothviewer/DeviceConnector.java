@@ -10,4 +10,6 @@ public interface DeviceConnector {
     void disconnect();
 
     void sendAsciiMessage(CharSequence chars);
+
+    String valueAsString(byte[] bytes);
 }
