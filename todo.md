@@ -29,6 +29,11 @@ add support for binary devices
         - settings: default mode
         - long-press on device to override default mode
 
+modern look
+-----------
+
+Recreate the UI following modern techniques, from modern elements.
+
 improve connectivity
 --------------------
 
