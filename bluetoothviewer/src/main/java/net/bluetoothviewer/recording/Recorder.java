@@ -6,4 +6,6 @@ public interface Recorder {
     void clear();
 
     byte[] getBytes();
+
+    boolean isEmpty();
 }

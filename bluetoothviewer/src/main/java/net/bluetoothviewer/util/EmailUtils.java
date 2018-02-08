@@ -29,7 +29,7 @@ public class EmailUtils {
         // prevent creating utility class
     }
 
-    public static Intent prepareDeviceRecording(Context context, String defaultEmail, String deviceName, String recordedContent) {
+    public static Intent prepareDeviceRecording(Context context, String defaultEmail, String deviceName, byte[] bytes) {
         String subject = String.format(context.getString(R.string.fmt_subject_recorded_data), deviceName);
         String messageHeader = String.format(context.getString(R.string.fmt_recorded_from), deviceName);
 
@@ -40,8 +40,8 @@ public class EmailUtils {
         intent.setType(MESSAGE_TYPE);
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{defaultEmail});
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-        if (!addAttachmentToIntent(context, deviceName, recordedContent, intent)) {
-            builder.append(recordedContent).append(HORIZONTAL_RULE);
+        if (!addAttachmentToIntent(context, deviceName, bytes, intent)) {
+            builder.append(new String(bytes)).append(HORIZONTAL_RULE);
         }
         builder.append(getPackageInfoString(context));
 
@@ -51,7 +51,7 @@ public class EmailUtils {
 
     private static String getPackageInfoString(Context context) {
         PackageInfo info = getPackageInfo(context);
-        return String.format("[App: %s Version: %d/%s]",
+        return String.format(Locale.US, "[App: %s Version: %d/%s]",
                 context.getPackageName(), info.versionCode, info.versionName);
     }
 
@@ -68,14 +68,14 @@ public class EmailUtils {
         return new PackageInfo();
     }
 
-    private static boolean addAttachmentToIntent(Context context, String deviceName, String recordedContent, Intent intent) {
+    private static boolean addAttachmentToIntent(Context context, String deviceName, byte[] bytes, Intent intent) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("_yyyyMMdd_HHmm", Locale.UK);
         String filename = deviceName + dateFormat.format(new Date()) + ".dat";
         File basedir = context.getExternalCacheDir();
         File attachment = new File(basedir, filename);
         try {
             FileOutputStream ostream = new FileOutputStream(attachment);
-            ostream.write(recordedContent.getBytes());
+            ostream.write(bytes);
             ostream.close();
             intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(attachment));
             return true;

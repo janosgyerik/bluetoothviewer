@@ -28,6 +28,11 @@ public class RecorderImpl implements Recorder {
         return bytes;
     }
 
+    @Override
+    public boolean isEmpty() {
+        return bytesList.isEmpty();
+    }
+
     private int count() {
         int total = 0;
         for (byte[] bytes : bytesList) {

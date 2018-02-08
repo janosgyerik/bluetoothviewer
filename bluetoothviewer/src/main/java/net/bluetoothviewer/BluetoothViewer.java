@@ -43,6 +43,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.bluetoothviewer.library.R;
+import net.bluetoothviewer.recording.Recorder;
+import net.bluetoothviewer.recording.RecorderImpl;
 import net.bluetoothviewer.util.ApplicationUtils;
 import net.bluetoothviewer.util.EmailUtils;
 
@@ -92,7 +94,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
 
     private String deviceName;
 
-    private final StringBuilder recording = new StringBuilder();
+    private final Recorder recorder = new RecorderImpl();
 
     // The Handler that gets information back from the BluetoothService
     private final Handler mHandler = new Handler() {
@@ -104,7 +106,7 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                     connected = true;
                     mStatusView.setText(formatStatusMessage(R.string.btstatus_connected_to_fmt, msg.obj));
                     onBluetoothStateChanged();
-                    recording.setLength(0);
+                    recorder.clear();
                     deviceName = msg.obj.toString();
                     break;
                 case MessageHandler.Constants.MSG_CONNECTING:
@@ -126,11 +128,12 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
                     break;
                 case MessageHandler.Constants.MSG_CHUNK_READ:
                     if (paused) break;
-                    String line = mDeviceConnector.valueAsString((byte[]) msg.obj);
-                    if (D) Log.d(TAG, line);
+                    byte[] bytes = (byte[]) msg.obj;
+                    String line = mDeviceConnector.valueAsString(bytes);
                     mConversationArrayAdapter.add(line);
+                    if (D) Log.d(TAG, line);
                     if (recordingEnabled) {
-                        recording.append(line).append("\n");
+                        recorder.append(bytes);
                     }
                     break;
                 default:
@@ -329,8 +332,8 @@ public class BluetoothViewer extends Activity implements SharedPreferences.OnSha
         } else if (itemId == R.id.menu_settings) {
             startActivityForResult(SettingsActivity.class, MENU_SETTINGS);
         } else if (itemId == R.id.menu_email_recorded_data) {
-            if (recording.length() > 0) {
-                launchEmailApp(EmailUtils.prepareDeviceRecording(this, defaultEmail, deviceName, recording.toString()));
+            if (!recorder.isEmpty()) {
+                launchEmailApp(EmailUtils.prepareDeviceRecording(this, defaultEmail, deviceName, recorder.getBytes()));
             } else if (recordingEnabled) {
                 Toast.makeText(this, R.string.msg_nothing_recorded, Toast.LENGTH_LONG).show();
             } else {

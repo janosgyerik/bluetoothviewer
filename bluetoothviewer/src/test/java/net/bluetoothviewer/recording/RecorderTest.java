@@ -70,4 +70,18 @@ public class RecorderTest {
         recorder.append(chunk2);
         assertThat(recorder.getBytes()).isEqualTo(chunk2);
     }
+
+    @Test
+    public void isEmpty_works_consistently() {
+        byte[] chunk1 = {1, 2, 3};
+        recorder.append(chunk1);
+        assertThat(recorder.isEmpty()).isFalse();
+
+        recorder.clear();
+        assertThat(recorder.isEmpty()).isTrue();
+
+        byte[] chunk2 = {3, 4, 5};
+        recorder.append(chunk2);
+        assertThat(recorder.isEmpty()).isFalse();
+    }
 }
