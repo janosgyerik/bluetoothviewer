@@ -109,11 +109,7 @@ config=$dirname/config.sh
 test -f "$config" && . "$config"
 cd "$dirname"/..
 
-if test -f gradlew; then
-    gradle=./gradlew
-else
-    gradle=gradle
-fi
+gradle=./gradlew
 
 projectname=$(grep ^include settings.gradle | head -n 1 | sed -e 's/.*://' -e 's/.$//')
 
