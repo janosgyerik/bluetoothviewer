@@ -12,7 +12,7 @@ buildscript {
 //systemProp.sonar.login=get-token-from-sonarcloud
 // run ./gradlew sonarqube
 plugins {
-    id "org.sonarqube" version "2.6"
+    id "org.sonarqube" version "2.7"
 }
 
 allprojects {
