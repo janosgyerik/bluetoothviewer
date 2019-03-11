@@ -28,6 +28,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.UUID;
 
 /**
  * This class does all the work for setting up and managing Bluetooth
@@ -40,6 +41,7 @@ public class BluetoothDeviceConnector implements DeviceConnector {
     private static final String TAG = BluetoothDeviceConnector.class.getSimpleName();
     private static final boolean D = true;
 
+    public static final UUID SPP_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     public static final int CHANNEL = 1;
 
     private static final int STATE_NONE = 0;       // we're doing nothing
@@ -209,19 +211,19 @@ public class BluetoothDeviceConnector implements DeviceConnector {
         private final BluetoothDevice mmDevice;
 
         public ConnectThread(BluetoothDevice device) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-            mmDevice = device;
+            String address = device.getAddress();
+
+            mmDevice = mAdapter.getRemoteDevice(address);
             BluetoothSocket tmp = null;
 
-            Log.i(TAG, "calling device.createRfcommSocket with channel " + CHANNEL + " ...");
             try {
-                // call hidden method, see BluetoothDevice source code for more details:
-                // https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/bluetooth/BluetoothDevice.java
-                Method m = device.getClass().getMethod("createRfcommSocket", int.class);
-                tmp = (BluetoothSocket) m.invoke(device, CHANNEL);
-                Log.i(TAG, "setting socket to result of createRfcommSocket");
-            } catch (Exception e) {
+                tmp = mmDevice.createRfcommSocketToServiceRecord(SPP_UUID);
+                // alternatively?
+                //tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(SPP_UUID);
+            } catch (IOException e) {
                 Log.e(TAG, e.getMessage(), e);
             }
+
             mmSocket = tmp;
         }
 
