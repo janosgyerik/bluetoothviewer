@@ -156,9 +156,9 @@ fi
 apk=
 if test "$proj"; then 
     if test $debug = on; then
-        apk=$proj/build/apk/$proj-debug-unaligned.apk
+        apk=$proj/build/outputs/apk/debug/$proj-debug.apk
     elif test $release = on; then
-        apk=$proj/build/apk/$proj-release.apk
+        apk=$proj/build/outputs/apk/release/$proj-release.apk
     fi
 fi
 
