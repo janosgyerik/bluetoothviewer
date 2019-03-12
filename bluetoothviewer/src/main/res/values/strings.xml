@@ -15,7 +15,7 @@
 
 <resources>
     <string name="app_name">Bluetooth Viewer</string>
-    <string name="app_name_lite">Bluetooth Viewer (IPEGCORP)</string>
+    <string name="app_name_lite">Bluetooth Viewer (IPEGCORPv2)</string>
 
     <!--  BluetoothViewer -->
     <string name="send">Send</string>

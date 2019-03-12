@@ -217,9 +217,9 @@ public class BluetoothDeviceConnector implements DeviceConnector {
             BluetoothSocket tmp = null;
 
             try {
-                tmp = mmDevice.createRfcommSocketToServiceRecord(SPP_UUID);
+//                tmp = mmDevice.createRfcommSocketToServiceRecord(SPP_UUID);
                 // alternatively?
-                //tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(SPP_UUID);
+                tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(SPP_UUID);
             } catch (IOException e) {
                 Log.e(TAG, e.getMessage(), e);
             }
